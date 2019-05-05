@@ -106,14 +106,15 @@ const baseConfig = {
   ],
 }
 
-
 const getConfig = (env) => {
   let config
   if (env && env.production) {
     config = Object.assign({}, baseConfig, {
       mode: 'production',
     })
-    config.plugins.push(new CleanWebpackPlugin(['./dist']))
+    config.plugins.push(new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [path.join(__dirname, 'dist')],
+    }))
     // config.plugins.push(new CopyPlugin([
     //   {from: 'src/assets/images/icon', to: 'src/assets/images/icon'},
     //   {from: 'src/js/libs', to: 'src/js/libs'},
@@ -126,7 +127,7 @@ const getConfig = (env) => {
         contentBase: path.join(__dirname, '.'),
         port: 9000,
         host: '0.0.0.0',
-      }
+      },
     })
   }
   return config
