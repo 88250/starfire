@@ -1,5 +1,5 @@
 {
-  "name": "star-fire",
+  "name": "starfire",
   "version": "1.0.0",
   "scripts": {
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts'",
