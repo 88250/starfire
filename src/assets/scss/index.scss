@@ -1,0 +1,11 @@
+$borderColor: #d1d5da !default;
+
+$tooltipColor:#fff !default;
+$toolTipBg: rgba(0, 0, 0, 0.8) !default;
+
+$font-family-base: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif !default;
+$font-family-code: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace !default;
+
+@import "reset";
+@import "content";
+@import "tooltipped";
