@@ -1,250 +1,299 @@
-import { EventEmitter } from "events";
-
-export as namespace ipfs;
-
 type Callback<T> = (error: Error, result?: T) => void;
 
-declare class IPFS extends EventEmitter {
+interface IIPFS {
+    key: any;
+    name: any;
+    get: any;
+    types: ITypes;
+    repo: IRepoAPI;
+    bootstrap: any;
+    config: any;
+    block: any;
+    object: IObjectAPI;
+    dag: IDagAPI;
+    libp2p: any;
+    swarm: ISwarmAPI;
+    files: IFilesAPI;
+    bitswap: any;
+    pubsub: any;
 
-    public types: ITypes;
+    init(options: IInitOptions, callback: Callback<boolean>): void;
 
-    public repo: IRepoAPI;
-    public bootstrap: any;
-    public config: any;
-    public block: any;
-    public object: IObjectAPI;
-    public dag: IDagAPI;
-    public libp2p: any;
-    public swarm: ISwarmAPI;
-    public files: IFilesAPI;
-    public bitswap: any;
+    init(callback: Callback<boolean>): void;
 
-    public pubsub: any;
-    constructor(options: IOptions);
+    preStart(callback: Callback<any>): void;
 
-    public init(options: IInitOptions, callback: Callback<boolean>): void;
-    public init(callback: Callback<boolean>): void;
+    start(callback?: Callback<any>): void;
 
-    public preStart(callback: Callback<any>): void;
-    public start(callback?: Callback<any>): void;
-    public stop(callback?: (error?: Error) => void): void;
-    public isOnline(): boolean;
+    stop(callback?: (error?: Error) => void): void;
 
-    public version(options: any, callback: (error: Error, version: IVersion) => void): void ;
-    public version(options?: any): Promise<IVersion>;
-    public version(callback: (error: Error, version: IVersion) => void): void ;
+    isOnline(): boolean;
 
-    public id(options: any, callback: (error: Error, version: IId) => void): void ;
-    public id(options?: any): Promise<IId>;
-    public id(callback: (error: Error, version: IId) => void): void ;
+    version(options: any, callback: (error: Error, version: IVersion) => void): void;
 
-    public ping(callback: (error: Error) => void): void;
-    public ping(): Promise<void>;
+    version(options?: any): Promise<IVersion>;
+
+    version(callback: (error: Error, version: IVersion) => void): void;
+
+    id(options: any, callback: (error: Error, version: IId) => void): void;
+
+    id(options?: any): Promise<IId>;
+
+    id(callback: (error: Error, version: IId) => void): void;
+
+    ping(callback: (error: Error) => void): void;
+
+    ping(): Promise<void>;
 }
 
-export interface IOptions {
-        init?: boolean;
-        start?: boolean;
-        EXPERIMENTAL?: any;
-        repo?: string;
-        config?: any;
-    }
+interface IOptions {
+    init?: boolean;
+    start?: boolean;
+    EXPERIMENTAL?: any;
+    repo?: string;
+    config?: any;
+}
 
-export interface IInitOptions {
-        emptyRepo?: boolean;
-        bits?: number;
-        log?: () => void;
-    }
+interface IInitOptions {
+    emptyRepo?: boolean;
+    bits?: number;
+    log?: () => void;
+}
 
-export interface IMultiaddr {
-        buffer: Uint8Array;
-    }
+interface IMultiaddr {
+    buffer: Uint8Array;
+}
 
-export type Multihash = any | string;
-export type CID = any;
+interface ITypes {
+    Buffer: any;
+    PeerId: any;
+    PeerInfo: any;
+    multiaddr: IMultiaddr;
+    multihash: string;
+    CID: string;
+}
 
-export interface ITypes {
-        Buffer: any;
-        PeerId: any;
-        PeerInfo: any;
-        multiaddr: IMultiaddr;
-        multihash: Multihash;
-        CID: CID;
-    }
+interface IVersion {
+    version: string;
+    repo: string;
+    commit: string;
+}
 
-export interface IVersion {
-        version: string;
-        repo: string;
-        commit: string;
-    }
+interface IId {
+    id: string;
+    publicKey: string;
+    addresses: IMultiaddr[];
+    agentVersion: string;
+    protocolVersion: string;
+}
 
-export interface IId {
-        id: string;
-        publicKey: string;
-        addresses: IMultiaddr[];
-        agentVersion: string;
-        protocolVersion: string;
-    }
+interface IRepoAPI {
+    init(bits: number, empty: boolean, callback: Callback<any>): void;
 
-export interface IRepoAPI {
-        init(bits: number, empty: boolean, callback: Callback<any>): void;
+    version(options: any, callback: Callback<any>): void;
 
-        version(options: any, callback: Callback<any>): void;
-        version(callback: Callback<any>): void;
+    version(callback: Callback<any>): void;
 
-        gc(): void;
-        path(): string;
-    }
+    gc(): void;
 
-export type FileContent = object | Blob | string;
+    path(): string;
+}
 
-export interface IPFSFile {
-        path: string;
-        hash: string;
-        size: number;
-        content?: FileContent;
-    }
+type FileContent = object | Blob | string;
 
-export interface IFilesAPI {
-        createAddStream(options: any, callback: Callback<any>): void;
-        createAddStream(callback: Callback<any>): void;
+interface IPFSFile {
+    path: string;
+    hash: string;
+    size: number;
+    content?: FileContent;
+}
 
-        createPullStream(options: any): any;
+interface IFilesAPI {
+    createAddStream(options: any, callback: Callback<any>): void;
 
-        add(data: FileContent, options: any, callback: Callback<IPFSFile[]>): void;
-        add(data: FileContent, options?: any): Promise<IPFSFile[]>;
-        add(data: FileContent, callback: Callback<IPFSFile[]>): void;
+    createAddStream(callback: Callback<any>): void;
 
-        cat(hash: Multihash, callback: Callback<FileContent>): void;
-        cat(hash: Multihash): Promise<FileContent>;
+    createPullStream(options: any): any;
 
-        get(hash: Multihash, callback: Callback<IPFSFile>): void;
-        get(hash: Multihash): Promise<IPFSFile>;
+    add(data: FileContent, options: any, callback: Callback<IPFSFile[]>): void;
 
-        getPull(hash: Multihash, callback: Callback<any>): void;
-    }
+    add(data: FileContent, options?: any): Promise<IPFSFile[]>;
 
-export interface IPeersOptions {
-        v?: boolean;
-        verbose?: boolean;
-    }
+    add(data: FileContent, callback: Callback<IPFSFile[]>): void;
 
-export type PeerId = any;
+    cat(hash: string, callback: Callback<FileContent>): void;
 
-export interface IPeerInfo {
-        id: PeerId;
-        multiaddr: IMultiaddr;
-        multiaddrs: IMultiaddr[];
-        distinctIMultiaddr(): IMultiaddr[];
-    }
+    cat(hash: string): Promise<FileContent>;
 
-export interface IPeer {
-        addr: IMultiaddr;
-        peer: IPeerInfo;
-    }
+    get(hash: string, callback: Callback<IPFSFile>): void;
 
-export interface ISwarmAPI {
-        peers(options: IPeersOptions, callback: Callback<IPeer[]>): void;
-        peers(options?: IPeersOptions): Promise<IPeer[]>;
-        peers(callback: Callback<IPeer[]>): void;
+    get(hash: string): Promise<IPFSFile>;
 
-        addrs(callback: Callback<IPeerInfo[]>): void;
-        addrs(): Promise<IPeerInfo[]>;
+    getPull(hash: string, callback: Callback<any>): void;
 
-        localAddrs(callback: Callback<IMultiaddr[]>): void;
-        localAddrs(): Promise<IMultiaddr[]>;
+    stat(path: string, callback?: Callback<IObjectStat>): void
 
-        connect(maddr: IMultiaddr | string, callback: Callback<any>): void;
-        connect(maddr: IMultiaddr | string): Promise<any>;
+    write(path: string, content: Buffer, options?: any, callback?: Callback<string>): void
+    read(path: string, callback?: Callback<string>): void
+}
 
-        disconnect(maddr: IMultiaddr | string, callback: Callback<any>): void;
-        disconnect(maddr: IMultiaddr | string): Promise<any>;
+interface IPeersOptions {
+    v?: boolean;
+    verbose?: boolean;
+}
 
-        filters(callback: Callback<void>): never;
-    }
+type PeerId = any;
 
-export type DAGNode = any;
-export type DAGLink = any;
-export type DAGLinkRef = DAGLink | any;
-export type Obj = BufferSource | object;
+interface IPeerInfo {
+    id: PeerId;
+    multiaddr: IMultiaddr;
+    multiaddrs: IMultiaddr[];
 
-export interface IObjectStat {
-        Hash: Multihash;
-        NumLinks: number;
-        BlockSize: number;
-        LinksSize: number;
-        DataSize: number;
-        CumulativeSize: number;
-    }
+    distinctIMultiaddr(): IMultiaddr[];
+}
 
-export interface IPutObjectOptions {
-        enc?: any;
-    }
+interface IPeer {
+    addr: IMultiaddr;
+    peer: IPeerInfo;
+}
 
-export interface IGetObjectOptions {
-        enc?: any;
-    }
+interface ISwarmAPI {
+    peers(options: IPeersOptions, callback: Callback<IPeer[]>): void;
 
-export interface IObjectPatchAPI {
-        addLink(multihash: Multihash, link: DAGLink, options: IGetObjectOptions, callback: Callback<any>): void;
-        addLink(multihash: Multihash, link: DAGLink, options?: IGetObjectOptions): Promise<any>;
-        addLink(multihash: Multihash, link: DAGLink, callback: Callback<any>): void;
+    peers(options?: IPeersOptions): Promise<IPeer[]>;
 
-        rmLink(multihash: Multihash, linkRef: DAGLinkRef, options: IGetObjectOptions, callback: Callback<any>): void;
-        rmLink(multihash: Multihash, linkRef: DAGLinkRef, options?: IGetObjectOptions): Promise<any>;
-        rmLink(multihash: Multihash, linkRef: DAGLinkRef, callback: Callback<any>): void;
+    peers(callback: Callback<IPeer[]>): void;
 
-        appendData(multihash: Multihash, data: any, options: IGetObjectOptions, callback: Callback<any>): void;
-        appendData(multihash: Multihash, data: any, options?: IGetObjectOptions): Promise<any>;
-        appendData(multihash: Multihash, data: any, callback: Callback<any>): void;
+    addrs(callback: Callback<IPeerInfo[]>): void;
 
-        setData(multihash: Multihash, data: any, options: IGetObjectOptions, callback: Callback<any>): void;
-        setData(multihash: Multihash, data: any, options?: IGetObjectOptions): Promise<any>;
-        setData(multihash: Multihash, data: any, callback: Callback<any>): void;
-    }
+    addrs(): Promise<IPeerInfo[]>;
 
-export interface IObjectAPI {
+    localAddrs(callback: Callback<IMultiaddr[]>): void;
 
-        patch: IObjectPatchAPI;
-        "new"(template: "unixfs-dir", callback: Callback<DAGNode>): void;
-        "new"(callback: Callback<DAGNode>): void;
-        "new"(): Promise<DAGNode>;
+    localAddrs(): Promise<IMultiaddr[]>;
 
-        put(obj: Obj, options: IPutObjectOptions, callback: Callback<any>): void;
-        put(obj: Obj, options?: IPutObjectOptions): Promise<any>;
-        put(obj: Obj, callback: Callback<any>): void;
+    connect(maddr: IMultiaddr | string, callback: Callback<any>): void;
 
-        get(multihash: Multihash, options: IGetObjectOptions, callback: Callback<any>): void;
-        get(multihash: Multihash, options?: IGetObjectOptions): Promise<any>;
-        get(multihash: Multihash, callback: Callback<any>): void;
+    connect(maddr: IMultiaddr | string): Promise<any>;
 
-        data(multihash: Multihash, options: IGetObjectOptions, callback: Callback<any>): void;
-        data(multihash: Multihash, options?: IGetObjectOptions): Promise<any>;
-        data(multihash: Multihash, callback: Callback<any>): void;
+    disconnect(maddr: IMultiaddr | string, callback: Callback<any>): void;
 
-        links(multihash: Multihash, options: IGetObjectOptions, callback: Callback<DAGLink[]>): void;
-        links(multihash: Multihash, options?: IGetObjectOptions): Promise<DAGLink[]>;
-        links(multihash: Multihash, callback: Callback<DAGLink[]>): void;
+    disconnect(maddr: IMultiaddr | string): Promise<any>;
 
-        stat(multihash: Multihash, options: IGetObjectOptions, callback: Callback<IObjectStat>): void;
-        stat(multihash: Multihash, options?: IGetObjectOptions): Promise<IObjectStat>;
-        stat(multihash: Multihash, callback: Callback<IObjectStat>): void;
-    }
+    filters(callback: Callback<void>): never;
+}
 
-export interface IDagAPI {
-        put(dagNode: any, options: any, callback: Callback<any>): void;
-        put(dagNode: any, options: any): Promise<any>;
+type DAGNode = any;
+type DAGLink = any;
+type DAGLinkRef = DAGLink | any;
+type Obj = BufferSource | object;
 
-        get(cid: string | CID, path: string, options: any, callback: Callback<any>): void;
-        get(cid: string | CID, path?: string, options?: any): Promise<any>;
-        get(cid: string | CID, path: string, callback: Callback<any>): void;
-        get(cid: string | CID, callback: Callback<any>): void;
+interface IObjectStat {
+    blocks: number
+    cumulativeSize: number
+    hash: string
+    local?: string
+    size: number
+    sizeLocal?: string
+    type: string
+    withLocality: boolean
+}
 
-        tree(cid: string | CID, path: string, options: any, callback: Callback<any>): void;
-        tree(cid: string | CID, path?: string, options?: any): Promise<any>;
-        tree(cid: string | CID, path: string, callback: Callback<any>): void;
-        tree(cid: string | CID, options: any): Promise<any>;
-        tree(cid: string | CID, callback: Callback<any>): void;
-    }
+interface IPutObjectOptions {
+    enc?: any;
+}
 
-export function createNode(options: IOptions): IPFS;
+interface IGetObjectOptions {
+    enc?: any;
+}
+
+interface IObjectPatchAPI {
+    addLink(multihash: string, link: DAGLink, options: IGetObjectOptions, callback: Callback<any>): void;
+
+    addLink(multihash: string, link: DAGLink, options?: IGetObjectOptions): Promise<any>;
+
+    addLink(multihash: string, link: DAGLink, callback: Callback<any>): void;
+
+    rmLink(multihash: string, linkRef: DAGLinkRef, options: IGetObjectOptions, callback: Callback<any>): void;
+
+    rmLink(multihash: string, linkRef: DAGLinkRef, options?: IGetObjectOptions): Promise<any>;
+
+    rmLink(multihash: string, linkRef: DAGLinkRef, callback: Callback<any>): void;
+
+    appendData(multihash: string, data: any, options: IGetObjectOptions, callback: Callback<any>): void;
+
+    appendData(multihash: string, data: any, options?: IGetObjectOptions): Promise<any>;
+
+    appendData(multihash: string, data: any, callback: Callback<any>): void;
+
+    setData(multihash: string, data: any, options: IGetObjectOptions, callback: Callback<any>): void;
+
+    setData(multihash: string, data: any, options?: IGetObjectOptions): Promise<any>;
+
+    setData(multihash: string, data: any, callback: Callback<any>): void;
+}
+
+interface IObjectAPI {
+
+    patch: IObjectPatchAPI;
+
+    "new"(template: "unixfs-dir", callback: Callback<DAGNode>): void;
+
+    "new"(callback: Callback<DAGNode>): void;
+
+    "new"(): Promise<DAGNode>;
+
+    put(obj: Obj, options: IPutObjectOptions, callback: Callback<any>): void;
+
+    put(obj: Obj, options?: IPutObjectOptions): Promise<any>;
+
+    put(obj: Obj, callback: Callback<any>): void;
+
+    get(multihash: string, options: IGetObjectOptions, callback: Callback<any>): void;
+
+    get(multihash: string, options?: IGetObjectOptions): Promise<any>;
+
+    get(multihash: string, callback: Callback<any>): void;
+
+    data(multihash: string, options: IGetObjectOptions, callback: Callback<any>): void;
+
+    data(multihash: string, options?: IGetObjectOptions): Promise<any>;
+
+    data(multihash: string, callback: Callback<any>): void;
+
+    links(multihash: string, options: IGetObjectOptions, callback: Callback<DAGLink[]>): void;
+
+    links(multihash: string, options?: IGetObjectOptions): Promise<DAGLink[]>;
+
+    links(multihash: string, callback: Callback<DAGLink[]>): void;
+
+    stat(multihash: string, options: IGetObjectOptions, callback: Callback<IObjectStat>): void;
+
+    stat(multihash: string, options?: IGetObjectOptions): Promise<IObjectStat>;
+
+    stat(multihash: string, callback: Callback<IObjectStat>): void;
+}
+
+interface IDagAPI {
+    put(dagNode: any, options: any, callback: Callback<any>): void;
+
+    put(dagNode: any, options: any): Promise<any>;
+
+    get(cid: string, path: string, options: any, callback: Callback<any>): void;
+
+    get(cid: string, path?: string, options?: any): Promise<any>;
+
+    get(cid: string, path: string, callback: Callback<any>): void;
+
+    get(cid: string, callback: Callback<any>): void;
+
+    tree(cid: string, path: string, options: any, callback: Callback<any>): void;
+
+    tree(cid: string, path?: string, options?: any): Promise<any>;
+
+    tree(cid: string, path: string, callback: Callback<any>): void;
+
+    tree(cid: string, options: any): Promise<any>;
+
+    tree(cid: string, callback: Callback<any>): void;
+}

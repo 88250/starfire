@@ -1,0 +1,17 @@
+include ./common/header.pug
+doctype html
+html(lang='zh-cmn-Hans')
+    head
+        include ./common/head.pug
+body
+    div
+        select#list
+        br
+        button#init 开始使用
+        button#remove 删除账号
+        br
+        br
+    div
+        input(placeholder='name')#name
+        br
+        button#add 添加新账号
