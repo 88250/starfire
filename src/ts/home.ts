@@ -10,27 +10,32 @@ const init = async () => {
     }
 
     const userStr: string = await ipfs.files.read(`/starfire/users/${userId}`);
-    const usreJSON = JSON.parse(userStr.toString());
-    const latestPostId = usreJSON.latestPostId;
-    const latestCommentId = usreJSON.latestCommentId;
+    const userJSON = JSON.parse(userStr.toString());
+    const latestPostId = userJSON.latestPostId;
+    const latestCommentId = userJSON.latestCommentId;
 
-    const postResult = await traverseIds(latestPostId);
-    let postHTML = "";
-    postResult.values.forEach((post, index) => {
-        postHTML += `<li>
+    if (latestPostId) {
+
+        const postResult = await traverseIds(latestPostId);
+        let postHTML = "";
+        postResult.values.forEach((post, index) => {
+            postHTML += `<li>
     <a href="detail.html?id=${postResult.ids[index]}">${post.title}</a>
 </li>`;
-    });
-    document.getElementById("postList").innerHTML = postHTML;
+        });
+        document.getElementById("postList").innerHTML = postHTML;
+    }
 
-    const commentResult = await traverseIds(latestCommentId);
-    let commentHTML = "";
-    commentResult.values.forEach((comment) => {
-        commentHTML += `<li>
+    if (latestCommentId) {
+        const commentResult = await traverseIds(latestCommentId);
+        let commentHTML = "";
+        commentResult.values.forEach((comment) => {
+            commentHTML += `<li>
     <a href="detail.html?id=${comment.postId}">${comment.content}</a>
 </li>`;
-    });
-    document.getElementById("commentList").innerHTML = commentHTML;
+        });
+        document.getElementById("commentList").innerHTML = commentHTML;
+    }
 };
 
 const traverseIds = async (id: string) => {

@@ -1,11 +1,11 @@
-export const genPostItemById = async (id: string, ipfs: IIPFS) => {
+export const genCommentItemById = async (id: string, ipfs: IIPFS) => {
     const result = await ipfs.dag.get(id);
-    document.getElementById("indexList").insertAdjacentHTML("afterbegin",
+    document.getElementById("comments").insertAdjacentHTML("afterbegin",
         `<li>
     <a href="home.html?id=${result.value.userId}">
         <img width="20" src="${result.value.userAvatar}"/> ${result.value.userName}
     </a>:
-    <a href="detail.html?id=${id}">${result.value.title}</a>
+    <div>${result.value.content}</div>
     ${result.value.time}
 </li>`);
 };

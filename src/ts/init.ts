@@ -1,5 +1,6 @@
 import ipfsClient from "ipfs-http-client";
 import "../assets/scss/index.scss";
+import {publishUser} from "./utils/publishUser";
 
 const ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
 
@@ -15,7 +16,7 @@ const init = async () => {
 
         try {
             const userStr = await ipfs.files.read(`/starfire/users/${selectElement.value}`);
-            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr).avatar;
+            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr.toString()).avatar;
         } catch (e) {
             console.warn(e);
         }
@@ -41,7 +42,7 @@ const init = async () => {
     selectElement.onchange = async () => {
         try {
             const userStr = await ipfs.files.read(`/starfire/users/${selectElement.value}`);
-            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr).avatar;
+            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr.toString()).avatar;
         } catch (e) {
             console.warn(e);
         }
@@ -55,27 +56,23 @@ const init = async () => {
 
         try {
             const oldUserStr = await ipfs.files.read(path);
-            userJSON = JSON.parse(oldUserStr);
+            userJSON = JSON.parse(oldUserStr.toString());
         } catch (e) {
             console.warn(e);
         }
 
-        const userStr = JSON.stringify({
+        const userObj = {
             avatar: (document.getElementById("avatar") as HTMLInputElement).value,
             id,
             latestCommentId: (userJSON && userJSON.latestCommentId) || "",
             latestPostId: (userJSON && userJSON.latestCommentId) || "",
             name: selectElement.options[selectElement.selectedIndex].text,
-        });
+            topics: (userJSON && userJSON.topics) || ['starfire-index'],
+        };
         localStorage.userId = id;
-        ipfs.files.write(path, Buffer.from(userStr), {
-            create: true,
-            parents: true,
-        }, async () => {
-            const stats = await ipfs.files.stat(path);
-            await ipfs.name.publish(`/ipfs/${stats.hash}`);
-            window.location.href = "/";
-        });
+
+        await publishUser(userObj, ipfs)
+        window.location.href = "/";
     });
 };
 

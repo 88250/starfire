@@ -1,4 +1,4 @@
-### Download IPFS and init
+## Download IPFS and init
 
 ```
 ipfs init
@@ -6,7 +6,7 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["http://localh
 ```
 
 
-### Use
+## Use
 
 ```
 ipfs daemon --enable-pubsub-experiment
@@ -14,13 +14,26 @@ ipfs daemon --enable-pubsub-experiment
 
 open http://localhost:8080/ipfs/TODO
 
-### Dev
+## Production
+
+TODO
+
+## Dev
 
 ```
-ipfs daemon 
+ipfs daemon --enable-pubsub-experiment
 npm run start
 ```
 
-### Production
+### Doc
 
-TODO
+#### topic
+
+* starfire-index
+* starfire-posts-id
+* starfire-users-id
+
+#### file
+* /starfire/index
+* /starfire/users/id
+* /starfire/posts/id

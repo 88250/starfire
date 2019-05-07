@@ -109,6 +109,8 @@ interface IPFSFile {
 }
 
 interface IFilesAPI {
+    rm(path: string): void
+
     createAddStream(options: any, callback: Callback<any>): void;
 
     createAddStream(callback: Callback<any>): void;
@@ -134,6 +136,7 @@ interface IFilesAPI {
     stat(path: string, callback?: Callback<IObjectStat>): IObjectStat;
 
     write(path: string, content: Buffer, options?: any, callback?: Callback<string>): void;
+
     read(path: string, callback?: Callback<string>): string;
 }
 

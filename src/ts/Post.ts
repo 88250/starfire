@@ -1,3 +1,5 @@
+import {publishUser} from "./utils/publishUser";
+
 export class Post {
     private ipfs: IIPFS;
 
@@ -40,13 +42,8 @@ export class Post {
 
             // update user file
             userJSON.latestPostId = postId;
-            await this.ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
-                create: true,
-                parents: true,
-                truncate: true,
-            });
-            const stats = await this.ipfs.files.stat(path);
-            await this.ipfs.name.publish(`/ipfs/${stats.hash}`);
+            userJSON.topics.push(`starfire-posts-${postId}`)
+            publishUser(userJSON, this.ipfs)
         });
     }
 }

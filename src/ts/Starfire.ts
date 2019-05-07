@@ -12,11 +12,11 @@ class Starfire {
 
         this.init();
 
+        const pubsub = new PubSub(this.ipfs);
+        pubsub.init();
+
         const post = new Post(this.ipfs);
         post.init();
-
-        const pubsub = new PubSub(this.ipfs);
-        pubsub.init("starfire-index");
     }
 
     public isInit() {
