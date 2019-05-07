@@ -131,10 +131,10 @@ interface IFilesAPI {
 
     getPull(hash: string, callback: Callback<any>): void;
 
-    stat(path: string, callback?: Callback<IObjectStat>): void
+    stat(path: string, callback?: Callback<IObjectStat>): void;
 
-    write(path: string, content: Buffer, options?: any, callback?: Callback<string>): void
-    read(path: string, callback?: Callback<string>): string
+    write(path: string, content: Buffer, options?: any, callback?: Callback<string>): void;
+    read(path: string, callback?: Callback<string>): string;
 }
 
 interface IPeersOptions {
@@ -189,14 +189,14 @@ type DAGLinkRef = DAGLink | any;
 type Obj = BufferSource | object;
 
 interface IObjectStat {
-    blocks: number
-    cumulativeSize: number
-    hash: string
-    local?: string
-    size: number
-    sizeLocal?: string
-    type: string
-    withLocality: boolean
+    blocks: number;
+    cumulativeSize: number;
+    hash: string;
+    local?: string;
+    size: number;
+    sizeLocal?: string;
+    type: string;
+    withLocality: boolean;
 }
 
 interface IPutObjectOptions {

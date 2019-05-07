@@ -9,7 +9,7 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["http://localh
 ### Use
 
 ```
-ipfs daemon 
+ipfs daemon --enable-pubsub-experiment
 ```
 
 open http://localhost:8080/ipfs/TODO
