@@ -40,11 +40,10 @@ const init = async () => {
             console.log(e)
         }
 
-        const list: any[] = []
         const user = {
             name: selectElement.options[selectElement.selectedIndex].text,
-            posts: list,
-            comments: list,
+            latestPostId: '',
+            latestCommentId: '',
             id,
         }
         localStorage.userId = id

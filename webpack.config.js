@@ -18,6 +18,7 @@ const baseConfig = {
     'index.js': './src/ts/index.ts',
     'init.js': './src/ts/init.ts',
     'detail.js': './src/ts/detail.ts',
+    'home.js': './src/ts/home.ts',
   },
   resolve: {
     extensions: ['.ts', '.js', '.scss', 'pug'],
@@ -114,6 +115,11 @@ const baseConfig = {
       chunks: ['detail.js'],
       filename: './detail.html',
       template: './src/pug/detail.pug',
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['home.js'],
+      filename: './home.html',
+      template: './src/pug/home.pug',
     }),
   ],
 }

@@ -12,15 +12,16 @@ class Starfire {
         post.init()
     }
 
-    initList(posts: string[]) {
-        posts.forEach(async (cid: string) => {
-            const result = await this.ipfs.dag.get(cid)
-            document.getElementById('list').insertAdjacentHTML('beforeend',
-                `<li>
-    <a href="">${result.value.userId}</a>:
-    <a href="detail.html?cid=${cid}">${result.value.title}</a>
+    async initList(id: string) {
+        if (!id) {
+            return
+        }
+        const result = await this.ipfs.dag.get(id)
+        document.getElementById('list').insertAdjacentHTML('beforeend',
+            `<li>
+    <a href="home.html?id=${result.value.userId}">${result.value.userId}</a>:
+    <a href="detail.html?id=${id}">${result.value.title}</a>
 </li>`)
-        })
     }
 
     async isInit() {
@@ -30,7 +31,7 @@ class Starfire {
 
         try {
             const userStr: string = await this.ipfs.files.read(`/starfire/users/${localStorage.userId}`)
-            this.initList(JSON.parse(userStr.toString()).posts)
+            this.initList(JSON.parse(userStr.toString()).latestPostId)
         } catch (e) {
             window.location.href = 'init.html'
         }
