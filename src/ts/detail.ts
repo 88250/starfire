@@ -91,11 +91,19 @@ const initPubSub = async (userId:string) => {
 }
 
 const initComments = async () => {
-    const commentsStr = await ipfs.files.read(`/starfire/posts/${postId}`);
-    const commentsJSON = JSON.parse(commentsStr.toString());
-    commentsJSON.forEach((async (commentId: string) => {
-        genCommentItemById(commentId, ipfs)
-    }));
+    try {
+        const commentsStr = await ipfs.files.read(`/starfire/posts/${postId}`);
+        const commentsJSON = JSON.parse(commentsStr.toString());
+        commentsJSON.forEach((async (commentId: string) => {
+            genCommentItemById(commentId, ipfs)
+        }));
+    } catch (e) {
+        ipfs.files.write(`/starfire/posts/${postId}`,
+            Buffer.from(JSON.stringify([])), {
+                create: true,
+                parents: true,
+            });
+    }
 };
 
 init();
