@@ -4,7 +4,6 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,
         parents: true,
-        truncate: true,
     });
     const stats = await ipfs.files.stat(path);
     await ipfs.name.publish(`/ipfs/${stats.hash}`);

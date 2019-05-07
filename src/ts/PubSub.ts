@@ -15,7 +15,6 @@ export class PubSub {
         const userJSON = JSON.parse(userStr.toString());
         this.topics = userJSON.topics
         userJSON.topics.forEach((topic: string) => {
-            console.log(topic)
             this.ipfs.pubsub.subscribe(topic, this.handlerMsg.bind(this));
         })
     }
