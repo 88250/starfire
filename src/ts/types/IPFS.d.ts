@@ -134,7 +134,7 @@ interface IFilesAPI {
     stat(path: string, callback?: Callback<IObjectStat>): void
 
     write(path: string, content: Buffer, options?: any, callback?: Callback<string>): void
-    read(path: string, callback?: Callback<string>): void
+    read(path: string, callback?: Callback<string>): string
 }
 
 interface IPeersOptions {

@@ -13,14 +13,24 @@ export class Post {
 
     add() {
         this.ipfs.dag.put({
-            content: (document.getElementById('postInput') as HTMLInputElement).value,
+            type: 0,
+            title: (document.getElementById('postTitle') as HTMLInputElement).value,
+            content: (document.getElementById('postContent') as HTMLInputElement).value,
             userId: localStorage.userId,
             time: new Date().getTime()
         }, (err: Error, cid: any) => {
-            const path = `/starfire/${localStorage.userId}`
+            const path = `/starfire/users/${localStorage.userId}`
+            const postCid = cid.toBaseEncodedString()
+
+            this.ipfs.files.write(`/starfire/posts/${postCid}`,
+                Buffer.from(JSON.stringify([])), {
+                create: true,
+                parents: true
+            })
+
             this.ipfs.files.read(path, (error, buf) => {
                 let userJSON = JSON.parse(buf.toString())
-                userJSON.posts.push(cid.toBaseEncodedString())
+                userJSON.posts.push(postCid)
                 this.ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
                     create: true,
                     parents: true,

@@ -15,8 +15,9 @@ const baseConfig = {
     path: path.resolve(__dirname, 'dist'),
   },
   entry: {
-    'app.js': './src/ts/app.ts',
+    'index.js': './src/ts/index.ts',
     'init.js': './src/ts/init.ts',
+    'detail.js': './src/ts/detail.ts',
   },
   resolve: {
     extensions: ['.ts', '.js', '.scss', 'pug'],
@@ -100,7 +101,7 @@ const baseConfig = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      chunks: ['app.js'],
+      chunks: ['index.js'],
       filename: './index.html',
       template: './src/pug/index.pug',
     }),
@@ -108,6 +109,11 @@ const baseConfig = {
       chunks: ['init.js'],
       filename: './init.html',
       template: './src/pug/init.pug',
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['detail.js'],
+      filename: './detail.html',
+      template: './src/pug/detail.pug',
     }),
   ],
 }

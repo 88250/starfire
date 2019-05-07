@@ -32,8 +32,13 @@ const init = async () => {
     document.getElementById('init').addEventListener('click', async () => {
         const id = selectElement.value
 
-        const path = `/starfire/${id}`
-        await ipfs.files.rm(path)
+        const path = `/starfire/users/${id}`
+
+        try {
+            await ipfs.files.rm(path)
+        } catch (e) {
+            console.log(e)
+        }
 
         const list: any[] = []
         const user = {
