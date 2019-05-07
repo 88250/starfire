@@ -46,8 +46,8 @@ const init = async () => {
             parents: true,
             truncate: true,
         });
-        const stats = await ipfs.files.stat(userPath)
-        await ipfs.name.publish(`/ipfs/${stats.hash}`)
+        const stats = await ipfs.files.stat(userPath);
+        await ipfs.name.publish(`/ipfs/${stats.hash}`);
     });
 
     initComments();

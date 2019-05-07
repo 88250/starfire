@@ -1,7 +1,7 @@
 import ipfsClient from "ipfs-http-client";
 import {Post} from "./Post";
 import {PubSub} from "./PubSub";
-import {genPostItemById} from './utils/genPostItemById'
+import {genPostItemById} from "./utils/genPostItemById";
 
 class Starfire {
     public ipfs: IIPFS;
@@ -10,13 +10,13 @@ class Starfire {
         this.ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
         this.isInit();
 
-        this.init()
+        this.init();
 
         const post = new Post(this.ipfs);
         post.init();
 
         const pubsub = new PubSub(this.ipfs);
-        pubsub.init('starfire-index');
+        pubsub.init("starfire-index");
     }
 
     public isInit() {
@@ -25,15 +25,15 @@ class Starfire {
         }
     }
 
-    async init() {
+    public async init() {
         try {
-            const indexStr = await this.ipfs.files.read('/starfire/index');
-            const indexJSON = JSON.parse(indexStr.toString())
+            const indexStr = await this.ipfs.files.read("/starfire/index");
+            const indexJSON = JSON.parse(indexStr.toString());
             indexJSON.forEach(async (id: string) => {
-                await genPostItemById(id, this.ipfs)
-            })
+                await genPostItemById(id, this.ipfs);
+            });
         } catch (e) {
-            this.ipfs.files.write('/starfire/index', Buffer.from(JSON.stringify([])), {
+            this.ipfs.files.write("/starfire/index", Buffer.from(JSON.stringify([])), {
                 create: true,
                 parents: true,
             });

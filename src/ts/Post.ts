@@ -22,14 +22,14 @@ export class Post {
             time: new Date().getTime(),
             title: (document.getElementById("postTitle") as HTMLInputElement).value,
             type: 0,
+            userAvatar: userJSON.avatar,
             userId: localStorage.userId,
             userName: userJSON.name,
-            userAvatar: userJSON.avatar
         }, async (err: Error, cid: any) => {
             const postId = cid.toBaseEncodedString();
 
             // send msg
-            this.ipfs.pubsub.publish('starfire-index', Buffer.from(postId))
+            this.ipfs.pubsub.publish("starfire-index", Buffer.from(postId));
 
             // update post file
             this.ipfs.files.write(`/starfire/posts/${postId}`,
@@ -45,8 +45,8 @@ export class Post {
                 parents: true,
                 truncate: true,
             });
-            const stats = await this.ipfs.files.stat(path)
-            await this.ipfs.name.publish(`/ipfs/${stats.hash}`)
+            const stats = await this.ipfs.files.stat(path);
+            await this.ipfs.name.publish(`/ipfs/${stats.hash}`);
         });
     }
 }

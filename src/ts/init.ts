@@ -15,7 +15,7 @@ const init = async () => {
 
         try {
             const userStr = await ipfs.files.read(`/starfire/users/${selectElement.value}`);
-            (document.getElementById('avatar') as HTMLInputElement).value = JSON.parse(userStr).avatar
+            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr).avatar;
         } catch (e) {
             console.warn(e);
         }
@@ -41,39 +41,39 @@ const init = async () => {
     selectElement.onchange = async () => {
         try {
             const userStr = await ipfs.files.read(`/starfire/users/${selectElement.value}`);
-            (document.getElementById('avatar') as HTMLInputElement).value = JSON.parse(userStr).avatar
+            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr).avatar;
         } catch (e) {
             console.warn(e);
         }
-    }
+    };
 
     document.getElementById("init").addEventListener("click", async () => {
         const id = selectElement.value;
 
         const path = `/starfire/users/${id}`;
-        let userJSON: IUser
+        let userJSON: IUser;
 
         try {
             const oldUserStr = await ipfs.files.read(path);
-            userJSON = JSON.parse(oldUserStr)
+            userJSON = JSON.parse(oldUserStr);
         } catch (e) {
             console.warn(e);
         }
 
         const userStr = JSON.stringify({
+            avatar: (document.getElementById("avatar") as HTMLInputElement).value,
             id,
-            latestCommentId: (userJSON && userJSON.latestCommentId) || '',
-            latestPostId: (userJSON && userJSON.latestCommentId) || '',
+            latestCommentId: (userJSON && userJSON.latestCommentId) || "",
+            latestPostId: (userJSON && userJSON.latestCommentId) || "",
             name: selectElement.options[selectElement.selectedIndex].text,
-            avatar: (document.getElementById('avatar') as HTMLInputElement).value
         });
         localStorage.userId = id;
         ipfs.files.write(path, Buffer.from(userStr), {
             create: true,
             parents: true,
         }, async () => {
-            const stats = await ipfs.files.stat(path)
-            await ipfs.name.publish(`/ipfs/${stats.hash}`)
+            const stats = await ipfs.files.stat(path);
+            await ipfs.name.publish(`/ipfs/${stats.hash}`);
             window.location.href = "/";
         });
     });

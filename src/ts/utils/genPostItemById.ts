@@ -1,4 +1,4 @@
-export const genPostItemById = async (id:string, ipfs:IIPFS) => {
+export const genPostItemById = async (id: string, ipfs: IIPFS) => {
     const result = await ipfs.dag.get(id);
     document.getElementById("list").insertAdjacentHTML("afterbegin",
         `<li>
@@ -7,5 +7,5 @@ export const genPostItemById = async (id:string, ipfs:IIPFS) => {
     </a>:
     <a href="detail.html?id=${id}">${result.value.title}</a>
     ${result.value.time}
-</li>`)
-}
+</li>`);
+};
