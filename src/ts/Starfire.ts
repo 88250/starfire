@@ -13,7 +13,7 @@ class Starfire {
         post.init();
 
         const pubsub = new PubSub(this.ipfs);
-        pubsub.init();
+        pubsub.init('index');
     }
 
     public async initList(id: string) {

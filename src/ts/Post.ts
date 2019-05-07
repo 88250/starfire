@@ -26,20 +26,23 @@ export class Post {
         }, (err: Error, cid: any) => {
             const postId = cid.toBaseEncodedString();
 
+            // update post file
             this.ipfs.files.write(`/starfire/posts/${postId}`,
                 Buffer.from(JSON.stringify([])), {
                     create: true,
                     parents: true,
                 });
 
+            // update user file
             userJSON.latestPostId = postId;
             this.ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
                 create: true,
                 parents: true,
                 truncate: true,
-            }, () => {
-                window.location.href = "/";
             });
+
+            // send msg
+            this.ipfs.pubsub.publish('index', Buffer.from(postId))
         });
     }
 }
