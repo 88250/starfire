@@ -131,7 +131,7 @@ interface IFilesAPI {
 
     getPull(hash: string, callback: Callback<any>): void;
 
-    stat(path: string, callback?: Callback<IObjectStat>): void;
+    stat(path: string, callback?: Callback<IObjectStat>): IObjectStat;
 
     write(path: string, content: Buffer, options?: any, callback?: Callback<string>): void;
     read(path: string, callback?: Callback<string>): string;

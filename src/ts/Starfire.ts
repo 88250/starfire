@@ -1,6 +1,7 @@
 import ipfsClient from "ipfs-http-client";
 import {Post} from "./Post";
 import {PubSub} from "./PubSub";
+import {genPostItemById} from './utils/genPostItemById'
 
 class Starfire {
     public ipfs: IIPFS;
@@ -9,35 +10,33 @@ class Starfire {
         this.ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
         this.isInit();
 
+        this.init()
+
         const post = new Post(this.ipfs);
         post.init();
 
         const pubsub = new PubSub(this.ipfs);
-        pubsub.init('index');
+        pubsub.init('starfire-index');
     }
 
-    public async initList(id: string) {
-        if (!id) {
-            return;
-        }
-        const result = await this.ipfs.dag.get(id);
-        document.getElementById("list").insertAdjacentHTML("beforeend",
-            `<li>
-    <a href="home.html?id=${result.value.userId}">${result.value.userId}</a>:
-    <a href="detail.html?id=${id}">${result.value.title}</a>
-</li>`);
-    }
-
-    public async isInit() {
+    public isInit() {
         if (!localStorage.userId) {
             window.location.href = "init.html";
         }
+    }
 
+    async init() {
         try {
-            const userStr: string = await this.ipfs.files.read(`/starfire/users/${localStorage.userId}`);
-            this.initList(JSON.parse(userStr.toString()).latestPostId);
+            const indexStr = await this.ipfs.files.read('/starfire/index');
+            const indexJSON = JSON.parse(indexStr.toString())
+            indexJSON.forEach(async (id: string) => {
+                await genPostItemById(id, this.ipfs)
+            })
         } catch (e) {
-            window.location.href = "init.html";
+            this.ipfs.files.write('/starfire/index', Buffer.from(JSON.stringify([])), {
+                create: true,
+                parents: true,
+            });
         }
     }
 }

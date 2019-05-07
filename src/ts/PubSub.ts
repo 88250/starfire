@@ -1,3 +1,5 @@
+import {genPostItemById} from './utils/genPostItemById'
+
 export class PubSub {
     public ipfs: IIPFS;
     private topic: string
@@ -14,12 +16,22 @@ export class PubSub {
             if (!id) {
                 return
             }
-            const result = await this.ipfs.dag.get(id);
-            document.getElementById("list").insertAdjacentHTML("beforeend",
-                `<li>
-    <a href="home.html?id=${result.value.userId}">${result.value.userId}</a>:
-    <a href="detail.html?id=${id}">${result.value.title}</a>
-</li>`)
+
+            await genPostItemById(id, this.ipfs)
+
+            const indexStr = await this.ipfs.files.read('/starfire/index');
+            const indexJSON = JSON.parse(indexStr.toString())
+
+            // TODO: index filter the same id, same link domain
+            indexJSON.push(id)
+            if (indexJSON.length > 1024) {
+                indexJSON.splice(0, indexJSON.length - 1024)
+            }
+
+            this.ipfs.files.write('/starfire/index', Buffer.from(JSON.stringify(indexJSON)), {
+                create: true,
+                parents: true,
+            });
         })
     }
 }

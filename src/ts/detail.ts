@@ -12,7 +12,9 @@ const init = async () => {
     const result = await ipfs.dag.get(postId);
     document.getElementById("content").innerHTML = result.value.content;
     document.getElementById("title").innerHTML = result.value.title;
-    document.getElementById("user").innerHTML = result.value.userId;
+    document.getElementById("user").innerHTML = `<a href="home.html?id=${result.value.userId}">
+        <img width="20" src="${result.value.userAvatar}"/> ${result.value.userName}
+    </a>`;
 
     document.getElementById("commentBtn").addEventListener("click", async () => {
         const userPath = `/starfire/users/${localStorage.userId}`;
@@ -44,8 +46,8 @@ const init = async () => {
             parents: true,
             truncate: true,
         });
-
-        window.location.reload();
+        const stats = await ipfs.files.stat(userPath)
+        await ipfs.name.publish(`/ipfs/${stats.hash}`)
     });
 
     initComments();
