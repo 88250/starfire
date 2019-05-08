@@ -278,9 +278,8 @@ interface IObjectAPI {
 }
 
 interface IDagAPI {
-    put(dagNode: any, options?: any, callback?: Callback<any>): Promise<any>;
 
-    put(dagNode: any, options: any): Promise<any>;
+    put(dagNode: any, options?: any, callback?: Callback<any>): Promise<any>;
 
     get(cid: string, path: string, options: any, callback: Callback<any>): void;
 

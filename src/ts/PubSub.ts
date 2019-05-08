@@ -34,7 +34,6 @@ export class PubSub {
         const userStr = await this.ipfs.files.read(path);
         const userJSON = JSON.parse(userStr.toString());
 
-        debugger;
         userJSON.topics.forEach((t: string, i: number) => {
             if (t === topic) {
                 userJSON.topics.splice(i, 1);

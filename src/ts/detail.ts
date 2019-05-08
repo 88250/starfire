@@ -36,8 +36,8 @@ const initAddComment = () => {
             postId,
             previousId: userJSON.latestCommentId,
             time: new Date().getTime(),
-            userId: localStorage.userId,
             userAvatar: userJSON.avatar,
+            userId: localStorage.userId,
             userName: userJSON.name,
         });
         const commentId = cid.toBaseEncodedString();
@@ -45,7 +45,7 @@ const initAddComment = () => {
         // send msg
         const postStr = await ipfs.files.read(`/starfire/posts/${postId}`);
         const postJSON = JSON.parse(postStr.toString());
-        postJSON.push(commentId)
+        postJSON.push(commentId);
         ipfs.pubsub.publish(`starfire-posts-${postId}`, Buffer.from(postJSON));
 
         // update user file
@@ -67,7 +67,7 @@ const initPubSub = async (userId: string) => {
     let hasSubscribe = false;
     const currentTopic = `starfire-posts-${postId}`;
     pubsub.topics.forEach((topic) => {
-        if (topic == currentTopic) {
+        if (topic === currentTopic) {
             hasSubscribe = true;
         }
     });

@@ -3,7 +3,7 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     try {
         await ipfs.files.rm(path);
     } catch (e) {
-        console.warn(e)
+        console.warn(e);
     }
 
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {

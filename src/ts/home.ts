@@ -8,7 +8,8 @@ const getOtherUser = () => {
     if (userId !== localStorage.userId) {
         const addr = `/ipns/${userId}`;
 
-        ipfs.name.resolve(addr, function(err: Error, name: string) {
+        document.getElementById("loading").innerHTML = "refreshing ipns";
+        ipfs.name.resolve(addr, function(nameErr: Error, name: string) {
             ipfs.get(name, function(err: Error, files: IPFSFile []) {
                 files.forEach(async (file) => {
                     try {
@@ -23,6 +24,7 @@ const getOtherUser = () => {
                     });
                 });
             });
+            document.getElementById("loading").innerHTML = "";
         });
     }
 };

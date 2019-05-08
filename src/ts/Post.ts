@@ -34,7 +34,7 @@ export class Post {
         // send msg
         const indexStr = await this.ipfs.files.read("/starfire/index");
         const indexJSON = JSON.parse(indexStr.toString());
-        indexJSON.push(postId)
+        indexJSON.push(postId);
         this.ipfs.pubsub.publish("starfire-index", Buffer.from(JSON.stringify(indexJSON)));
 
         // add post file
