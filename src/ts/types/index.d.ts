@@ -5,6 +5,10 @@ declare module "*.svg" {
 
 declare module "ipfs-http-client";
 
+interface Window {
+    publishTimeout: any
+}
+
 interface IUser {
     topics: string[];
     id: string;
@@ -13,3 +17,4 @@ interface IUser {
     name: string;
     avatar: string;
 }
+

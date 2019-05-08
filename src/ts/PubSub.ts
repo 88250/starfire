@@ -26,6 +26,7 @@ export class PubSub {
         userJSON.topics.push(topic);
         this.topics = userJSON.topics;
 
+        this.ipfs.pubsub.subscribe(topic, this.handlerMsg.bind(this));
         publishUser(userJSON, this.ipfs);
     }
 
@@ -41,6 +42,8 @@ export class PubSub {
         });
 
         this.topics = userJSON.topics;
+
+        this.ipfs.pubsub.unsubscribe(topic)
         publishUser(userJSON, this.ipfs);
     }
 

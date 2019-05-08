@@ -11,5 +11,10 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
         parents: true,
     });
     const stats = await ipfs.files.stat(path);
-    ipfs.name.publish(`/ipfs/${stats.hash}`);
+
+    clearTimeout(window.publishTimeout)
+    window.publishTimeout = setTimeout(() => {
+        ipfs.name.publish(`/ipfs/${stats.hash}`)
+    }, 10000)
+
 };
