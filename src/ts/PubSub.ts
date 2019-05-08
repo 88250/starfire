@@ -64,16 +64,19 @@ export class PubSub {
                 uniqueIndex.splice(0, uniqueIndex.length - 1024);
             }
 
-            // render post list
-            document.getElementById("indexList").innerHTML = "";
-            uniqueIndex.forEach(async (postId) => {
-                await genPostItemById(postId, this.ipfs);
-            });
-
             // update index file
             this.ipfs.files.write("/starfire/index", Buffer.from(JSON.stringify(uniqueIndex)), {
                 create: true,
                 parents: true,
+            });
+
+            // render post list
+            if (!document.getElementById("indexList")) {
+                return
+            }
+            document.getElementById("indexList").innerHTML = "";
+            uniqueIndex.forEach(async (postId) => {
+                await genPostItemById(postId, this.ipfs);
             });
         } else if (topic.indexOf("starfire-posts-") === 0) {
             const postPath = `/starfire/posts/${topic.split("-")[2]}`;
@@ -81,16 +84,19 @@ export class PubSub {
             const commentsJSON: string[] = JSON.parse(commentsStr.toString());
             const uniqueComments = commentsJSON.concat(JSON.parse(id)).filter((v, i, a) => a.indexOf(v) === i);
 
-            // render post list
-            document.getElementById("comments").innerHTML = "";
-            uniqueComments.forEach(async (commentId) => {
-                await genCommentItemById(commentId, this.ipfs);
-            });
-
             // update post file
             this.ipfs.files.write(postPath, Buffer.from(JSON.stringify(uniqueComments)), {
                 create: true,
                 parents: true,
+            });
+
+            // render post list
+            if (!document.getElementById("comments")) {
+                return
+            }
+            document.getElementById("comments").innerHTML = "";
+            uniqueComments.forEach(async (commentId) => {
+                await genCommentItemById(commentId, this.ipfs);
             });
         }
     }
