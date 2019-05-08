@@ -67,11 +67,11 @@ const init = async () => {
             latestCommentId: (userJSON && userJSON.latestCommentId) || "",
             latestPostId: (userJSON && userJSON.latestCommentId) || "",
             name: selectElement.options[selectElement.selectedIndex].text,
-            topics: (userJSON && userJSON.topics) || ['starfire-index'],
+            topics: (userJSON && userJSON.topics) || ["starfire-index"],
         };
         localStorage.userId = id;
 
-        await publishUser(userObj, ipfs)
+        await publishUser(userObj, ipfs);
         window.location.href = "/";
     });
 };

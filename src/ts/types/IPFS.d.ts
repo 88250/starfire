@@ -109,7 +109,7 @@ interface IPFSFile {
 }
 
 interface IFilesAPI {
-    rm(path: string): void
+    rm(path: string): void;
 
     createAddStream(options: any, callback: Callback<any>): void;
 
@@ -278,7 +278,7 @@ interface IObjectAPI {
 }
 
 interface IDagAPI {
-    put(dagNode: any, options: any, callback: Callback<any>): void;
+    put(dagNode: any, options?: any, callback?: Callback<any>): Promise<any>;
 
     put(dagNode: any, options: any): Promise<any>;
 

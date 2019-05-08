@@ -18,7 +18,7 @@ export class Post {
         const userStr = await this.ipfs.files.read(path);
         const userJSON = JSON.parse(userStr.toString());
 
-        this.ipfs.dag.put({
+        const cid = await this.ipfs.dag.put({
             content: (document.getElementById("postContent") as HTMLInputElement).value,
             previousId: userJSON.latestPostId,
             time: new Date().getTime(),
@@ -27,23 +27,26 @@ export class Post {
             userAvatar: userJSON.avatar,
             userId: localStorage.userId,
             userName: userJSON.name,
-        }, async (err: Error, cid: any) => {
-            const postId = cid.toBaseEncodedString();
-
-            // send msg
-            this.ipfs.pubsub.publish("starfire-index", Buffer.from(postId));
-
-            // update post file
-            this.ipfs.files.write(`/starfire/posts/${postId}`,
-                Buffer.from(JSON.stringify([])), {
-                    create: true,
-                    parents: true,
-                });
-
-            // update user file
-            userJSON.latestPostId = postId;
-            userJSON.topics.push(`starfire-posts-${postId}`)
-            publishUser(userJSON, this.ipfs)
         });
+
+        const postId = cid.toBaseEncodedString();
+
+        // send msg
+        const indexStr = await this.ipfs.files.read("/starfire/index");
+        const indexJSON = JSON.parse(indexStr.toString());
+        indexJSON.push(postId)
+        this.ipfs.pubsub.publish("starfire-index", Buffer.from(JSON.stringify(indexJSON)));
+
+        // update post file
+        this.ipfs.files.write(`/starfire/posts/${postId}`,
+            Buffer.from(JSON.stringify([])), {
+                create: true,
+                parents: true,
+            });
+
+        // update user file
+        userJSON.latestPostId = postId;
+        userJSON.topics.push(`starfire-posts-${postId}`);
+        publishUser(userJSON, this.ipfs);
     }
 }

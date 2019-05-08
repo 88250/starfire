@@ -6,7 +6,7 @@ declare module "*.svg" {
 declare module "ipfs-http-client";
 
 interface IUser {
-    topics: string[]
+    topics: string[];
     id: string;
     latestCommentId: string;
     latestPostId: string;

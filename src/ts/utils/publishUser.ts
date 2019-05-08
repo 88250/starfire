@@ -1,10 +1,15 @@
 export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
-    const path = `/starfire/users/${localStorage.userId}`
-    await ipfs.files.rm(path)
+    const path = `/starfire/users/${localStorage.userId}`;
+    try {
+        await ipfs.files.rm(path);
+    } catch (e) {
+        console.warn(e)
+    }
+
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,
         parents: true,
     });
     const stats = await ipfs.files.stat(path);
-    await ipfs.name.publish(`/ipfs/${stats.hash}`);
-}
+    ipfs.name.publish(`/ipfs/${stats.hash}`);
+};

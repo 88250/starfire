@@ -31,7 +31,6 @@ npm run start
 
 * starfire-index
 * starfire-posts-id
-* starfire-users-id
 
 #### file
 * /starfire/index

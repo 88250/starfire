@@ -1,8 +1,8 @@
 import ipfsClient from "ipfs-http-client";
 import "../assets/scss/index.scss";
 import {PubSub} from "./PubSub";
-import {publishUser} from "./utils/publishUser";
 import {genCommentItemById} from "./utils/genCommentItemById";
+import {publishUser} from "./utils/publishUser";
 
 const ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
 const postId = location.search.split("=")[1];
@@ -38,7 +38,7 @@ const initAddComment = () => {
             time: new Date().getTime(),
             userId: localStorage.userId,
             userAvatar: userJSON.avatar,
-            userName: userJSON.name
+            userName: userJSON.name,
         });
         const commentId = cid.toBaseEncodedString();
 
@@ -47,55 +47,55 @@ const initAddComment = () => {
 
         // update user file
         userJSON.latestCommentId = commentId;
-        publishUser(userJSON, ipfs)
+        publishUser(userJSON, ipfs);
     });
-}
+};
 
-const initPubSub = async (userId:string) => {
-    const pubsub = new PubSub(ipfs)
-    await pubsub.init()
-    const subscribeElement = document.getElementById('subscribe')
+const initPubSub = async (userId: string) => {
+    const pubsub = new PubSub(ipfs);
+    await pubsub.init();
+    const subscribeElement = document.getElementById("subscribe");
 
     if (userId === localStorage.userId) {
-        subscribeElement.style.display = 'none'
-        return
+        subscribeElement.style.display = "none";
+        return;
     }
 
-    let hasSubscribe = false
-    const currentTopic = `starfire-posts-${postId}`
+    let hasSubscribe = false;
+    const currentTopic = `starfire-posts-${postId}`;
     pubsub.topics.forEach((topic) => {
         if (topic == currentTopic) {
-            hasSubscribe = true
+            hasSubscribe = true;
         }
-    })
+    });
 
     if (hasSubscribe) {
-        subscribeElement.setAttribute('data-subscribe', 'true')
-        subscribeElement.innerText = '取消订阅'
+        subscribeElement.setAttribute("data-subscribe", "true");
+        subscribeElement.innerText = "取消订阅";
     } else {
-        subscribeElement.setAttribute('data-subscribe', 'false')
-        subscribeElement.innerText = '订阅'
+        subscribeElement.setAttribute("data-subscribe", "false");
+        subscribeElement.innerText = "订阅";
     }
 
-    subscribeElement.addEventListener('click', async () => {
-        if (subscribeElement.getAttribute('data-subscribe') === 'true') {
-            await pubsub.remove(currentTopic)
-            subscribeElement.setAttribute('data-subscribe', 'false')
-            subscribeElement.innerText = '订阅'
+    subscribeElement.addEventListener("click", async () => {
+        if (subscribeElement.getAttribute("data-subscribe") === "true") {
+            await pubsub.remove(currentTopic);
+            subscribeElement.setAttribute("data-subscribe", "false");
+            subscribeElement.innerText = "订阅";
         } else {
-            await pubsub.add(currentTopic)
-            subscribeElement.setAttribute('data-subscribe', 'true')
-            subscribeElement.innerText = '取消订阅'
+            await pubsub.add(currentTopic);
+            subscribeElement.setAttribute("data-subscribe", "true");
+            subscribeElement.innerText = "取消订阅";
         }
-    })
-}
+    });
+};
 
 const initComments = async () => {
     try {
         const commentsStr = await ipfs.files.read(`/starfire/posts/${postId}`);
         const commentsJSON = JSON.parse(commentsStr.toString());
         commentsJSON.forEach((async (commentId: string) => {
-            genCommentItemById(commentId, ipfs)
+            genCommentItemById(commentId, ipfs);
         }));
     } catch (e) {
         ipfs.files.write(`/starfire/posts/${postId}`,
