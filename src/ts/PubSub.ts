@@ -54,33 +54,39 @@ export class PubSub {
         const topic = msg.topicIDs[0];
 
         if (topic === "starfire-index") {
+            // merge data
             const indexStr = await this.ipfs.files.read("/starfire/index");
             const indexJSON: string[] = JSON.parse(indexStr.toString());
-
             const uniqueIndex = indexJSON.concat(JSON.parse(id)).filter((v, i, a) => a.indexOf(v) === i);
-
             if (uniqueIndex.length > 1024) {
                 uniqueIndex.splice(0, uniqueIndex.length - 1024);
             }
+
+            // render post list
             document.getElementById("indexList").innerHTML = "";
-            uniqueIndex.forEach((postId) => {
-                genPostItemById(postId, this.ipfs);
+            uniqueIndex.forEach(async (postId) => {
+                await genPostItemById(postId, this.ipfs);
             });
 
+            // update index file
             this.ipfs.files.write("/starfire/index", Buffer.from(JSON.stringify(uniqueIndex)), {
                 create: true,
                 parents: true,
             });
         } else if (topic.indexOf("starfire-posts-") === 0) {
-            await genCommentItemById(id, this.ipfs);
+            const postPath = `/starfire/posts/${topic.split("-")[2]}`;
+            const commentsStr = await this.ipfs.files.read(postPath);
+            const commentsJSON: string[] = JSON.parse(commentsStr.toString());
+            const uniqueComments = commentsJSON.concat(JSON.parse(id)).filter((v, i, a) => a.indexOf(v) === i);
+
+            // render post list
+            document.getElementById("indexList").innerHTML = "";
+            uniqueComments.forEach(async (commentId) => {
+                await genCommentItemById(commentId, this.ipfs);
+            });
 
             // update post file
-            const postId = topic.split("-")[2];
-            const postPath = `/starfire/posts/${postId}`;
-            const commentsStr = await this.ipfs.files.read(postPath);
-            const commentsJSON = JSON.parse(commentsStr.toString());
-            commentsJSON.push(id);
-            await this.ipfs.files.write(postPath, Buffer.from(JSON.stringify(commentsJSON)), {
+            this.ipfs.files.write(postPath, Buffer.from(JSON.stringify(uniqueComments)), {
                 create: true,
                 parents: true,
             });

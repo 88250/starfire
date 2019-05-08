@@ -43,7 +43,10 @@ const initAddComment = () => {
         const commentId = cid.toBaseEncodedString();
 
         // send msg
-        ipfs.pubsub.publish(`starfire-posts-${postId}`, Buffer.from(commentId));
+        const postStr = await ipfs.files.read(`/starfire/posts/${postId}`);
+        const postJSON = JSON.parse(postStr.toString());
+        postJSON.push(commentId)
+        ipfs.pubsub.publish(`starfire-posts-${postId}`, Buffer.from(postJSON));
 
         // update user file
         userJSON.latestCommentId = commentId;

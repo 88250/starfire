@@ -37,7 +37,7 @@ export class Post {
         indexJSON.push(postId)
         this.ipfs.pubsub.publish("starfire-index", Buffer.from(JSON.stringify(indexJSON)));
 
-        // update post file
+        // add post file
         this.ipfs.files.write(`/starfire/posts/${postId}`,
             Buffer.from(JSON.stringify([])), {
                 create: true,
