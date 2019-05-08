@@ -1,5 +1,6 @@
 import ipfsClient from "ipfs-http-client";
 import "../assets/scss/index.scss";
+import {PubSub} from "./PubSub";
 
 const ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
 const userId = location.search.split("=")[1] || localStorage.userId;
@@ -69,6 +70,9 @@ const init = async () => {
         });
         document.getElementById("commentList").innerHTML = commentHTML;
     }
+
+    const pubsub = new PubSub(ipfs);
+    await pubsub.init();
 };
 
 const traverseIds = async (id: string) => {
