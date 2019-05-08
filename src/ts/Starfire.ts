@@ -7,7 +7,7 @@ class Starfire {
     public ipfs: IIPFS;
 
     constructor() {
-        this.ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
+        this.ipfs = ipfsClient("127.0.0.1", "5001", {protocol: "http"});
         this.isInit();
 
         this.init();

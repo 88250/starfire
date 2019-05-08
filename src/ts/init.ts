@@ -2,7 +2,7 @@ import ipfsClient from "ipfs-http-client";
 import "../assets/scss/index.scss";
 import {publishUser} from "./utils/publishUser";
 
-const ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
+const ipfs = ipfsClient("127.0.0.1", "5001", {protocol: "http"});
 
 const init = async () => {
     const selectElement = document.getElementById("list") as HTMLSelectElement;
@@ -65,7 +65,7 @@ const init = async () => {
             avatar: (document.getElementById("avatar") as HTMLInputElement).value,
             id,
             latestCommentId: (userJSON && userJSON.latestCommentId) || "",
-            latestPostId: (userJSON && userJSON.latestCommentId) || "",
+            latestPostId: (userJSON && userJSON.latestPostId) || "",
             name: selectElement.options[selectElement.selectedIndex].text,
             topics: (userJSON && userJSON.topics) || ["starfire-index"],
         };

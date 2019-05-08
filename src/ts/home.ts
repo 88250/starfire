@@ -2,7 +2,7 @@ import ipfsClient from "ipfs-http-client";
 import "../assets/scss/index.scss";
 import {PubSub} from "./PubSub";
 
-const ipfs = ipfsClient("localhost", "5001", {protocol: "http"});
+const ipfs = ipfsClient("127.0.0.1", "5001", {protocol: "http"});
 const userId = location.search.split("=")[1] || localStorage.userId;
 
 const getOtherUser = () => {
