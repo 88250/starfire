@@ -46,7 +46,7 @@ const initAddComment = () => {
         const postStr = await ipfs.files.read(`/starfire/posts/${postId}`);
         const postJSON = JSON.parse(postStr.toString());
         postJSON.push(commentId);
-        ipfs.pubsub.publish(`starfire-posts-${postId}`, Buffer.from(postJSON));
+        ipfs.pubsub.publish(`starfire-posts-${postId}`, Buffer.from(JSON.stringify(postJSON)));
 
         // update user file
         userJSON.latestCommentId = commentId;

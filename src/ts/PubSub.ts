@@ -79,7 +79,7 @@ export class PubSub {
             const uniqueComments = commentsJSON.concat(JSON.parse(id)).filter((v, i, a) => a.indexOf(v) === i);
 
             // render post list
-            document.getElementById("indexList").innerHTML = "";
+            document.getElementById("comments").innerHTML = "";
             uniqueComments.forEach(async (commentId) => {
                 await genCommentItemById(commentId, this.ipfs);
             });
