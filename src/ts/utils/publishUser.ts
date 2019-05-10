@@ -8,6 +8,7 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
         console.warn(e);
     }
 
+    delete userJSON.signature
     userJSON.signature = await sign(JSON.stringify(userJSON));
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,
