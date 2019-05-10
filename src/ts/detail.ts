@@ -1,9 +1,10 @@
-import {ipfs} from "./utils/initIPFS";
 import "../assets/scss/index.scss";
 import {PubSub} from "./PubSub";
 import {genCommentItemById} from "./utils/genCommentItemById";
+import {ipfs} from "./utils/initIPFS";
 import {publishUser} from "./utils/publishUser";
 import {verify} from "./utils/sign";
+import {sortObject} from "./utils/tools/sortObject";
 
 const postId = location.search.split("=")[1];
 const init = async () => {
@@ -13,16 +14,14 @@ const init = async () => {
     }
 
     const result = await ipfs.dag.get(postId);
-    const postObj:IPost  =result.value
-    const signature = postObj.signature
-    delete postObj.signature
-
-    debugger
-    const isMatch = await verify(JSON.stringify(postObj), postObj.publicKey, signature)
+    const postObj: IPost = result.value;
+    const signature = postObj.signature;
+    delete postObj.signature;
+    const isMatch = await verify(JSON.stringify(sortObject(postObj)), postObj.publicKey, signature);
 
     if (!isMatch) {
-        alert('数据被串改')
-        return
+        alert("数据被串改");
+        return;
     }
 
     document.getElementById("content").innerHTML = result.value.content;

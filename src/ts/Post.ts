@@ -1,5 +1,6 @@
 import {publishUser} from "./utils/publishUser";
 import {sign} from "./utils/sign";
+import {sortObject} from "./utils/tools/sortObject";
 
 // import JSEncrypt from 'jsencrypt'
 
@@ -24,17 +25,18 @@ export class Post {
         const postObj: IPost = {
             content: (document.getElementById("postContent") as HTMLInputElement).value,
             previousId: userJSON.latestPostId,
+            publicKey: localStorage.publicKey,
             time: new Date().getTime(),
             title: (document.getElementById("postTitle") as HTMLInputElement).value,
             type: 0,
             userAvatar: userJSON.avatar,
             userId: localStorage.userId,
             userName: userJSON.name,
-            publicKey: localStorage.publicKey
-        }
+        };
 
-        const signature = await sign(JSON.stringify(postObj))
-        postObj.signature = signature
+        const signature = await sign(JSON.stringify(sortObject(postObj)));
+        console.log(JSON.stringify(sortObject(postObj)))
+        postObj.signature = signature;
 
         const cid = await this.ipfs.dag.put(postObj);
         const postId = cid.toBaseEncodedString();
@@ -44,9 +46,9 @@ export class Post {
         const indexJSON = JSON.parse(indexStr.toString());
         indexJSON.push(postId);
         const publishObj = {
-            type: 'index',
-            data: indexJSON
-        }
+            data: indexJSON,
+            type: "index",
+        };
         this.ipfs.pubsub.publish("starfire", Buffer.from(JSON.stringify(publishObj)));
 
         // add post file

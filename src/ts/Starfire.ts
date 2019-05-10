@@ -1,13 +1,13 @@
-import {ipfs} from "./utils/initIPFS";
 import {Post} from "./Post";
 import {PubSub} from "./PubSub";
 import {genPostItemById} from "./utils/genPostItemById";
+import {ipfs} from "./utils/initIPFS";
 
 class Starfire {
     public ipfs: IIPFS;
 
     constructor() {
-        this.ipfs = ipfs
+        this.ipfs = ipfs;
         this.isInit();
 
         this.init();

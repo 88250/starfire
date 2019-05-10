@@ -1,4 +1,5 @@
 import {sign} from "./sign";
+import {sortObject} from "./tools/sortObject";
 
 export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     const path = `/starfire/users/${localStorage.userId}`;
@@ -8,8 +9,8 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
         console.warn(e);
     }
 
-    delete userJSON.signature
-    userJSON.signature = await sign(JSON.stringify(userJSON));
+    delete userJSON.signature;
+    userJSON.signature = await sign(JSON.stringify(sortObject(userJSON)));
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,
         parents: true,

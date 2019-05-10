@@ -1,9 +1,10 @@
-import {ipfs} from "./utils/initIPFS";
-import "../assets/scss/index.scss";
-import {PubSub} from "./PubSub";
-import {verify} from "./utils/sign";
 import base64js from "base64-js";
 import cryptoKeys from "libp2p-crypto/src/keys";
+import "../assets/scss/index.scss";
+import {PubSub} from "./PubSub";
+import {ipfs} from "./utils/initIPFS";
+import {verify} from "./utils/sign";
+import {sortObject} from "./utils/tools/sortObject";
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
@@ -13,8 +14,8 @@ const syncOtherUser = () => {
 
         document.getElementById("loading").innerHTML = "refreshing ipns";
 
-        ipfs.name.resolve(addr, function (nameErr: Error, name: string) {
-            ipfs.get(name, function (err: Error, files: IPFSFile []) {
+        ipfs.name.resolve(addr, function(nameErr: Error, name: string) {
+            ipfs.get(name, function(err: Error, files: IPFSFile []) {
                 files.forEach(async (file) => {
                     try {
                         await ipfs.files.rm(`/starfire/users/${userId}`);
@@ -47,14 +48,13 @@ const init = async () => {
     }
 
     const userJSON = JSON.parse(userStr.toString());
-    const signature = userJSON.signature
-    delete userJSON.signature
-    const isMatch = await verify(JSON.stringify(userJSON), userJSON.publicKey, signature)
+    const signature = userJSON.signature;
+    delete userJSON.signature;
+    const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        alert('用户数据被串改')
-        return
+        alert("用户数据被串改");
+        return;
     }
-
 
     const latestPostId = userJSON.latestPostId;
     const latestCommentId = userJSON.latestCommentId;

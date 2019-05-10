@@ -62,7 +62,7 @@ export class PubSub {
                 await genPostItemById(postId, this.ipfs);
             });
 
-        } else if (data.type === 'comment') {
+        } else if (data.type === "comment") {
             const postPath = `/starfire/posts/${data.data.id}`;
             const commentsStr = await this.ipfs.files.read(postPath);
             const commentsJSON: string[] = JSON.parse(commentsStr.toString());
