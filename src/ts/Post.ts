@@ -1,4 +1,6 @@
 import {publishUser} from "./utils/publishUser";
+import {sign} from "./utils/sign";
+
 // import JSEncrypt from 'jsencrypt'
 
 export class Post {
@@ -19,7 +21,7 @@ export class Post {
         const userStr = await this.ipfs.files.read(path);
         const userJSON = JSON.parse(userStr.toString());
 
-        const cid = await this.ipfs.dag.put({
+        const postObj: IPost = {
             content: (document.getElementById("postContent") as HTMLInputElement).value,
             previousId: userJSON.latestPostId,
             time: new Date().getTime(),
@@ -28,15 +30,24 @@ export class Post {
             userAvatar: userJSON.avatar,
             userId: localStorage.userId,
             userName: userJSON.name,
-        });
+            publicKey: localStorage.publicKey
+        }
 
+        const signature = await sign(JSON.stringify(postObj))
+        postObj.signature = signature
+
+        const cid = await this.ipfs.dag.put(postObj);
         const postId = cid.toBaseEncodedString();
 
         // send msg
         const indexStr = await this.ipfs.files.read("/starfire/index");
         const indexJSON = JSON.parse(indexStr.toString());
         indexJSON.push(postId);
-        this.ipfs.pubsub.publish("starfire-index", Buffer.from(JSON.stringify(indexJSON)));
+        const publishObj = {
+            type: 'index',
+            data: indexJSON
+        }
+        this.ipfs.pubsub.publish("starfire", Buffer.from(JSON.stringify(publishObj)));
 
         // add post file
         this.ipfs.files.write(`/starfire/posts/${postId}`,

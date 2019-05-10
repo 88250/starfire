@@ -3,6 +3,7 @@ import "../assets/scss/index.scss";
 import {PubSub} from "./PubSub";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {publishUser} from "./utils/publishUser";
+import {verify} from "./utils/sign";
 
 const postId = location.search.split("=")[1];
 const init = async () => {
@@ -12,6 +13,18 @@ const init = async () => {
     }
 
     const result = await ipfs.dag.get(postId);
+    const postObj:IPost  =result.value
+    const signature = postObj.signature
+    delete postObj.signature
+
+    debugger
+    const isMatch = await verify(JSON.stringify(postObj), postObj.publicKey, signature)
+
+    if (!isMatch) {
+        alert('数据被串改')
+        return
+    }
+
     document.getElementById("content").innerHTML = result.value.content;
     document.getElementById("title").innerHTML = result.value.title;
     document.getElementById("user").innerHTML = `<a href="home.html?id=${result.value.userId}">

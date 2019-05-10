@@ -10,7 +10,7 @@ export class PubSub {
     }
 
     public async init() {
-        this.ipfs.pubsub.subscribe("starfire-index", this.handlerMsg.bind(this));
+        this.ipfs.pubsub.subscribe("starfire", this.handlerMsg.bind(this));
     }
 
     public async add(topic: string) {
@@ -35,18 +35,12 @@ export class PubSub {
     }
 
     private async handlerMsg(msg: any) {
-        const id = msg.data.toString();
-        if (!id || id === "end") {
-            return;
-        }
-
-        const topic = msg.topicIDs[0];
-
-        if (topic === "starfire-index") {
+        const data = JSON.parse(msg.data.toString());
+        if (data.type === "index") {
             // merge data
             const indexStr = await this.ipfs.files.read("/starfire/index");
             const indexJSON: string[] = JSON.parse(indexStr.toString());
-            const uniqueIndex = indexJSON.concat(JSON.parse(id)).filter((v, i, a) => a.indexOf(v) === i);
+            const uniqueIndex = indexJSON.concat(data.data).filter((v, i, a) => a.indexOf(v) === i);
             if (uniqueIndex.length > 1024) {
                 uniqueIndex.splice(0, uniqueIndex.length - 1024);
             }
@@ -61,15 +55,18 @@ export class PubSub {
             if (!document.getElementById("indexList")) {
                 return;
             }
+
+            // TODO: 按照时间顺序插入
             document.getElementById("indexList").innerHTML = "";
             uniqueIndex.forEach(async (postId) => {
                 await genPostItemById(postId, this.ipfs);
             });
-        } else if (topic.indexOf("starfire-posts-") === 0) {
-            const postPath = `/starfire/posts/${topic.split("-")[2]}`;
+
+        } else if (data.type === 'comment') {
+            const postPath = `/starfire/posts/${data.data.id}`;
             const commentsStr = await this.ipfs.files.read(postPath);
             const commentsJSON: string[] = JSON.parse(commentsStr.toString());
-            const uniqueComments = commentsJSON.concat(JSON.parse(id)).filter((v, i, a) => a.indexOf(v) === i);
+            const uniqueComments = commentsJSON.concat(data.data.ids).filter((v, i, a) => a.indexOf(v) === i);
 
             // update post file
             this.ipfs.files.write(postPath, Buffer.from(JSON.stringify(uniqueComments)), {

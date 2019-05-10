@@ -22,3 +22,17 @@ interface IUser {
     name: string;
     avatar: string;
 }
+
+
+interface IPost {
+    publicKey: string
+    content: string
+    signature?: any
+    previousId: string
+    time: number
+    title: string
+    type: number // 0-link
+    userAvatar: string
+    userId: string
+    userName: string
+}
