@@ -1,4 +1,4 @@
-import ipfsClient from "ipfs-http-client";
+import {ipfs} from "./utils/initIPFS";
 import {Post} from "./Post";
 import {PubSub} from "./PubSub";
 import {genPostItemById} from "./utils/genPostItemById";
@@ -7,7 +7,7 @@ class Starfire {
     public ipfs: IIPFS;
 
     constructor() {
-        this.ipfs = ipfsClient("127.0.0.1", "5001", {protocol: "http"});
+        this.ipfs = ipfs
         this.isInit();
 
         this.init();

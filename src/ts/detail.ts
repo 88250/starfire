@@ -1,10 +1,9 @@
-import ipfsClient from "ipfs-http-client";
+import {ipfs} from "./utils/initIPFS";
 import "../assets/scss/index.scss";
 import {PubSub} from "./PubSub";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {publishUser} from "./utils/publishUser";
 
-const ipfs = ipfsClient("127.0.0.1", "5001", {protocol: "http"});
 const postId = location.search.split("=")[1];
 const init = async () => {
     if (!localStorage.userId) {

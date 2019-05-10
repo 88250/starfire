@@ -12,9 +12,10 @@ export const sign = async (content: string) => {
     });
 }
 
-export const verify = async (publicKey: string, signature: string) => {
-    const publicKeyObj: any = cryptoKeys.unmarshalPublicKey(Buffer.from(publicKey))
-    publicKeyObj.verify(Buffer.from('hi'), Uint8Array.from(Buffer.from(signature, 'hex')), (err: Error, isMatch: boolean) => {
+export const verify = async (content: string, publicKey: string, signature: string) => {
+    const publicKeyObj: any = cryptoKeys.unmarshalPublicKey(Buffer.from(base64js.toByteArray(publicKey)))
+    const isMath = await publicKeyObj.verify(Buffer.from(content), Uint8Array.from(Buffer.from(signature, 'hex')), (err: Error, isMatch: boolean) => {
         console.log(isMatch)
     })
+    console.log(isMath, 1)
 }
