@@ -39,10 +39,6 @@ const init = async () => {
     const pubsub = new PubSub(ipfs);
     await pubsub.init();
 
-    if (!localStorage.userId) {
-        window.location.href = `${config.publicPath}init.html`;
-    }
-
     let userStr = "{}";
     try {
         userStr = await ipfs.files.read(`/starfire/users/${userId}`);
@@ -60,7 +56,7 @@ const render = async (userJSON: IUser) => {
     delete userJSON.signature;
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        alert("用户数据被串改");
+        alert("数据被串改");
         return;
     }
 

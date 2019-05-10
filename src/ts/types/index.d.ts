@@ -35,3 +35,17 @@ interface IPost {
     userId: string;
     userName: string;
 }
+
+
+interface IComment {
+    publicKey: string;
+    content: string;
+    signature?: any;
+    previousId: string;
+    time: number;
+    userAvatar: string;
+    userId: string;
+    userName: string;
+    postId: string
+}
+

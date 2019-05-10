@@ -9,7 +9,6 @@ class Starfire {
 
     constructor() {
         this.ipfs = ipfs;
-        this.isInit();
 
         this.init();
 
@@ -18,12 +17,6 @@ class Starfire {
 
         const post = new Post(this.ipfs);
         post.init();
-    }
-
-    public isInit() {
-        if (!localStorage.userId) {
-            window.location.href = `${config.publicPath}init.html`;
-        }
     }
 
     public async init() {

@@ -12,6 +12,10 @@ export class Post {
 
     public init() {
         document.getElementById("postBtn").addEventListener("click", () => {
+            if (!localStorage.privateKey) {
+                window.location.href = `${config.publicPath}init.html`
+                return
+            }
             this.add();
         });
     }
@@ -34,7 +38,6 @@ export class Post {
         };
 
         const signature = await sign(JSON.stringify(sortObject(postObj)));
-        console.log(JSON.stringify(sortObject(postObj)))
         postObj.signature = signature;
 
         const cid = await this.ipfs.dag.put(postObj);
@@ -52,7 +55,7 @@ export class Post {
 
         // add post file
         this.ipfs.files.write(`/starfire/posts/${postId}`,
-            Buffer.from(JSON.stringify([])), {
+            Buffer.from('[]'), {
                 create: true,
                 parents: true,
             });

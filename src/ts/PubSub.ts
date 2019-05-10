@@ -17,6 +17,7 @@ export class PubSub {
         const data = JSON.parse(msg.data.toString());
         if (data.type === "index") {
             // merge data
+            // TODO 新数据放最上面，单个节点虽多放 1024/节点数 个
             const indexStr = await this.ipfs.files.read("/starfire/index");
             const indexJSON: string[] = JSON.parse(indexStr.toString());
             const uniqueIndex = indexJSON.concat(data.data).filter((v, i, a) => a.indexOf(v) === i);
@@ -35,16 +36,17 @@ export class PubSub {
                 return;
             }
 
-            // TODO: 按照时间顺序插入
             document.getElementById("indexList").innerHTML = "";
             uniqueIndex.forEach(async (postId) => {
                 await genPostItemById(postId, this.ipfs);
             });
 
         } else if (data.type === "comment") {
-            const postPath = `/starfire/posts/${data.data.id}`;
+            const postPath = `/starfire/posts/${data.data.postId}`;
             const commentsStr = await this.ipfs.files.read(postPath);
             const commentsJSON: string[] = JSON.parse(commentsStr.toString());
+
+            // TODO 新数据放最上面，单个节点虽多放 1024/节点数 个
             const uniqueComments = commentsJSON.concat(data.data.ids).filter((v, i, a) => a.indexOf(v) === i);
 
             // update post file
