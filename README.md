@@ -29,8 +29,7 @@ npm run start
 
 #### topic
 
-* starfire-index
-* starfire-posts-id
+* starfire-hash
 
 #### file
 * /starfire/index

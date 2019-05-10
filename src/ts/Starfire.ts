@@ -2,6 +2,7 @@ import {Post} from "./Post";
 import {PubSub} from "./PubSub";
 import {genPostItemById} from "./utils/genPostItemById";
 import {ipfs} from "./utils/initIPFS";
+import {config} from "./config/config"
 
 class Starfire {
     public ipfs: IIPFS;
@@ -21,7 +22,7 @@ class Starfire {
 
     public isInit() {
         if (!localStorage.userId) {
-            window.location.href = "init.html";
+            window.location.href = `${config.publicPath}init.html`;
         }
     }
 

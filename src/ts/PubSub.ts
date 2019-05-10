@@ -1,6 +1,6 @@
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {genPostItemById} from "./utils/genPostItemById";
-import {publishUser} from "./utils/publishUser";
+import {config} from "./config/config";
 
 export class PubSub {
     public ipfs: IIPFS;
@@ -10,28 +10,7 @@ export class PubSub {
     }
 
     public async init() {
-        this.ipfs.pubsub.subscribe("starfire", this.handlerMsg.bind(this));
-    }
-
-    public async add(topic: string) {
-        const path = `/starfire/users/${localStorage.userId}`;
-        const userStr = await this.ipfs.files.read(path);
-        const userJSON = JSON.parse(userStr.toString());
-        // TODO: 去重
-        userJSON.topics.push(topic);
-        publishUser(userJSON, this.ipfs);
-    }
-
-    public async remove(topic: string) {
-        const path = `/starfire/users/${localStorage.userId}`;
-        const userStr = await this.ipfs.files.read(path);
-        const userJSON = JSON.parse(userStr.toString());
-        userJSON.topics.forEach((t: string, i: number) => {
-            if (t === topic) {
-                userJSON.topics.splice(i, 1);
-            }
-        });
-        publishUser(userJSON, this.ipfs);
+        this.ipfs.pubsub.subscribe(config.topic, this.handlerMsg.bind(this));
     }
 
     private async handlerMsg(msg: any) {

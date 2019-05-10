@@ -1,6 +1,7 @@
 import "../assets/scss/index.scss";
 import {ipfs} from "./utils/initIPFS";
 import {publishUser} from "./utils/publishUser";
+import {config} from "./config/config"
 
 const init = async () => {
     let oldUserJSON: IUser;
@@ -32,11 +33,10 @@ const init = async () => {
             latestPostId: (oldUserJSON && oldUserJSON.latestPostId) || "",
             name: (document.getElementById("name") as HTMLInputElement).value,
             publicKey: identity.publicKey,
-            topics: (oldUserJSON && oldUserJSON.topics) || ["starfire-index"],
         };
 
         await publishUser(userObj, ipfs);
-        window.location.href = "/";
+        window.location.href = `${config.publicPath}init.html`;
     });
 };
 

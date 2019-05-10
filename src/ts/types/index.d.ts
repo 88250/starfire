@@ -6,6 +6,7 @@ declare module "*.svg" {
 declare module "ipfs-http-client";
 
 declare module "base64-js";
+
 declare module "libp2p-crypto/src/keys";
 
 interface Window {
@@ -15,7 +16,6 @@ interface Window {
 interface IUser {
     publicKey: string;
     signature?: any;
-    topics: string[];
     id: string;
     latestCommentId: string;
     latestPostId: string;

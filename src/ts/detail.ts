@@ -5,11 +5,12 @@ import {ipfs} from "./utils/initIPFS";
 import {publishUser} from "./utils/publishUser";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {config} from "./config/config"
 
 const postId = location.search.split("=")[1];
 const init = async () => {
     if (!localStorage.userId) {
-        window.location.href = "init.html";
+        window.location.href = `${config.publicPath}init.html`;
         return;
     }
 
@@ -32,7 +33,7 @@ const init = async () => {
 
     initAddComment();
     initComments();
-    initPubSub(result.value.userId);
+    initPubSub();
 
 };
 
@@ -57,7 +58,7 @@ const initAddComment = () => {
         const postStr = await ipfs.files.read(`/starfire/posts/${postId}`);
         const postJSON = JSON.parse(postStr.toString());
         postJSON.push(commentId);
-        ipfs.pubsub.publish(`starfire-posts-${postId}`, Buffer.from(JSON.stringify(postJSON)));
+        ipfs.pubsub.publish(config.topic, Buffer.from(JSON.stringify(postJSON)));
 
         // update user file
         userJSON.latestCommentId = commentId;
@@ -65,43 +66,9 @@ const initAddComment = () => {
     });
 };
 
-const initPubSub = async (userId: string) => {
+const initPubSub = async () => {
     const pubsub = new PubSub(ipfs);
     await pubsub.init();
-    const subscribeElement = document.getElementById("subscribe");
-
-    if (userId === localStorage.userId) {
-        subscribeElement.style.display = "none";
-        return;
-    }
-
-    const hasSubscribe = false;
-    const currentTopic = `starfire-posts-${postId}`;
-    // pubsub.topics.forEach((topic) => {
-    //     if (topic === currentTopic) {
-    //         hasSubscribe = true;
-    //     }
-    // });
-
-    if (hasSubscribe) {
-        subscribeElement.setAttribute("data-subscribe", "true");
-        subscribeElement.innerText = "取消订阅";
-    } else {
-        subscribeElement.setAttribute("data-subscribe", "false");
-        subscribeElement.innerText = "订阅";
-    }
-
-    subscribeElement.addEventListener("click", async () => {
-        if (subscribeElement.getAttribute("data-subscribe") === "true") {
-            await pubsub.remove(currentTopic);
-            subscribeElement.setAttribute("data-subscribe", "false");
-            subscribeElement.innerText = "订阅";
-        } else {
-            await pubsub.add(currentTopic);
-            subscribeElement.setAttribute("data-subscribe", "true");
-            subscribeElement.innerText = "取消订阅";
-        }
-    });
 };
 
 const initComments = async () => {

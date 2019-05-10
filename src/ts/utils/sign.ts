@@ -1,5 +1,6 @@
 import base64js from "base64-js";
 import cryptoKeys from "libp2p-crypto/src/keys";
+import {config} from "../config/config"
 
 export const sign = async (content: string) => {
     try {
@@ -12,7 +13,7 @@ export const sign = async (content: string) => {
             });
         });
     } catch (e) {
-        window.location.href = "init.html";
+        window.location.href = `${config.publicPath}init.html`;
     }
 };
 

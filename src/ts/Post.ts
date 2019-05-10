@@ -1,8 +1,7 @@
 import {publishUser} from "./utils/publishUser";
 import {sign} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-
-// import JSEncrypt from 'jsencrypt'
+import {config} from "./config/config";
 
 export class Post {
     private ipfs: IIPFS;
@@ -49,7 +48,7 @@ export class Post {
             data: indexJSON,
             type: "index",
         };
-        this.ipfs.pubsub.publish("starfire", Buffer.from(JSON.stringify(publishObj)));
+        this.ipfs.pubsub.publish(config.topic, Buffer.from(JSON.stringify(publishObj)));
 
         // add post file
         this.ipfs.files.write(`/starfire/posts/${postId}`,
@@ -60,7 +59,6 @@ export class Post {
 
         // update user file
         userJSON.latestPostId = postId;
-        userJSON.topics.push(`starfire-posts-${postId}`);
         publishUser(userJSON, this.ipfs);
     }
 }
