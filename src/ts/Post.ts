@@ -1,4 +1,5 @@
 import {publishUser} from "./utils/publishUser";
+// import JSEncrypt from 'jsencrypt'
 
 export class Post {
     private ipfs: IIPFS;

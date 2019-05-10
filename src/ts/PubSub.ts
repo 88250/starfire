@@ -4,29 +4,21 @@ import {publishUser} from "./utils/publishUser";
 
 export class PubSub {
     public ipfs: IIPFS;
-    public topics: string[];
 
     constructor(ipfs: IIPFS) {
         this.ipfs = ipfs;
     }
 
     public async init() {
-        const userStr = await this.ipfs.files.read(`/starfire/users/${localStorage.userId}`);
-        const userJSON = JSON.parse(userStr.toString());
-        this.topics = userJSON.topics;
-        userJSON.topics.forEach((topic: string) => {
-            this.ipfs.pubsub.subscribe(topic, this.handlerMsg.bind(this));
-        });
+        this.ipfs.pubsub.subscribe("starfire-index", this.handlerMsg.bind(this));
     }
 
     public async add(topic: string) {
         const path = `/starfire/users/${localStorage.userId}`;
         const userStr = await this.ipfs.files.read(path);
         const userJSON = JSON.parse(userStr.toString());
+        // TODO: 去重
         userJSON.topics.push(topic);
-        this.topics = userJSON.topics;
-
-        this.ipfs.pubsub.subscribe(topic, this.handlerMsg.bind(this));
         publishUser(userJSON, this.ipfs);
     }
 
@@ -34,22 +26,17 @@ export class PubSub {
         const path = `/starfire/users/${localStorage.userId}`;
         const userStr = await this.ipfs.files.read(path);
         const userJSON = JSON.parse(userStr.toString());
-
         userJSON.topics.forEach((t: string, i: number) => {
             if (t === topic) {
                 userJSON.topics.splice(i, 1);
             }
         });
-
-        this.topics = userJSON.topics;
-
-        this.ipfs.pubsub.unsubscribe(topic)
         publishUser(userJSON, this.ipfs);
     }
 
     private async handlerMsg(msg: any) {
         const id = msg.data.toString();
-        if (!id) {
+        if (!id || id === "end") {
             return;
         }
 
@@ -72,7 +59,7 @@ export class PubSub {
 
             // render post list
             if (!document.getElementById("indexList")) {
-                return
+                return;
             }
             document.getElementById("indexList").innerHTML = "";
             uniqueIndex.forEach(async (postId) => {
@@ -92,7 +79,7 @@ export class PubSub {
 
             // render post list
             if (!document.getElementById("comments")) {
-                return
+                return;
             }
             document.getElementById("comments").innerHTML = "";
             uniqueComments.forEach(async (commentId) => {

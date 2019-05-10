@@ -1,3 +1,5 @@
+import {sign} from "./sign";
+
 export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     const path = `/starfire/users/${localStorage.userId}`;
     try {
@@ -6,15 +8,16 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
         console.warn(e);
     }
 
+    userJSON.signature = await sign(JSON.stringify(userJSON));
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,
         parents: true,
     });
     const stats = await ipfs.files.stat(path);
 
-    clearTimeout(window.publishTimeout)
+    clearTimeout(window.publishTimeout);
     window.publishTimeout = setTimeout(() => {
-        ipfs.name.publish(`/ipfs/${stats.hash}`)
-    }, 10000)
+        ipfs.name.publish(`/ipfs/${stats.hash}`);
+    }, 10000);
 
 };

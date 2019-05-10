@@ -64,13 +64,13 @@ const initPubSub = async (userId: string) => {
         return;
     }
 
-    let hasSubscribe = false;
+    const hasSubscribe = false;
     const currentTopic = `starfire-posts-${postId}`;
-    pubsub.topics.forEach((topic) => {
-        if (topic === currentTopic) {
-            hasSubscribe = true;
-        }
-    });
+    // pubsub.topics.forEach((topic) => {
+    //     if (topic === currentTopic) {
+    //         hasSubscribe = true;
+    //     }
+    // });
 
     if (hasSubscribe) {
         subscribeElement.setAttribute("data-subscribe", "true");

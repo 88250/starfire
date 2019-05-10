@@ -5,11 +5,16 @@ declare module "*.svg" {
 
 declare module "ipfs-http-client";
 
+declare module "base64-js";
+declare module "libp2p-crypto/src/keys";
+
 interface Window {
-    publishTimeout: any
+    publishTimeout: any;
 }
 
 interface IUser {
+    publicKey: string;
+    signature?: any;
     topics: string[];
     id: string;
     latestCommentId: string;
@@ -17,4 +22,3 @@ interface IUser {
     name: string;
     avatar: string;
 }
-

@@ -5,71 +5,56 @@ import {publishUser} from "./utils/publishUser";
 const ipfs = ipfsClient("127.0.0.1", "5001", {protocol: "http"});
 
 const init = async () => {
-    const selectElement = document.getElementById("list") as HTMLSelectElement;
+    let userName: string;
+    let oldUserJSON: IUser;
+    const identity = await ipfs.id();
 
-    ipfs.key.list(async (err: Error, keys: any []) => {
-        let optionsHTML = "";
-        keys.forEach((item) => {
-            optionsHTML += `<option value="${item.id}">${item.name}</option>`;
-        });
-        selectElement.innerHTML = optionsHTML;
+    try {
+        const oldUserStr = await ipfs.files.read(`/starfire/users/${identity.id}`);
+        oldUserJSON = JSON.parse(oldUserStr.toString());
+        (document.getElementById("avatar") as HTMLInputElement).value = oldUserJSON.avatar;
+    } catch (e) {
+        console.warn(e);
+    }
 
-        try {
-            const userStr = await ipfs.files.read(`/starfire/users/${selectElement.value}`);
-            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr.toString()).avatar;
-        } catch (e) {
-            console.warn(e);
-        }
-    });
+    const keys = await ipfs.key.list();
+    console.log(keys)
+    userName = (oldUserJSON && oldUserJSON.name) || keys[0].name;
+    (document.getElementById("name") as HTMLInputElement).value = userName;
 
-    document.getElementById("add").addEventListener("click", () => {
-        ipfs.key.gen((document.getElementById("name") as HTMLInputElement).value, {
-            size: 2048,
-            type: "rsa",
-        }, () => {
-            window.location.reload();
-        });
-    });
 
-    document.getElementById("remove").addEventListener("click", async () => {
-        await ipfs.key.rm(selectElement.options[selectElement.selectedIndex].text);
-
-        const path = `/starfire/users/${selectElement.value}`;
-        await ipfs.files.rm(path);
-        window.location.reload();
-    });
-
-    selectElement.onchange = async () => {
-        try {
-            const userStr = await ipfs.files.read(`/starfire/users/${selectElement.value}`);
-            (document.getElementById("avatar") as HTMLInputElement).value = JSON.parse(userStr.toString()).avatar;
-        } catch (e) {
-            console.warn(e);
-        }
-    };
+    (document.getElementById("privateKey") as HTMLInputElement).value = localStorage.privateKey || '';
 
     document.getElementById("init").addEventListener("click", async () => {
-        const id = selectElement.value;
+        const newUserName = (document.getElementById("name") as HTMLInputElement).value;
+        const privateKey = `${(document.getElementById("privateKey") as HTMLInputElement).value}`
+        let error = false
 
-        const path = `/starfire/users/${id}`;
-        let userJSON: IUser;
-
-        try {
-            const oldUserStr = await ipfs.files.read(path);
-            userJSON = JSON.parse(oldUserStr.toString());
-        } catch (e) {
-            console.warn(e);
+        if (userName !== newUserName) {
+            try {
+                await ipfs.key.rename(userName, newUserName);
+            } catch (e) {
+                error = true
+                alert(e)
+            }
+            if (error) {
+                return
+            }
         }
+
+        localStorage.userId = identity.id;
+        localStorage.publicKey = identity.publicKey;
+        localStorage.privateKey = privateKey;
 
         const userObj = {
             avatar: (document.getElementById("avatar") as HTMLInputElement).value,
-            id,
-            latestCommentId: (userJSON && userJSON.latestCommentId) || "",
-            latestPostId: (userJSON && userJSON.latestPostId) || "",
-            name: selectElement.options[selectElement.selectedIndex].text,
-            topics: (userJSON && userJSON.topics) || ["starfire-index"],
+            id: identity.id,
+            latestCommentId: (oldUserJSON && oldUserJSON.latestCommentId) || "",
+            latestPostId: (oldUserJSON && oldUserJSON.latestPostId) || "",
+            name: newUserName,
+            publicKey: identity.publicKey,
+            topics: (oldUserJSON && oldUserJSON.topics) || ["starfire-index"],
         };
-        localStorage.userId = id;
 
         await publishUser(userObj, ipfs);
         window.location.href = "/";
