@@ -21,5 +21,5 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS) => {
 </li>`
     }
 
-    document.getElementById("comments").insertAdjacentHTML("afterbegin", commentHTML);
+    document.getElementById("comments").insertAdjacentHTML("beforeend", commentHTML);
 };
