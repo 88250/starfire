@@ -1,4 +1,4 @@
 export const config = {
   publicPath: "/",
-  topic: "starfire-zdpuco3VRLnb5NF4T4Lq7ausFApLF2ib5XgeaXf4L883Saaji",
+  topic: "starfire-QmZV7wx99NoBPvYGRoi2XY9SDpp4B7TTYQs1GFJAPDoZjP",
 };
