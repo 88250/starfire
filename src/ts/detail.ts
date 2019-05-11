@@ -1,11 +1,11 @@
 import "../assets/scss/index.scss";
+import {config} from "./config/config";
 import {PubSub} from "./PubSub";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {ipfs} from "./utils/initIPFS";
 import {publishUser} from "./utils/publishUser";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {config} from "./config/config"
 
 const postId = location.search.split("=")[1];
 const init = async () => {
@@ -43,11 +43,11 @@ const initAddComment = () => {
             content: (document.getElementById("commentContent") as HTMLInputElement).value,
             postId,
             previousId: userJSON.latestCommentId,
+            publicKey: localStorage.publicKey,
             time: new Date().getTime(),
             userAvatar: userJSON.avatar,
             userId: localStorage.userId,
             userName: userJSON.name,
-            publicKey: localStorage.publicKey
         };
 
         const signature = await sign(JSON.stringify(sortObject(commentObj)));
@@ -62,8 +62,8 @@ const initAddComment = () => {
         postJSON.push(commentId);
         const publishObj = {
             data: {
+                ids: postJSON,
                 postId,
-                ids:postJSON
             },
             type: "comment",
         };
@@ -84,7 +84,7 @@ const initComments = async () => {
         }));
     } catch (e) {
         ipfs.files.write(`/starfire/posts/${postId}`,
-            Buffer.from('[]'), {
+            Buffer.from("[]"), {
                 create: true,
                 parents: true,
             });

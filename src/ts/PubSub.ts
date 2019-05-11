@@ -1,7 +1,7 @@
+import {config} from "./config/config";
+import {filterSpam} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {genPostItemById} from "./utils/genPostItemById";
-import {config} from "./config/config";
-import {difference} from "./utils/tools/difference";
 
 export class PubSub {
     public ipfs: IIPFS;
@@ -20,8 +20,8 @@ export class PubSub {
             // merge data
             const oldIndexStr = await this.ipfs.files.read("/starfire/index");
             const oldIndexJSON: string[] = JSON.parse(oldIndexStr.toString());
-            const newIndex = difference(data.data, oldIndexJSON)
-            const indexJSON = oldIndexJSON.concat(newIndex)
+            const newIndex = filterSpam(data.data, oldIndexJSON);
+            const indexJSON = oldIndexJSON.concat(newIndex);
 
             // remove surplus index item
             if (indexJSON.length > 1024) {
@@ -43,13 +43,12 @@ export class PubSub {
             newIndex.forEach(async (postId) => {
                 await genPostItemById(postId, this.ipfs);
             });
-
         } else if (data.type === "comment") {
             const postPath = `/starfire/posts/${data.data.postId}`;
             const oldCommentsStr = await this.ipfs.files.read(postPath);
             const oldCommentsJSON: string[] = JSON.parse(oldCommentsStr.toString());
-            const newComment = difference(data.data.ids, oldCommentsJSON)
-            const commentsJSON = oldCommentsJSON.concat(newComment)
+            const newComment = filterSpam(data.data.ids, oldCommentsJSON);
+            const commentsJSON = oldCommentsJSON.concat(newComment);
 
             // update post file
             this.ipfs.files.write(postPath, Buffer.from(JSON.stringify(commentsJSON)), {

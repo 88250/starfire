@@ -1,7 +1,7 @@
+import {config} from "./config/config";
 import {publishUser} from "./utils/publishUser";
 import {sign} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {config} from "./config/config";
 
 export class Post {
     private ipfs: IIPFS;
@@ -13,8 +13,8 @@ export class Post {
     public init() {
         document.getElementById("postBtn").addEventListener("click", () => {
             if (!localStorage.privateKey) {
-                window.location.href = `${config.publicPath}init.html`
-                return
+                window.location.href = `${config.publicPath}init.html`;
+                return;
             }
             this.add();
         });
@@ -55,7 +55,7 @@ export class Post {
 
         // add post file
         this.ipfs.files.write(`/starfire/posts/${postId}`,
-            Buffer.from('[]'), {
+            Buffer.from("[]"), {
                 create: true,
                 parents: true,
             });

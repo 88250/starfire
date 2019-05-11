@@ -1,5 +1,5 @@
-import {config} from "./config/config"
 import "../assets/scss/index.scss";
+import {config} from "./config/config";
 import {PubSub} from "./PubSub";
 import {ipfs} from "./utils/initIPFS";
 import {verify} from "./utils/sign";
@@ -13,8 +13,8 @@ const syncOtherUser = () => {
 
         document.getElementById("loading").innerHTML = "refreshing ipns";
 
-        ipfs.name.resolve(addr, function (nameErr: Error, name: string) {
-            ipfs.get(name, function (err: Error, files: IPFSFile []) {
+        ipfs.name.resolve(addr, function(nameErr: Error, name: string) {
+            ipfs.get(name, function(err: Error, files: IPFSFile []) {
                 files.forEach(async (file) => {
                     try {
                         await ipfs.files.rm(`/starfire/users/${userId}`);
@@ -22,7 +22,7 @@ const syncOtherUser = () => {
                         console.warn(e);
                     }
 
-                    render(JSON.parse(file.content.toString()))
+                    render(JSON.parse(file.content.toString()));
 
                     ipfs.files.write(`/starfire/users/${userId}`, Buffer.from(file.content.toString()), {
                         create: true,
@@ -47,7 +47,7 @@ const init = async () => {
         syncOtherUser();
     }
 
-    render(JSON.parse(userStr.toString()))
+    render(JSON.parse(userStr.toString()));
 
 };
 
@@ -86,7 +86,7 @@ const render = async (userJSON: IUser) => {
         });
         document.getElementById("commentList").innerHTML = commentHTML;
     }
-}
+};
 
 const traverseIds = async (id: string) => {
     const result = {ids: Array(0), values: Array(0)};

@@ -1,8 +1,8 @@
+import {config} from "./config/config";
 import {Post} from "./Post";
 import {PubSub} from "./PubSub";
 import {genPostItemById} from "./utils/genPostItemById";
 import {ipfs} from "./utils/initIPFS";
-import {config} from "./config/config"
 
 class Starfire {
     public ipfs: IIPFS;

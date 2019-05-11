@@ -1,7 +1,7 @@
 import "../assets/scss/index.scss";
+import {config} from "./config/config";
 import {ipfs} from "./utils/initIPFS";
 import {publishUser} from "./utils/publishUser";
-import {config} from "./config/config"
 
 const init = async () => {
     let oldUserJSON: IUser;

@@ -36,7 +36,6 @@ interface IPost {
     userName: string;
 }
 
-
 interface IComment {
     publicKey: string;
     content: string;
@@ -46,6 +45,5 @@ interface IComment {
     userAvatar: string;
     userId: string;
     userName: string;
-    postId: string
+    postId: string;
 }
-
