@@ -2,6 +2,7 @@ import {config} from "./config/config";
 import {filterSpam, idIsInBlacklist} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {genPostItemById} from "./utils/genPostItemById";
+import {verify} from "./utils/sign";
 
 export class PubSub {
     public ipfs: IIPFS;
@@ -70,7 +71,10 @@ export class PubSub {
                 await genCommentItemById(commentId, this.ipfs, result.blacklist);
             });
         } else if (data.type == "blacklist") {
-            // TODO verify
+            const isMatch = await verify(data.data, config.adminPublicKey, data.sign)
+            if (!isMatch) {
+                return
+            }
             const result = await this.ipfs.cat(data.data)
             const blacklist = result.toString().split('\n')
 
