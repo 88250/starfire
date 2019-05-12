@@ -17,6 +17,8 @@ interface IIPFS {
     bitswap: any;
     pubsub: any;
 
+    cat(id: string): string;
+
     init(options: IInitOptions, callback: Callback<boolean>): void;
 
     init(callback: Callback<boolean>): void;
@@ -151,7 +153,7 @@ interface IPeerInfo {
     id: PeerId;
     multiaddr: IMultiaddr;
     multiaddrs: IMultiaddr[];
-
+    _idB58String: string
     distinctIMultiaddr(): IMultiaddr[];
 }
 
@@ -182,8 +184,6 @@ interface ISwarmAPI {
     disconnect(maddr: IMultiaddr | string, callback: Callback<any>): void;
 
     disconnect(maddr: IMultiaddr | string): Promise<any>;
-
-    filters(callback: Callback<void>): never;
 }
 
 type DAGNode = any;

@@ -29,9 +29,10 @@ npm run start
 
 #### topic
 
-* starfire-hash
+* starfire
 
 #### file
 * /starfire/index
 * /starfire/users/id
 * /starfire/posts/id
+* /starfire/blacklist

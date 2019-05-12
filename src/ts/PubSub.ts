@@ -1,5 +1,5 @@
 import {config} from "./config/config";
-import {filterSpam} from "./utils/filterSpam";
+import {filterSpam, idIsInBlacklist} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {genPostItemById} from "./utils/genPostItemById";
 
@@ -15,6 +15,11 @@ export class PubSub {
     }
 
     private async handlerMsg(msg: any) {
+        const isBlack = await idIsInBlacklist(msg.from)
+        if (isBlack) {
+            return
+        }
+
         const data = JSON.parse(msg.data.toString());
         if (data.type === "index") {
             // merge data
@@ -63,6 +68,35 @@ export class PubSub {
 
             newComment.forEach(async (commentId) => {
                 await genCommentItemById(commentId, this.ipfs);
+            });
+        } else if (data.type == "blacklist") {
+            // TODO verify
+            const result = await this.ipfs.cat(data.data)
+            const blacklist = result.toString().split('\n')
+
+            this.ipfs.swarm.peers((err, peerInfos) => {
+                peerInfos.forEach((info: IPeer) => {
+                    blacklist.forEach(blackId => {
+                        if (blackId === info.peer._idB58String) {
+                            let maddr = info.addr.toString().replace('/p2p-circuit', '')
+                            if (info.addr.toString().indexOf('/ipfs/') !== 0) {
+                                maddr = `${maddr}/ipfs/${info.peer._idB58String}`
+                            }
+                            this.ipfs.swarm.disconnect(maddr)
+                        }
+                    })
+                })
+            })
+
+            try {
+                await this.ipfs.files.rm('/starfire/blacklist')
+            } catch (e) {
+                console.warn(e)
+            }
+
+            await this.ipfs.files.write('/starfire/blacklist', Buffer.from(JSON.stringify(blacklist)), {
+                create: true,
+                parents: true,
             });
         }
     }
