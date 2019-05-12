@@ -17,14 +17,9 @@ const init = async () => {
 
     (document.getElementById("name") as HTMLInputElement).value = (oldUserJSON && oldUserJSON.name) || "";
 
-    (document.getElementById("privateKey") as HTMLInputElement).value = localStorage.privateKey || "";
-
     document.getElementById("init").addEventListener("click", async () => {
-        const privateKey = `${(document.getElementById("privateKey") as HTMLInputElement).value}`;
-
         localStorage.userId = identity.id;
         localStorage.publicKey = identity.publicKey;
-        localStorage.privateKey = privateKey;
 
         const userObj = {
             avatar: (document.getElementById("avatar") as HTMLInputElement).value,

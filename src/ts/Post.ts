@@ -12,10 +12,6 @@ export class Post {
 
     public init() {
         document.getElementById("postBtn").addEventListener("click", () => {
-            if (!localStorage.privateKey) {
-                window.location.href = `${config.publicPath}init.html`;
-                return;
-            }
             this.add();
         });
     }

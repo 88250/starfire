@@ -4,7 +4,7 @@ import {config} from "../config/config";
 
 export const sign = async (content: string) => {
     try {
-        const privateKey = base64js.toByteArray(localStorage.privateKey);
+        const privateKey = base64js.toByteArray((document.getElementById('privateKey') as HTMLInputElement).value);
         return new Promise((resolve) => {
             cryptoKeys.unmarshalPrivateKey(Buffer.from(privateKey), (err: Error, privateKeyObj: any) => {
                 privateKeyObj.sign(Buffer.from(content), (signErr: Error, signUint8Array: any) => {
