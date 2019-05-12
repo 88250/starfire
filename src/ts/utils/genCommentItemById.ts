@@ -21,7 +21,7 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     const signature = commentObj.signature;
     delete commentObj.signature;
     const isMatch = await verify(JSON.stringify(sortObject(commentObj)), commentObj.publicKey, signature);
-    let commentHTML = "数据被串改";
+    let commentHTML = "Invalid data";
     if (isMatch) {
         commentHTML = `<li>
     <a href="home.html?id=${result.value.userId}">

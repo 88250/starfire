@@ -55,7 +55,6 @@ const render = async (userJSON: IUser) => {
     delete userJSON.signature;
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        alert("数据被串改");
         return;
     }
 

@@ -18,9 +18,7 @@ const init = async () => {
     const signature = postObj.signature;
     delete postObj.signature;
     const isMatch = await verify(JSON.stringify(sortObject(postObj)), postObj.publicKey, signature);
-
     if (!isMatch) {
-        alert("数据被串改");
         return;
     }
 
