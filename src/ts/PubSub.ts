@@ -71,7 +71,7 @@ export class PubSub {
                 await genCommentItemById(commentId, this.ipfs, result.blacklist);
             });
         } else if (data.type == "blacklist") {
-            const isMatch = await verify(data.data, config.adminPublicKey, data.sign)
+            const isMatch = await verify(data.data, config.moderatePubKey, data.sign)
             if (!isMatch) {
                 return
             }
