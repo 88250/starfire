@@ -1,10 +1,9 @@
-## Download IPFS and init
+## Setup
 
 ```
 ipfs init
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["http://localhost:9000"]'
 ```
-
 
 ## Use
 
@@ -27,11 +26,12 @@ npm run start
 
 ### Doc
 
-#### topic
+#### PubSub Topic
 
 * starfire
 
-#### file
+#### File Paths
+
 * /starfire/index
 * /starfire/users/id
 * /starfire/posts/id
