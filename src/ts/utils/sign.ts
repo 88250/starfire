@@ -1,20 +1,15 @@
 import base64js from "base64-js";
 import cryptoKeys from "libp2p-crypto/src/keys";
-import {config} from "../config/config";
 
 export const sign = async (content: string) => {
-    try {
-        const privateKey = base64js.toByteArray((document.getElementById('privateKey') as HTMLInputElement).value);
-        return new Promise((resolve) => {
-            cryptoKeys.unmarshalPrivateKey(Buffer.from(privateKey), (err: Error, privateKeyObj: any) => {
-                privateKeyObj.sign(Buffer.from(content), (signErr: Error, signUint8Array: any) => {
-                    resolve(signUint8Array.toString("hex"));
-                });
+    const privateKey = base64js.toByteArray((document.getElementById('privateKey') as HTMLInputElement).value);
+    return new Promise((resolve) => {
+        cryptoKeys.unmarshalPrivateKey(Buffer.from(privateKey), (err: Error, privateKeyObj: any) => {
+            privateKeyObj.sign(Buffer.from(content), (signErr: Error, signUint8Array: any) => {
+                resolve(signUint8Array.toString("hex"));
             });
         });
-    } catch (e) {
-        window.location.href = `${config.publicPath}init.html`;
-    }
+    });
 };
 
 export const verify = (content: string, publicKey: string, signature: string) => {

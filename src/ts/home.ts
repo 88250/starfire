@@ -1,5 +1,4 @@
 import "../assets/scss/index.scss";
-import {config} from "./config/config";
 import {PubSub} from "./PubSub";
 import {ipfs} from "./utils/initIPFS";
 import {verify} from "./utils/sign";
