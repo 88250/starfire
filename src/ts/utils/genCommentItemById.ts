@@ -1,12 +1,23 @@
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
 
-export const genCommentItemById = async (id: string, ipfs: IIPFS) => {
+export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: string[]) => {
     if (!id) {
-        return;
+        return false;
     }
     const result = await ipfs.dag.get(id);
     const commentObj = result.value;
+
+    let isInBlacklist = false
+    blackList.forEach((blackId: string) => {
+        if (commentObj.userId === blackId) {
+            isInBlacklist = true
+        }
+    })
+    if (isInBlacklist) {
+        return commentObj.userId
+    }
+
     const signature = commentObj.signature;
     delete commentObj.signature;
     const isMatch = await verify(JSON.stringify(sortObject(commentObj)), commentObj.publicKey, signature);
@@ -22,4 +33,5 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS) => {
     }
 
     document.getElementById("comments").insertAdjacentHTML("beforeend", commentHTML);
+    return false
 };

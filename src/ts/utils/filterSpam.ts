@@ -5,7 +5,7 @@ const difference = (newArray: string[], oldArray: string[]) => {
     return newArray.filter((key: string) => !oldSet.has(key));
 };
 
-const filter = async (list: string[]) => {
+export const getSpam = async () => {
     let blackJSON = []
     try {
         const blackStr = await ipfs.files.read('/starfire/blacklist');
@@ -13,10 +13,7 @@ const filter = async (list: string[]) => {
     } catch (e) {
         console.warn(e)
     }
-
-    list.filter(() => {
-
-    });
+    return blackJSON
 }
 
 export const idIsInBlacklist = async (id: string) => {
@@ -35,7 +32,10 @@ export const idIsInBlacklist = async (id: string) => {
         }
     })
 
-    return isIn
+    return {
+        isIn,
+        blacklist: blackJSON
+    }
 }
 
 export const filterSpam = (newList: string[], oldList: string[]) => {

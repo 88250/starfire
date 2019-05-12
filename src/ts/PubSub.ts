@@ -15,8 +15,8 @@ export class PubSub {
     }
 
     private async handlerMsg(msg: any) {
-        const isBlack = await idIsInBlacklist(msg.from)
-        if (isBlack) {
+        const result = await idIsInBlacklist(msg.from)
+        if (result.isIn) {
             return
         }
 
@@ -46,7 +46,7 @@ export class PubSub {
 
             // add new index item
             newIndex.forEach(async (postId) => {
-                await genPostItemById(postId, this.ipfs);
+                await genPostItemById(postId, this.ipfs, result.blacklist);
             });
         } else if (data.type === "comment") {
             const postPath = `/starfire/posts/${data.data.postId}`;
@@ -67,7 +67,7 @@ export class PubSub {
             }
 
             newComment.forEach(async (commentId) => {
-                await genCommentItemById(commentId, this.ipfs);
+                await genCommentItemById(commentId, this.ipfs, result.blacklist);
             });
         } else if (data.type == "blacklist") {
             // TODO verify

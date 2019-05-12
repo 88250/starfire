@@ -6,6 +6,7 @@ import {ipfs} from "./utils/initIPFS";
 import {publishUser} from "./utils/publishUser";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {getSpam} from "./utils/filterSpam";
 
 const postId = location.search.split("=")[1];
 const init = async () => {
@@ -76,14 +77,25 @@ const initAddComment = () => {
 };
 
 const initComments = async () => {
+    const path = `/starfire/posts/${postId}`
     try {
-        const commentsStr = await ipfs.files.read(`/starfire/posts/${postId}`);
+        const blackList = await getSpam()
+        const commentsStr = await ipfs.files.read(path);
         const commentsJSON = JSON.parse(commentsStr.toString());
-        commentsJSON.forEach((async (commentId: string) => {
-            genCommentItemById(commentId, ipfs);
+        commentsJSON.forEach((async (commentId: string, i:number) => {
+            const blacklistId = await genCommentItemById(commentId, ipfs, blackList);
+            if (blacklistId) {
+                commentsJSON.splice(i, 1)
+            }
         }));
+
+        await ipfs.files.rm(path)
+        ipfs.files.write(path, Buffer.from(JSON.stringify(commentsJSON)), {
+            create: true,
+            parents: true,
+        });
     } catch (e) {
-        ipfs.files.write(`/starfire/posts/${postId}`,
+        ipfs.files.write(path,
             Buffer.from("[]"), {
                 create: true,
                 parents: true,
