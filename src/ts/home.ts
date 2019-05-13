@@ -3,6 +3,9 @@ import {PubSub} from "./PubSub";
 import {ipfs} from "./utils/initIPFS";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {renderPug} from "./utils/renderPug";
+import pugTpl from "../pug/home.pug";
+import {loaded} from "./utils/loading";
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
@@ -35,6 +38,8 @@ const syncOtherUser = () => {
 };
 
 const init = async () => {
+    renderPug(pugTpl)
+
     const pubsub = new PubSub(ipfs);
     await pubsub.init();
 
@@ -84,6 +89,7 @@ const render = async (userJSON: IUser) => {
         });
         document.getElementById("commentList").innerHTML = commentHTML;
     }
+    loaded()
 };
 
 const traverseIds = async (id: string) => {

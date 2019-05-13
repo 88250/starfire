@@ -1,9 +1,11 @@
-import {config} from "./config/config";
 import {Post} from "./Post";
 import {PubSub} from "./PubSub";
 import {genPostItemById} from "./utils/genPostItemById";
 import {ipfs} from "./utils/initIPFS";
 import {getSpam} from "./utils/filterSpam";
+import {renderPug} from "./utils/renderPug";
+import pugTpl from "../pug/index.pug";
+import {loaded} from "./utils/loading";
 
 class Starfire {
     public ipfs: IIPFS;
@@ -21,6 +23,7 @@ class Starfire {
     }
 
     public async init() {
+        renderPug(pugTpl)
         try {
             const indexStr = await this.ipfs.files.read("/starfire/index");
             const indexJSON = JSON.parse(indexStr.toString());
@@ -44,6 +47,8 @@ class Starfire {
                 parents: true,
             });
         }
+
+        loaded()
     }
 }
 

@@ -2,8 +2,13 @@ import "../assets/scss/index.scss";
 import {config} from "./config/config";
 import {ipfs} from "./utils/initIPFS";
 import {publishUser} from "./utils/publishUser";
+import {loaded} from "./utils/loading";
+import {renderPug} from "./utils/renderPug";
+import pugTpl from "../pug/setting.pug"
 
-const init = async () => {
+const setting = async () => {
+    renderPug(pugTpl)
+
     let oldUserJSON: IUser;
     const identity = await ipfs.id();
 
@@ -31,8 +36,10 @@ const init = async () => {
         };
 
         await publishUser(userObj, ipfs);
-        window.location.href = `${config.publicPath}init.html`;
+        window.location.href = `init.html`;
     });
+
+    loaded()
 };
 
-init();
+setting();

@@ -1,14 +1,8 @@
 include ./common/header.pug
-doctype html
-html(lang='zh-cmn-Hans')
-    head
-        include ./common/head.pug
-body
-    a(href='/') Index &nbsp;
-    a(href='init.html') Init
-    span#loading
-    div#user
-    h2 posts
-    ul#postList
-    h2 comments
-    ul#commentList
++header('home')
+span#loading
+div#user
+h2 posts
+ul#postList
+h2 comments
+ul#commentList

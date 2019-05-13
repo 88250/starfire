@@ -7,9 +7,14 @@ import {publishUser} from "./utils/publishUser";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
 import {getSpam} from "./utils/filterSpam";
+import {renderPug} from "./utils/renderPug";
+import pugTpl from "../pug/detail.pug";
+import {loaded} from "./utils/loading";
 
 const postId = location.search.split("=")[1];
 const init = async () => {
+    renderPug(pugTpl)
+
     const pubsub = new PubSub(ipfs);
     pubsub.init();
 
@@ -30,6 +35,7 @@ const init = async () => {
 
     initAddComment();
     initComments();
+    loaded()
 };
 
 const initAddComment = () => {

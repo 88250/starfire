@@ -32,3 +32,7 @@ npm run start
 * /starfire/users/id
 * /starfire/posts/id
 * /starfire/blacklist
+
+#### Theme
+
+https://material.io/tools/color/#!/?view.left=0&view.right=1&primary.color=24282d&secondary.color=d93025

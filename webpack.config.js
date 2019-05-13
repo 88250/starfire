@@ -16,7 +16,7 @@ const baseConfig = {
   },
   entry: {
     'index.js': './src/ts/index.ts',
-    'init.js': './src/ts/init.ts',
+    'setting.js': './src/ts/setting.ts',
     'detail.js': './src/ts/detail.ts',
     'home.js': './src/ts/home.ts',
   },
@@ -104,22 +104,22 @@ const baseConfig = {
     new HtmlWebpackPlugin({
       chunks: ['index.js'],
       filename: './index.html',
-      template: './src/pug/index.pug',
+      template: './src/pug/app.pug',
     }),
     new HtmlWebpackPlugin({
-      chunks: ['init.js'],
-      filename: './init.html',
-      template: './src/pug/init.pug',
+      chunks: ['setting.js'],
+      filename: './setting.html',
+      template: './src/pug/app.pug',
     }),
     new HtmlWebpackPlugin({
       chunks: ['detail.js'],
       filename: './detail.html',
-      template: './src/pug/detail.pug',
+      template: './src/pug/app.pug',
     }),
     new HtmlWebpackPlugin({
       chunks: ['home.js'],
       filename: './home.html',
-      template: './src/pug/home.pug',
+      template: './src/pug/app.pug',
     }),
   ],
 }

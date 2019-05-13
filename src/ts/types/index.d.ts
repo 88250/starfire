@@ -9,6 +9,9 @@ declare module "base64-js";
 
 declare module "libp2p-crypto/src/keys";
 
+
+declare module "*.pug";
+
 interface Window {
     publishTimeout: any;
 }

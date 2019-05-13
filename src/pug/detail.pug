@@ -1,14 +1,9 @@
 include ./common/header.pug
-doctype html
-html(lang='zh-cmn-Hans')
-    head
-        include ./common/head.pug
-body
-    a(href='/') Index
-    div#title
-    div#content
-    div#user
-    input#commentContent(placeholder='comment')
-    input#privateKey(placeholder='private key')
-    button#commentBtn 发布
-    ul#comments
++header()
+div#title
+div#content
+div#user
+input#commentContent(placeholder='comment')
+input#privateKey(placeholder='private key')
+button#commentBtn 发布
+ul#comments
