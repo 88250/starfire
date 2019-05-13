@@ -6,37 +6,30 @@ const difference = (newArray: string[], oldArray: string[]) => {
 };
 
 export const getSpam = async () => {
-    let blackJSON = []
+    let blackJSON = [];
     try {
-        const blackStr = await ipfs.files.read('/starfire/blacklist');
-        blackJSON = JSON.parse(blackStr.toString());
+        const blackStr = await ipfs.files.read("/starfire/blacklist");
+        blackJSON = blackStr.toString().split("\n");
     } catch (e) {
-        console.warn(e)
+        console.warn(e);
     }
-    return blackJSON
-}
+    return blackJSON;
+};
 
 export const idIsInBlacklist = async (id: string) => {
-    let blackJSON = []
-    let isIn = false
-    try {
-        const blackStr = await ipfs.files.read('/starfire/blacklist');
-        blackJSON = JSON.parse(blackStr.toString());
-    } catch (e) {
-        console.warn(e)
-    }
-
+    let isIn = false;
+    const blackJSON = await getSpam();
     blackJSON.forEach((blackId: string) => {
         if (blackId === id) {
-            isIn = true
+            isIn = true;
         }
-    })
+    });
 
     return {
+        blacklist: blackJSON,
         isIn,
-        blacklist: blackJSON
-    }
-}
+    };
+};
 
 export const filterSpam = (newList: string[], oldList: string[]) => {
     const uniqueNewList = difference(newList, oldList);

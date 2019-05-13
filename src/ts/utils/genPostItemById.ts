@@ -1,13 +1,13 @@
 export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string[]) => {
     const result = await ipfs.dag.get(id);
-    let isInBlacklist = false
+    let isInBlacklist = false;
     blackList.forEach((blackId: string) => {
         if (result.value.userId === blackId) {
-            isInBlacklist = true
+            isInBlacklist = true;
         }
-    })
+    });
     if (isInBlacklist) {
-        return result.value.userId
+        return result.value.userId;
     }
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
         `<li>
@@ -17,5 +17,5 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
     <a href="detail.html?id=${id}">${result.value.title}</a>
     ${result.value.time}
 </li>`);
-    return false
+    return false;
 };

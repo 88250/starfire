@@ -1,22 +1,19 @@
 import "../assets/scss/index.scss";
-import {PubSub} from "./PubSub";
+import pugTpl from "../pug/home.pug";
 import {ipfs} from "./utils/initIPFS";
+import {loaded} from "./utils/initPage";
+import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {renderPug} from "./utils/renderPug";
-import pugTpl from "../pug/home.pug";
-import {loaded} from "./utils/loading";
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
 const syncOtherUser = () => {
     if (userId !== localStorage.userId) {
-        const addr = `/ipns/${userId}`;
-
         document.getElementById("loading").innerHTML = "refreshing ipns";
 
-        ipfs.name.resolve(addr, function(nameErr: Error, name: string) {
-            ipfs.get(name, function(err: Error, files: IPFSFile []) {
+        ipfs.name.resolve(`/ipns/${userId}`, (nameErr: Error, name: string) => {
+            ipfs.get(name, (err: Error, files: IPFSFile []) => {
                 files.forEach(async (file) => {
                     try {
                         await ipfs.files.rm(`/starfire/users/${userId}`);
@@ -38,10 +35,7 @@ const syncOtherUser = () => {
 };
 
 const init = async () => {
-    renderPug(pugTpl)
-
-    const pubsub = new PubSub(ipfs);
-    await pubsub.init();
+    renderPug(pugTpl);
 
     let userStr = "{}";
     try {
@@ -89,7 +83,7 @@ const render = async (userJSON: IUser) => {
         });
         document.getElementById("commentList").innerHTML = commentHTML;
     }
-    loaded()
+    loaded(ipfs);
 };
 
 const traverseIds = async (id: string) => {

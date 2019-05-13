@@ -153,7 +153,7 @@ interface IPeerInfo {
     id: PeerId;
     multiaddr: IMultiaddr;
     multiaddrs: IMultiaddr[];
-    _idB58String: string
+    _idB58String: string;
     distinctIMultiaddr(): IMultiaddr[];
 }
 

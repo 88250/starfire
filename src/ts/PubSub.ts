@@ -16,9 +16,9 @@ export class PubSub {
     }
 
     private async handlerMsg(msg: any) {
-        const result = await idIsInBlacklist(msg.from)
+        const result = await idIsInBlacklist(msg.from);
         if (result.isIn) {
-            return
+            return;
         }
 
         const data = JSON.parse(msg.data.toString());
@@ -70,35 +70,35 @@ export class PubSub {
             newComment.forEach(async (commentId) => {
                 await genCommentItemById(commentId, this.ipfs, result.blacklist);
             });
-        } else if (data.type == "blacklist") {
-            const isMatch = await verify(data.data, config.moderatePubKey, data.sign)
+        } else if (data.type === "blacklist") {
+            const isMatch = await verify(data.data, config.moderatePubKey, data.sign);
             if (!isMatch) {
-                return
+                return;
             }
-            const result = await this.ipfs.cat(data.data)
-            const blacklist = result.toString().split('\n')
+            const blacklistStr = await this.ipfs.cat(data.data);
+            const blacklistJSON = blacklistStr.toString().split("\n");
 
             this.ipfs.swarm.peers((err, peerInfos) => {
                 peerInfos.forEach((info: IPeer) => {
-                    blacklist.forEach(blackId => {
+                    blacklistJSON.forEach((blackId) => {
                         if (blackId === info.peer._idB58String) {
-                            let maddr = info.addr.toString().replace('/p2p-circuit', '')
-                            if (info.addr.toString().indexOf('/ipfs/') !== 0) {
-                                maddr = `${maddr}/ipfs/${info.peer._idB58String}`
+                            let maddr = info.addr.toString().replace("/p2p-circuit", "");
+                            if (info.addr.toString().indexOf("/ipfs/") !== 0) {
+                                maddr = `${maddr}/ipfs/${info.peer._idB58String}`;
                             }
-                            this.ipfs.swarm.disconnect(maddr)
+                            this.ipfs.swarm.disconnect(maddr);
                         }
-                    })
-                })
-            })
+                    });
+                });
+            });
 
             try {
-                await this.ipfs.files.rm('/starfire/blacklist')
+                await this.ipfs.files.rm("/starfire/blacklist");
             } catch (e) {
-                console.warn(e)
+                console.warn(e);
             }
 
-            await this.ipfs.files.write('/starfire/blacklist', Buffer.from(JSON.stringify(blacklist)), {
+            await this.ipfs.files.write("/starfire/blacklist", Buffer.from(blacklistStr.toString()), {
                 create: true,
                 parents: true,
             });

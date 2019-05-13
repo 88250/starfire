@@ -1,22 +1,19 @@
 import "../assets/scss/index.scss";
+import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
 import {PubSub} from "./PubSub";
+import {getSpam} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {ipfs} from "./utils/initIPFS";
+import {loaded} from "./utils/initPage";
 import {publishUser} from "./utils/publishUser";
+import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {getSpam} from "./utils/filterSpam";
-import {renderPug} from "./utils/renderPug";
-import pugTpl from "../pug/detail.pug";
-import {loaded} from "./utils/loading";
 
 const postId = location.search.split("=")[1];
 const init = async () => {
-    renderPug(pugTpl)
-
-    const pubsub = new PubSub(ipfs);
-    pubsub.init();
+    renderPug(pugTpl);
 
     const result = await ipfs.dag.get(postId);
     const postObj: IPost = result.value;
@@ -35,7 +32,7 @@ const init = async () => {
 
     initAddComment();
     initComments();
-    loaded()
+    loaded(ipfs);
 };
 
 const initAddComment = () => {
@@ -81,19 +78,19 @@ const initAddComment = () => {
 };
 
 const initComments = async () => {
-    const path = `/starfire/posts/${postId}`
+    const path = `/starfire/posts/${postId}`;
     try {
-        const blackList = await getSpam()
+        const blackList = await getSpam();
         const commentsStr = await ipfs.files.read(path);
         const commentsJSON = JSON.parse(commentsStr.toString());
-        commentsJSON.forEach((async (commentId: string, i:number) => {
+        commentsJSON.forEach((async (commentId: string, i: number) => {
             const blacklistId = await genCommentItemById(commentId, ipfs, blackList);
             if (blacklistId) {
-                commentsJSON.splice(i, 1)
+                commentsJSON.splice(i, 1);
             }
         }));
 
-        await ipfs.files.rm(path)
+        await ipfs.files.rm(path);
         ipfs.files.write(path, Buffer.from(JSON.stringify(commentsJSON)), {
             create: true,
             parents: true,

@@ -8,14 +8,14 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     const result = await ipfs.dag.get(id);
     const commentObj = result.value;
 
-    let isInBlacklist = false
+    let isInBlacklist = false;
     blackList.forEach((blackId: string) => {
         if (commentObj.userId === blackId) {
-            isInBlacklist = true
+            isInBlacklist = true;
         }
-    })
+    });
     if (isInBlacklist) {
-        return commentObj.userId
+        return commentObj.userId;
     }
 
     const signature = commentObj.signature;
@@ -33,5 +33,5 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     }
 
     document.getElementById("comments").insertAdjacentHTML("beforeend", commentHTML);
-    return false
+    return false;
 };

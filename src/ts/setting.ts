@@ -1,13 +1,12 @@
 import "../assets/scss/index.scss";
-import {config} from "./config/config";
+import pugTpl from "../pug/setting.pug";
 import {ipfs} from "./utils/initIPFS";
+import {loaded} from "./utils/initPage";
 import {publishUser} from "./utils/publishUser";
-import {loaded} from "./utils/loading";
 import {renderPug} from "./utils/renderPug";
-import pugTpl from "../pug/setting.pug"
 
 const setting = async () => {
-    renderPug(pugTpl)
+    renderPug(pugTpl);
 
     let oldUserJSON: IUser;
     const identity = await ipfs.id();
@@ -39,7 +38,7 @@ const setting = async () => {
         window.location.href = `init.html`;
     });
 
-    loaded()
+    loaded(ipfs);
 };
 
 setting();
