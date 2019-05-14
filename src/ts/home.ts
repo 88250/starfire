@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "../assets/scss/home.scss";
+import {escapeHtml} from "xss";
+import * as xss from "xss";
 import pugTpl from "../pug/home.pug";
 import {config} from "./config/config";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
@@ -125,7 +127,7 @@ const render = async (userJSON: IUser) => {
             ${dayjs().to(dayjs(post.time))}
         </time>
         <a class="content" href="${config.detailPath}?id=${id}">
-            ${post.title}
+            ${escapeHtml(post.title)}
         </a>
     </div>
 </li>`);
@@ -143,7 +145,7 @@ const render = async (userJSON: IUser) => {
             <a href="${config.detailPath}?id=${comment.postId}#${id}" class="name">${comment.postId}</a>
             <time class="time">${dayjs().to(dayjs(comment.time))}</time>
         </div>
-        <div class="module__body reset">${comment.content}</div>
+        <div class="module__body reset">${xss(comment.content)}</div>
     </div>
 </li>`);
         });
