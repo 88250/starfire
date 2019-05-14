@@ -109,55 +109,56 @@ const render = async (userJSON: IUser) => {
 <div class="flex1 meta">
     <div class="username">${userJSON.name}</div>
     <div class="id">${userJSON.id}</div>
-</div>
-`;
+</div>`;
 
     if (latestPostId) {
-        const postResult = await traverseIds(latestPostId);
-        let postHTML = "";
-        postResult.values.forEach((post, index) => {
-            postHTML += `
+        postList.innerHTML = ''
+        traverseIds(latestPostId, (id: string, post: IPost) => {
+            postList.insertAdjacentHTML("beforeend", `
 <li class="flex item">
-    <img class="avatar avatar--small" src="${post.userAvatar}"/>
+    <img class="avatar avatar--small" src="${gateway}/ipfs/${post.userAvatar}"/>
     <div class="flex1">
-        <a href="${config.homePath}?id=${post.userId}" class="name">
+        <span class="name">
             ${post.userName}
-        </a>
+        </span>
         <time class="time">
             ${dayjs().to(dayjs(post.time))}
         </time>
-        <a class="content" href="${config.detailPath}?id=${postResult.ids[index]}">
+        <a class="content" href="${config.detailPath}?id=${id}">
             ${post.title}
         </a>
     </div>
-</li>`;
+</li>`);
         });
-        postList.innerHTML = postHTML;
     }
 
     if (latestCommentId) {
-        const commentResult = await traverseIds(latestCommentId);
-        let commentHTML = "";
-        commentResult.values.forEach((comment) => {
-            commentHTML += `<li>
-    <a href="${config.detailPath}?id=${comment.postId}">${comment.content}</a>
-</li>`;
+        commentList.innerHTML = ''
+        traverseIds(latestCommentId, (id: string, comment: IComment) => {
+            document.getElementById("commentList").insertAdjacentHTML("beforeend", `
+<li class="item flex">
+    <img class="avatar" src="${gateway}/ipfs/${comment.userAvatar}"/>
+    <div class="module flex1">
+        <div class="module__header">
+            <a href="${config.detailPath}?id=${comment.postId}#${id}" class="name">${comment.postId}</a>
+            <time class="time">${dayjs().to(dayjs(comment.time))}</time>
+        </div>
+        <div class="module__body reset">${comment.content}</div>
+    </div>
+</li>`);
         });
-        commentList.innerHTML = commentHTML;
     }
 };
 
-const traverseIds = async (id: string) => {
-    const result = {ids: Array(0), values: Array(0)};
+const traverseIds = async (id: string, render: any) => {
     while (id) {
         const current = await ipfs.dag.get(id);
-        result.ids.push(id);
-        result.values.push(current.value);
+        render(id, current.value)
         const previousId = current.value.previousId;
         if (previousId) {
             id = previousId;
         } else {
-            return result;
+            return
         }
     }
 };

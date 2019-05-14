@@ -52,10 +52,6 @@
     color: #fff;
     font-weight: 600;
     margin-right: 6px;
-    &:hover {
-      text-decoration: none;
-      color: $secondary-light;
-    }
   }
 
   .empty {
@@ -68,6 +64,7 @@
     .item {
       padding: 16px 0;
       border-top: 1px solid $primary-light;
+
       &:first-child {
         border-top: 0;
       }
@@ -88,11 +85,61 @@
       display: block;
       background-color: $primary;
       font-weight: 600;
+
       &:hover {
         text-decoration: none;
         color: $secondary;
         border-color: $secondary-light;
       }
+    }
+  }
+
+  #commentList {
+    .item {
+      margin-bottom: 15px;
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        background-color: $primary-light;
+        width: 2px;
+        height: 15px;
+        bottom: -15px;
+        left: 80px;
+      }
+
+      &:last-child:after {
+        display: none;
+      }
+    }
+
+    .time {
+      color: $primary-light;
+    }
+
+    .module {
+      background-color: $primary-dark;
+      border: 1px solid $primary-light;
+      border-radius: 6px;
+      overflow: hidden;
+
+      &__header {
+        line-height: 44px;
+        padding: 0 15px;
+        background-color: $primary;
+        border-bottom: 1px solid $primary-light;
+      }
+
+      &__body {
+        padding: 15px;
+        color: #fff;
+      }
+    }
+
+    .name:hover {
+      text-decoration: none;
+      color: $secondary-light;
     }
   }
 }

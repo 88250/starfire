@@ -42,7 +42,7 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     </div>
 </div>`;
     if (isMatch) {
-        commentHTML = `<div class="item flex">
+        commentHTML = `<div class="item flex" id="${id}">
     <a href="${config.homePath}?id=${result.value.userId}">
         <img class="avatar" src="${gateway}/ipfs/${result.value.userAvatar}"/>
     </a>
