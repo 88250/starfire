@@ -58,10 +58,16 @@ export class Post {
             Buffer.from("[]"), {
                 create: true,
                 parents: true,
+                truncate: true,
             });
 
         // update user file
         userJSON.latestPostId = postId;
         publishUser(userJSON, this.ipfs);
+
+        // clear input
+        (document.getElementById("postContent") as HTMLInputElement).value = '';
+        (document.getElementById("postTitle") as HTMLInputElement).value = '';
+        (document.getElementById("privateKey") as HTMLInputElement).value = '';
     }
 }

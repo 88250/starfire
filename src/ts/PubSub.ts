@@ -38,6 +38,7 @@ export class PubSub {
             this.ipfs.files.write("/starfire/index", Buffer.from(JSON.stringify(indexJSON)), {
                 create: true,
                 parents: true,
+                truncate: true,
             });
 
             // render post list
@@ -67,6 +68,7 @@ export class PubSub {
             this.ipfs.files.write(postPath, Buffer.from(JSON.stringify(commentsJSON)), {
                 create: true,
                 parents: true,
+                truncate: true,
             });
 
             // render comment list
@@ -99,15 +101,10 @@ export class PubSub {
                 });
             });
 
-            try {
-                await this.ipfs.files.rm("/starfire/blacklist");
-            } catch (e) {
-                console.warn(e);
-            }
-
             await this.ipfs.files.write("/starfire/blacklist", Buffer.from(blacklistStr.toString()), {
                 create: true,
                 parents: true,
+                truncate: true
             });
         }
     }

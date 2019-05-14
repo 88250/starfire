@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {config} from "../config/config";
+import {getIPFSGateway} from "./getIPFSGateway";
 
 dayjs.extend(relativeTime);
 
@@ -16,10 +17,11 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
         return result.value.userId;
     }
 
+    const gateway = await getIPFSGateway(ipfs)
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
         `<li class="flex item">
     <a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar avatar--small" src="${result.value.userAvatar}"/>
+        <img class="avatar avatar--small" src="${gateway}/ipfs/${result.value.userAvatar}"/>
     </a>
     <div class="flex1">
         <a href="${config.homePath}?id=${result.value.userId}" class="name">

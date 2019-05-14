@@ -29,18 +29,13 @@ const syncOtherUser = () => {
                     return;
                 }
                 files.forEach(async (file) => {
-                    try {
-                        await ipfs.files.rm(`/starfire/users/${userId}`);
-                    } catch (e) {
-                        console.warn(e);
-                    }
-
-                    render(JSON.parse(file.content.toString()));
-
                     ipfs.files.write(`/starfire/users/${userId}`, Buffer.from(file.content.toString()), {
                         create: true,
                         parents: true,
+                        truncate: true
                     });
+
+                    render(JSON.parse(file.content.toString()));
                 });
             });
         });

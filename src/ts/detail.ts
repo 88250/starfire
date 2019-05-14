@@ -36,11 +36,11 @@ const init = async () => {
         ${dayjs().to(dayjs(result.value.time))}
     </time>`;
     document.getElementById("content").innerHTML = result.value.content || "No Content";
+    const gateway = await getIPFSGateway(ipfs);
     document.getElementById("user").innerHTML = `<a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar" src="${result.value.userAvatar}"/>
+        <img class="avatar" src="${gateway}/ipfs/${result.value.userAvatar}"/>
     </a>`;
 
-    const gateway = await getIPFSGateway(ipfs);
     document.getElementById("currentUser").innerHTML = `<a href="${config.homePath}">
         <img class="avatar" src="${gateway}/ipfs/${localStorage.userAvatar || config.defaultAvatar}"/>
     </a>`;
@@ -128,10 +128,10 @@ const initComments = async () => {
             }
         }));
 
-        await ipfs.files.rm(path);
         ipfs.files.write(path, Buffer.from(JSON.stringify(commentsJSON)), {
             create: true,
             parents: true,
+            truncate: true
         });
     } catch (e) {
         console.warn(e);
