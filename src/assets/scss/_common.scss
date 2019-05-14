@@ -19,6 +19,36 @@
   }
 }
 
+.none {
+  display: none;
+}
+
+.avatar {
+  height: 44px;
+  width: 44px;
+  border-radius: 3px;
+  margin-right: 16px;
+
+  &--small {
+    height: 32px;
+    width: 32px;
+  }
+
+  &--big {
+    height: 260px;
+    width: 260px;
+    border-radius: 6px;
+  }
+}
+
+.wrap {
+  width: 760px;
+  margin: 0 auto 50px;
+  &--small {
+    width: 384px;
+  }
+}
+
 .header {
   background-color: $primary;
   color: hsla(0, 0%, 100%, .7);

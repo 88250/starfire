@@ -1,10 +1,12 @@
 include ./common/header.pug
 +header('setting')
-div.setting
-    img#avatarImg.avatar
-    input.input#avatarPath(placeholder='avatar')
-    input.input#name(placeholder='name')
-    input.input#id(readonly='')
-    input.input#privateKey(placeholder='private key')
-    button#start.button Confirm
-    div #{config.detailId}
+div.setting.wrap.wrap--small
+    img.avatar.avatar--big
+    img.avatar
+    img.avatar.avatar--small
+    div.clear
+        input.input#avatarPath(placeholder='avatar')
+        input.input#name(placeholder='name')
+        input.input#id(readonly='')
+        input.input#privateKey(placeholder='private key')
+        button#start.button Confirm

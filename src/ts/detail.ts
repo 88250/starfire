@@ -60,6 +60,10 @@ const init = async () => {
 
 const initAddComment = () => {
     document.getElementById("commentBtn").addEventListener("click", async () => {
+        if (!localStorage.userId) {
+            window.location.href = config.settingPath
+            return
+        }
         const userPath = `/starfire/users/${localStorage.userId}`;
         const userStr = await ipfs.files.read(userPath);
         const userJSON = JSON.parse(userStr.toString());
@@ -119,11 +123,7 @@ const initComments = async () => {
             parents: true,
         });
     } catch (e) {
-        ipfs.files.write(path,
-            Buffer.from("[]"), {
-                create: true,
-                parents: true,
-            });
+        console.warn(e)
     }
 };
 

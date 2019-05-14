@@ -6,9 +6,6 @@ $secondary: #d93025 !default;
 $secondary-light: #ff674f !default;
 $secondary-dark: #9f0000 !default;
 
-$tooltipColor: #fff !default;
-$toolTipBg: #9a0009 !default;
-
 $transition: all .18s cubic-bezier(.4, 0, .2, 1) !default;
 
 $font-family-base: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif !default;
@@ -16,5 +13,4 @@ $font-family-code: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monosp
 
 @import "reset";
 @import "content";
-@import "tooltipped";
 @import "common";

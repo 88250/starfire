@@ -1,6 +1,5 @@
 import pugTpl from "../pug/index.pug";
 import {Post} from "./Post";
-import {PubSub} from "./PubSub";
 import {getSpam} from "./utils/filterSpam";
 import {genPostItemById} from "./utils/genPostItemById";
 import {ipfs} from "./utils/initIPFS";
@@ -39,10 +38,7 @@ class Starfire {
             });
 
         } catch (e) {
-            this.ipfs.files.write("/starfire/index", Buffer.from(JSON.stringify([])), {
-                create: true,
-                parents: true,
-            });
+            console.warn(e)
         }
 
         loaded(this.ipfs);

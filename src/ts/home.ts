@@ -1,4 +1,4 @@
-import "../assets/scss/index.scss";
+import "../assets/scss/home.scss";
 import pugTpl from "../pug/home.pug";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
@@ -6,15 +6,27 @@ import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
 import {config} from "./config/config";
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
 const syncOtherUser = () => {
     if (userId !== localStorage.userId) {
-        document.getElementById("loading").innerHTML = "refreshing ipns";
-
+        document.getElementById("loading").style.display = 'block';
         ipfs.name.resolve(`/ipns/${userId}`, (nameErr: Error, name: string) => {
+            document.getElementById("loading").style.display = 'none'
+            if (!name) {
+                render(JSON.parse('{"signature":1}'));
+                return
+            }
             ipfs.get(name, (err: Error, files: IPFSFile []) => {
+                if (!files) {
+                    render(JSON.parse('{"signature":1}'));
+                    return
+                }
                 files.forEach(async (file) => {
                     try {
                         await ipfs.files.rm(`/starfire/users/${userId}`);
@@ -30,13 +42,30 @@ const syncOtherUser = () => {
                     });
                 });
             });
-            document.getElementById("loading").innerHTML = "";
         });
     }
 };
 
 const init = async () => {
     renderPug(pugTpl);
+
+
+    const postBtn = document.getElementById('postBtn')
+    const commentBtn = document.getElementById('commentBtn')
+    const postList = document.getElementById('postList')
+    const commentList = document.getElementById('commentList')
+    postBtn.addEventListener('click', () => {
+        postBtn.className = 'current'
+        commentBtn.className = ''
+        postList.style.display = 'block'
+        commentList.style.display = 'none'
+    })
+    commentBtn.addEventListener('click', () => {
+        postBtn.className = ''
+        commentBtn.className = 'current'
+        postList.style.display = 'none'
+        commentList.style.display = 'block'
+    })
 
     let userStr = "{}";
     try {
@@ -47,31 +76,66 @@ const init = async () => {
     }
 
     render(JSON.parse(userStr.toString()));
-
+    loaded(ipfs);
 };
 
 const render = async (userJSON: IUser) => {
     const signature = userJSON.signature;
+    // 本地没有该文件
+    if (!signature) {
+        window.location.href = config.settingPath
+    }
+    // ipns 失败
+    if (signature === 1) {
+        document.getElementById("user").innerHTML = `<img class="avatar--big avatar" src="${config.defaultAvatar}">
+<div class="flex1 meta">
+    <div class="username">This node is offline</div>
+    <div class="id">This node is offline</div>
+</div>
+`;
+        return
+    }
+
     delete userJSON.signature;
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
         return;
     }
 
+    const postList = document.getElementById('postList')
+    const commentList = document.getElementById('commentList')
+
     const latestPostId = userJSON.latestPostId;
     const latestCommentId = userJSON.latestCommentId;
 
-    document.getElementById("user").innerHTML = `<img src="${userJSON.avatar}"> ${userJSON.name}`;
+    document.getElementById("user").innerHTML = `<img class="avatar--big avatar" src="${userJSON.avatar || config.defaultAvatar}">
+<div class="flex1 meta">
+    <div class="username">${userJSON.name}</div>
+    <div class="id">${userJSON.id}</div>
+</div>
+`;
 
     if (latestPostId) {
         const postResult = await traverseIds(latestPostId);
         let postHTML = "";
         postResult.values.forEach((post, index) => {
-            postHTML += `<li>
-    <a href="${config.detailPath}?id=${postResult.ids[index]}">${post.title}</a>
+            postHTML += `
+<li class="flex item">
+    <img class="avatar avatar--small" src="${post.userAvatar}"/> 
+    <div class="flex1">
+        <a href="${config.homePath}?id=${post.userId}" class="name">
+            ${post.userName}
+        </a> 
+        <time class="time">
+            ${dayjs().to(dayjs(post.time))}
+        </time>
+        <a class="content" href="${config.detailPath}?id=${postResult.ids[index]}">
+            ${post.title}
+        </a>
+    </div>
 </li>`;
         });
-        document.getElementById("postList").innerHTML = postHTML;
+        postList.innerHTML = postHTML;
     }
 
     if (latestCommentId) {
@@ -82,9 +146,8 @@ const render = async (userJSON: IUser) => {
     <a href="${config.detailPath}?id=${comment.postId}">${comment.content}</a>
 </li>`;
         });
-        document.getElementById("commentList").innerHTML = commentHTML;
+        commentList.innerHTML = commentHTML;
     }
-    loaded(ipfs);
 };
 
 const traverseIds = async (id: string) => {

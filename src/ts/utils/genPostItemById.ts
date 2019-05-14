@@ -20,7 +20,7 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
         `<li class="flex item">
     <a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar" src="${result.value.userAvatar}"/> 
+        <img class="avatar avatar--small" src="${result.value.userAvatar}"/> 
     </a>
     <div class="flex1">
         <a href="${config.homePath}?id=${result.value.userId}" class="name">

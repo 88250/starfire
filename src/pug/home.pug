@@ -1,8 +1,25 @@
 include ./common/header.pug
 +header('home')
-span#loading
-div#user
-h2 posts
-ul#postList
-h2 comments
-ul#commentList
+div.home.wrap
+    div#loading.none
+        svg(width='160px' height='160px' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid' class='lds-double-ring' style='height:260px;width:260px')
+            circle(cx='50' cy='50' fill='none' stroke-linecap='round' r='20' stroke-width='4' stroke='#24282d' stroke-dasharray='31.41592653589793 31.41592653589793' transform='rotate(111.924 50 50)')
+                animateTransform(attributeName='transform' type='rotate' calcMode='linear' values='0 50 50;360 50 50' keyTimes='0;1' dur='1.5s' begin='0s' repeatCount='indefinite')
+            circle(cx='50' cy='50' fill='none' stroke-linecap='round' r='15' stroke-width='4' stroke='#d93025' stroke-dasharray='23.561944901923447 23.561944901923447' stroke-dashoffset='23.561944901923447' transform='rotate(-111.924 50 50)')
+                animateTransform(attributeName='transform' type='rotate' calcMode='linear' values='0 50 50;-360 50 50' keyTimes='0;1' dur='1.5s' begin='0s' repeatCount='indefinite')
+    div#user.flex
+        img.avatar--big.avatar(src=config.defaultAvatar)
+        div.flex1.meta
+            div.username Loading
+            div.id Loading
+    div.nav
+        span.current#postBtn POSTS
+        span#commentBtn COMMENTS
+    ul#postList
+        li.flex.item
+            img.avatar.avatar--small(src=config.defaultAvatar)
+            div.flex1
+                a.name Loading
+                a.content Loading
+    ul#commentList.none
+        li.flex.item Loading

@@ -1,20 +1,13 @@
 @import "base";
 
 .setting {
-  width: 300px;
-  margin:  0 auto 50px;
-
-
-  .avatar {
-    margin: 0 auto 30px;
-    height: 200px;
-    display: block;
-    width: 200px;
-    border-radius: 6px;
+  .clear {
+    margin: 16px 0 0 0;
+    width: 260px;
   }
 
   .input {
-    margin-bottom: 30px;
+    margin-bottom: 16px;
   }
 
   .button,
