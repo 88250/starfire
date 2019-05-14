@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import xss from "xss";
 import {config} from "../config/config";
 import {getIPFSGateway} from "./getIPFSGateway";
 
@@ -25,13 +26,13 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
     </a>
     <div class="flex1">
         <a href="${config.homePath}?id=${result.value.userId}" class="name">
-            ${result.value.userName}
+            ${xss(result.value.userName)}
         </a>
         <time class="time">
             ${dayjs().to(dayjs(result.value.time))}
         </time>
         <a class="content" href="${config.detailPath}?id=${id}">
-            ${result.value.title}
+            ${xss(result.value.title)}
         </a>
     </div>
 </li>`);
