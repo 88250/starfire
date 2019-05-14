@@ -51,7 +51,14 @@ export class PubSub {
             });
         } else if (data.type === "comment") {
             const postPath = `/starfire/posts/${data.data.postId}`;
-            const oldCommentsStr = await this.ipfs.files.read(postPath);
+
+            let oldCommentsStr = "[]";
+            try {
+                oldCommentsStr = await this.ipfs.files.read(postPath);
+            } catch (e) {
+                console.warn(e);
+            }
+
             const oldCommentsJSON: string[] = JSON.parse(oldCommentsStr.toString());
             const newComment = filterSpam(data.data.ids, oldCommentsJSON);
             const commentsJSON = oldCommentsJSON.concat(newComment);

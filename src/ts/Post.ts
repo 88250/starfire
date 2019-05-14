@@ -18,8 +18,8 @@ export class Post {
 
     public async add() {
         if (!localStorage.userId) {
-            window.location.href = config.settingPath
-            return
+            window.location.href = config.settingPath;
+            return;
         }
         const path = `/starfire/users/${localStorage.userId}`;
         const userStr = await this.ipfs.files.read(path);

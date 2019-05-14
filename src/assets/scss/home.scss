@@ -58,6 +58,12 @@
     }
   }
 
+  .empty {
+    color: #fff;
+    text-align: center;
+    list-style: none;
+  }
+
   #postList {
     .item {
       padding: 16px 0;

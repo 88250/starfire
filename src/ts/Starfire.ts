@@ -38,7 +38,7 @@ class Starfire {
             });
 
         } catch (e) {
-            console.warn(e)
+            console.warn(e);
         }
 
         loaded(this.ipfs);

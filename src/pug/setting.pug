@@ -5,8 +5,12 @@ div.setting.wrap.wrap--small
     img.avatar
     img.avatar.avatar--small
     div.clear
-        input.input#avatarPath(placeholder='avatar')
+        label.label Avatar hash
+        input.input#avatarPath(readonly='')
+        label.label Nickname
         input.input#name(placeholder='name')
+        label.label Node id
         input.input#id(readonly='')
-        input.input#privateKey(placeholder='private key')
+        label.label Private key
+        input.input#privateKey()
         button#start.button Confirm

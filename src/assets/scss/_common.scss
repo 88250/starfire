@@ -103,6 +103,12 @@
   }
 }
 
+.label {
+  color: $primary-light;
+  margin-bottom: 3px;
+  display: block;
+}
+
 .input {
   box-sizing: border-box;
   width: 100%;

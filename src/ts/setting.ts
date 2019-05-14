@@ -1,10 +1,13 @@
+import {toPng} from "jdenticon/index.js";
+import fileReaderPullStream from "pull-file-reader";
 import "../assets/scss/setting.scss";
 import pugTpl from "../pug/setting.pug";
+import {config} from "./config/config";
+import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
-import {config} from "./config/config";
 
 const init = async () => {
     renderPug(pugTpl);
@@ -19,22 +22,25 @@ const init = async () => {
         console.warn(e);
     }
 
-    // render html
-    const avatarPathElement = document.getElementById("avatarPath") as HTMLInputElement
-    const avatarImgElements = document.querySelectorAll(".avatar")
-    avatarImgElements.forEach(element => {
-        element.setAttribute('src', (oldUserJSON && oldUserJSON.avatar) || config.defaultAvatar);
-    })
+    const gateway = await getIPFSGateway(ipfs);
 
-    avatarPathElement.value = (oldUserJSON && oldUserJSON.avatar) || config.defaultAvatar;
+    let initAvatarHash = "";
+    if (!(oldUserJSON && oldUserJSON.avatar)) {
+        const file = new File([toPng(identity.id, 260, 0)], "avatar.svg", {type: "text/xml"});
+        const results = await ipfs.add(fileReaderPullStream(file));
+        initAvatarHash = results[0].hash;
+    }
+
+    // render html
+    document.querySelectorAll(".avatar").forEach((element) => {
+        element.setAttribute("src",
+            (oldUserJSON && `${gateway}/ipfs/${oldUserJSON.avatar}`) || `${gateway}/ipfs/${initAvatarHash}`);
+    });
+
+    (document.getElementById("avatarPath") as HTMLInputElement).value =
+        (oldUserJSON && oldUserJSON.avatar) || initAvatarHash;
     (document.getElementById("name") as HTMLInputElement).value = (oldUserJSON && oldUserJSON.name) || "";
     (document.getElementById("id") as HTMLInputElement).value = identity.id;
-
-    avatarPathElement.addEventListener('change', () => {
-        avatarImgElements.forEach(element => {
-            element.setAttribute('src', avatarPathElement.value);
-        })
-    })
 
     // bind start
     document.getElementById("start").addEventListener("click", async () => {

@@ -1,18 +1,19 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "../assets/scss/detail.scss";
 import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
 import {getSpam} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
+import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
 
 const postId = location.search.split("=")[1];
 const init = async () => {
@@ -30,28 +31,29 @@ const init = async () => {
     document.getElementById("title").innerHTML = result.value.title;
     document.getElementById("meta").innerHTML = `<a class="name" href="${config.homePath}?id=${result.value.userId}">
         ${result.value.userName}
-    </a> 
+    </a>
     <time class="time">
         ${dayjs().to(dayjs(result.value.time))}
     </time>`;
-    document.getElementById("content").innerHTML = result.value.content || 'No Content';
+    document.getElementById("content").innerHTML = result.value.content || "No Content";
     document.getElementById("user").innerHTML = `<a href="${config.homePath}?id=${result.value.userId}">
         <img class="avatar" src="${result.value.userAvatar}"/>
     </a>`;
 
-    document.getElementById('currentUser').innerHTML = `<a href="${config.homePath}">
-        <img class="avatar" src="${localStorage.userAvatar || config.defaultAvatar}"/>
+    const gateway = await getIPFSGateway(ipfs);
+    document.getElementById("currentUser").innerHTML = `<a href="${config.homePath}">
+        <img class="avatar" src="${gateway}/ipfs/${localStorage.userAvatar || config.defaultAvatar}"/>
     </a>`;
 
     let currentUserNameHTML = `<a class="name" href="${config.settingPath}">
        Please go Setting Account
-    </a>`
+    </a>`;
     if (localStorage.userName) {
         currentUserNameHTML = `<a class="name" href="${config.homePath}">
         ${localStorage.userName}
-    </a>`
+    </a>`;
     }
-    document.getElementById('currentUserName').innerHTML = currentUserNameHTML
+    document.getElementById("currentUserName").innerHTML = currentUserNameHTML;
 
     initAddComment();
     initComments();
@@ -61,8 +63,8 @@ const init = async () => {
 const initAddComment = () => {
     document.getElementById("commentBtn").addEventListener("click", async () => {
         if (!localStorage.userId) {
-            window.location.href = config.settingPath
-            return
+            window.location.href = config.settingPath;
+            return;
         }
         const userPath = `/starfire/users/${localStorage.userId}`;
         const userStr = await ipfs.files.read(userPath);
@@ -86,7 +88,12 @@ const initAddComment = () => {
         const commentId = cid.toBaseEncodedString();
 
         // send msg
-        const postStr = await ipfs.files.read(`/starfire/posts/${postId}`);
+        let postStr = "[]";
+        try {
+            postStr = await ipfs.files.read(`/starfire/posts/${postId}`);
+        } catch (e) {
+            console.warn(e);
+        }
         const postJSON = JSON.parse(postStr.toString());
         postJSON.push(commentId);
         const publishObj = {
@@ -101,6 +108,10 @@ const initAddComment = () => {
         // update user file
         userJSON.latestCommentId = commentId;
         publishUser(userJSON, ipfs);
+
+        // clear input
+        (document.getElementById("commentContent") as HTMLInputElement).value = "";
+        (document.getElementById("privateKey") as HTMLInputElement).value = "";
     });
 };
 
@@ -123,7 +134,7 @@ const initComments = async () => {
             parents: true,
         });
     } catch (e) {
-        console.warn(e)
+        console.warn(e);
     }
 };
 

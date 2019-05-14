@@ -1,6 +1,5 @@
 import {config} from "../config/config";
 import {PubSub} from "../PubSub";
-import {ipfs} from "./initIPFS";
 
 const closeLoading = () => {
     document.getElementById("pageLoading").remove();
@@ -30,22 +29,22 @@ const initPubSub = (ipfs: IIPFS) => {
     pubsub.init();
 };
 
-const updateNewestVersion = async () => {
-    if (config.env !== 'product') {
-        return
+const updateNewestVersion = async (ipfs: IIPFS) => {
+    if (config.env !== "product") {
+        return;
     }
     const versionStr = await ipfs.files.read("/starfire/version");
-    const versionId = versionStr.toString()
+    const versionId = versionStr.toString();
     if (location.pathname.indexOf(`/ipfs/${versionId}`) === 0) {
-        return
+        return;
     }
-    window.location.href = `/ipfs/${versionId}`
+    window.location.href = `/ipfs/${versionId}`;
 };
 
 export const loaded = (ipfs: IIPFS) => {
     initPubSub(ipfs);
     closeLoading();
-    updateNewestVersion();
+    updateNewestVersion(ipfs);
     pullModerate(ipfs, "version");
     pullModerate(ipfs, "blacklist");
 };

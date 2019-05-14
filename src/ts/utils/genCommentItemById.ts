@@ -1,10 +1,11 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import {config} from "../config/config";
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import {config} from "../config/config";
+import {getIPFSGateway} from "./getIPFSGateway";
 
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
 
 export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: string[]) => {
     if (!id) {
@@ -26,11 +27,24 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     const signature = commentObj.signature;
     delete commentObj.signature;
     const isMatch = await verify(JSON.stringify(sortObject(commentObj)), commentObj.publicKey, signature);
-    let commentHTML = "Invalid data";
+
+    const gateway = await getIPFSGateway(ipfs)
+    let commentHTML = `<div class="item flex">
+    <img class="avatar" src="${gateway}/ipfs/${config.defaultAvatar}"/>
+    <div class="module flex1">
+        <div class="module__header">
+            <a class="name">
+                Invalid data
+            </a>
+            <time class="time">Invalid data</time>
+        </div>
+        <div class="module__body reset">Invalid data</div>
+    </div>
+</div>`;
     if (isMatch) {
         commentHTML = `<div class="item flex">
     <a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar" src="${result.value.userAvatar}"/> 
+        <img class="avatar" src="${gateway}/ipfs/${result.value.userAvatar}"/>
     </a>
     <div class="module flex1">
         <div class="module__header">

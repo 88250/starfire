@@ -1,31 +1,32 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "../assets/scss/home.scss";
 import pugTpl from "../pug/home.pug";
+import {config} from "./config/config";
+import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {config} from "./config/config";
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
 const syncOtherUser = () => {
     if (userId !== localStorage.userId) {
-        document.getElementById("loading").style.display = 'block';
+        document.getElementById("loading").style.display = "block";
         ipfs.name.resolve(`/ipns/${userId}`, (nameErr: Error, name: string) => {
-            document.getElementById("loading").style.display = 'none'
+            document.getElementById("loading").style.display = "none";
             if (!name) {
                 render(JSON.parse('{"signature":1}'));
-                return
+                return;
             }
             ipfs.get(name, (err: Error, files: IPFSFile []) => {
                 if (!files) {
                     render(JSON.parse('{"signature":1}'));
-                    return
+                    return;
                 }
                 files.forEach(async (file) => {
                     try {
@@ -49,23 +50,26 @@ const syncOtherUser = () => {
 const init = async () => {
     renderPug(pugTpl);
 
+    if (location.search.split("=")[1]) {
+        document.querySelector(".header__item--current").className = "header__item";
+    }
 
-    const postBtn = document.getElementById('postBtn')
-    const commentBtn = document.getElementById('commentBtn')
-    const postList = document.getElementById('postList')
-    const commentList = document.getElementById('commentList')
-    postBtn.addEventListener('click', () => {
-        postBtn.className = 'current'
-        commentBtn.className = ''
-        postList.style.display = 'block'
-        commentList.style.display = 'none'
-    })
-    commentBtn.addEventListener('click', () => {
-        postBtn.className = ''
-        commentBtn.className = 'current'
-        postList.style.display = 'none'
-        commentList.style.display = 'block'
-    })
+    const postBtn = document.getElementById("postBtn");
+    const commentBtn = document.getElementById("commentBtn");
+    const postList = document.getElementById("postList");
+    const commentList = document.getElementById("commentList");
+    postBtn.addEventListener("click", () => {
+        postBtn.className = "current";
+        commentBtn.className = "";
+        postList.style.display = "block";
+        commentList.style.display = "none";
+    });
+    commentBtn.addEventListener("click", () => {
+        postBtn.className = "";
+        commentBtn.className = "current";
+        postList.style.display = "none";
+        commentList.style.display = "block";
+    });
 
     let userStr = "{}";
     try {
@@ -81,19 +85,16 @@ const init = async () => {
 
 const render = async (userJSON: IUser) => {
     const signature = userJSON.signature;
-    // 本地没有该文件
-    if (!signature) {
-        window.location.href = config.settingPath
-    }
+    const gateway = await getIPFSGateway(ipfs);
     // ipns 失败
     if (signature === 1) {
-        document.getElementById("user").innerHTML = `<img class="avatar--big avatar" src="${config.defaultAvatar}">
+        document.getElementById("user").innerHTML = `
+<img class="avatar--big avatar" src="${gateway}/ipfs/${config.defaultAvatar}">
 <div class="flex1 meta">
     <div class="username">This node is offline</div>
     <div class="id">This node is offline</div>
-</div>
-`;
-        return
+</div>`;
+        return;
     }
 
     delete userJSON.signature;
@@ -102,13 +103,14 @@ const render = async (userJSON: IUser) => {
         return;
     }
 
-    const postList = document.getElementById('postList')
-    const commentList = document.getElementById('commentList')
+    const postList = document.getElementById("postList");
+    const commentList = document.getElementById("commentList");
 
     const latestPostId = userJSON.latestPostId;
     const latestCommentId = userJSON.latestCommentId;
 
-    document.getElementById("user").innerHTML = `<img class="avatar--big avatar" src="${userJSON.avatar || config.defaultAvatar}">
+    document.getElementById("user").innerHTML = `
+<img class="avatar--big avatar" src="${gateway}/ipfs/${userJSON.avatar}">
 <div class="flex1 meta">
     <div class="username">${userJSON.name}</div>
     <div class="id">${userJSON.id}</div>
@@ -121,11 +123,11 @@ const render = async (userJSON: IUser) => {
         postResult.values.forEach((post, index) => {
             postHTML += `
 <li class="flex item">
-    <img class="avatar avatar--small" src="${post.userAvatar}"/> 
+    <img class="avatar avatar--small" src="${post.userAvatar}"/>
     <div class="flex1">
         <a href="${config.homePath}?id=${post.userId}" class="name">
             ${post.userName}
-        </a> 
+        </a>
         <time class="time">
             ${dayjs().to(dayjs(post.time))}
         </time>
