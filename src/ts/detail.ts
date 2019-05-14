@@ -36,7 +36,7 @@ const init = async () => {
     <time class="time">
         ${dayjs().to(dayjs(result.value.time))}
     </time>`;
-    document.getElementById("content").innerHTML = result.value.content || "No Content";
+    document.getElementById("content").innerHTML = xss(result.value.content) || "No Content";
     const gateway = await getIPFSGateway(ipfs);
     document.getElementById("user").innerHTML = `<a href="${config.homePath}?id=${result.value.userId}">
         <img class="avatar" src="${gateway}/ipfs/${result.value.userAvatar}"/>
