@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {escapeHtml} from "xss";
+import xss from "xss";
 import {config} from "../config/config";
-import {getIPFSGateway} from "./getIPFSGateway";
 import {getAvatarPath} from "./getAvatarPath";
+import {getIPFSGateway} from "./getIPFSGateway";
 
 dayjs.extend(relativeTime);
 

@@ -6,6 +6,7 @@ import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
 import {getSpam} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
+import {getAvatarPath} from "./utils/getAvatarPath";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
@@ -39,11 +40,11 @@ const init = async () => {
     document.getElementById("content").innerHTML = xss(result.value.content) || "No Content";
     const gateway = await getIPFSGateway(ipfs);
     document.getElementById("user").innerHTML = `<a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar" src="${gateway}/ipfs/${result.value.userAvatar}"/>
+        <img class="avatar" src="${getAvatarPath(result.value.userAvatar, gateway)}"/>
     </a>`;
 
     document.getElementById("currentUser").innerHTML = `<a href="${config.homePath}">
-        <img class="avatar" src="${gateway}/ipfs/${localStorage.userAvatar || config.defaultAvatar}"/>
+        <img class="avatar" src="${getAvatarPath(localStorage.userAvatar, gateway)}"/>
     </a>`;
 
     let currentUserNameHTML = `<a class="name" href="${config.settingPath}">

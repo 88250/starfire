@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import "../assets/scss/home.scss";
 import {escapeHtml} from "xss";
 import * as xss from "xss";
+import "../assets/scss/home.scss";
 import pugTpl from "../pug/home.pug";
 import {config} from "./config/config";
+import {getAvatarPath} from "./utils/getAvatarPath";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
@@ -107,7 +108,7 @@ const render = async (userJSON: IUser) => {
     const latestCommentId = userJSON.latestCommentId;
 
     document.getElementById("user").innerHTML = `
-<img class="avatar--big avatar" src="${gateway}/ipfs/${userJSON.avatar}">
+<img class="avatar--big avatar" src="${getAvatarPath(userJSON.avatar, gateway)}">
 <div class="flex1 meta">
     <div class="username">${userJSON.name}</div>
     <div class="id">${userJSON.id}</div>
@@ -118,7 +119,7 @@ const render = async (userJSON: IUser) => {
         traverseIds(latestPostId, (id: string, post: IPost) => {
             postList.insertAdjacentHTML("beforeend", `
 <li class="flex item">
-    <img class="avatar avatar--small" src="${gateway}/ipfs/${post.userAvatar}"/>
+    <img class="avatar avatar--small" src="${getAvatarPath(post.userAvatar, gateway)}"/>
     <div class="flex1">
         <span class="name">
             ${post.userName}
@@ -139,7 +140,7 @@ const render = async (userJSON: IUser) => {
         traverseIds(latestCommentId, (id: string, comment: IComment) => {
             document.getElementById("commentList").insertAdjacentHTML("beforeend", `
 <li class="item flex">
-    <img class="avatar" src="${gateway}/ipfs/${comment.userAvatar}"/>
+    <img class="avatar" src="${getAvatarPath(comment.userAvatar, gateway)}"/>
     <div class="module flex1">
         <div class="module__header">
             <a href="${config.detailPath}?id=${comment.postId}#${id}" class="name">${comment.postId}</a>
