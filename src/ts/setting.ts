@@ -6,6 +6,7 @@ import {config} from "./config/config";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
+import {getAvatarPath} from "./utils/getAvatarPath";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 
@@ -32,9 +33,12 @@ const init = async () => {
     }
 
     // render html
+    let avatarSrc = `${gateway}/ipfs/${initAvatarHash}`;
+    if (oldUserJSON && oldUserJSON.avatar) {
+        avatarSrc = getAvatarPath(oldUserJSON.avatar, gateway);
+    }
     document.querySelectorAll(".avatar").forEach((element) => {
-        element.setAttribute("src",
-            (oldUserJSON && `${gateway}/ipfs/${oldUserJSON.avatar}`) || `${gateway}/ipfs/${initAvatarHash}`);
+        element.setAttribute("src", avatarSrc);
     });
 
     (document.getElementById("avatarPath") as HTMLInputElement).value =

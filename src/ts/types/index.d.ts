@@ -13,6 +13,8 @@ declare module "dayjs*";
 
 declare module "xss";
 
+declare module "is-ipfs";
+
 declare module "libp2p-crypto/src/keys";
 
 declare module "*.pug";

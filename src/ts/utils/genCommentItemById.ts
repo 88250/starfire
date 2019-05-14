@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import xss from "xss";
 import {config} from "../config/config";
+import {getAvatarPath} from "./getAvatarPath";
 import {getIPFSGateway} from "./getIPFSGateway";
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
@@ -45,7 +46,7 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     if (isMatch) {
         commentHTML = `<div class="item flex" id="${id}">
     <a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar" src="${gateway}/ipfs/${result.value.userAvatar}"/>
+        <img class="avatar" src="${getAvatarPath(result.value.userAvatar, gateway)}"/>
     </a>
     <div class="module flex1">
         <div class="module__header">
