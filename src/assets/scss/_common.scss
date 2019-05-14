@@ -1,7 +1,105 @@
+.clear:after,
+.clear:before {
+  display: table;
+  content: ""
+}
+
+.clear:after {
+  clear: both
+}
+
+.right {
+  float: right;
+}
+
+.flex {
+  display: flex;
+  &1 {
+    flex: 1;
+  }
+}
+
 .header {
-  background-color:$primary;
-  color: hsla(0,0%,100%,.7);
+  background-color: $primary;
+  color: hsla(0, 0%, 100%, .7);
   font-size: 14px;
   line-height: 1.5;
   padding: 16px;
+  margin-bottom: 50px;
+
+  &__item {
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-right: 16px;
+
+    &:hover {
+      color: hsla(0, 0%, 100%, .7);
+      text-decoration: none;
+    }
+
+    &--current {
+      color: $secondary;
+    }
+  }
+}
+
+.module {
+  background-color: $primary;
+  border-radius: 6px;
+}
+
+.button {
+  background-color: $secondary;
+  color: #fff;
+  will-change: box-shadow;
+  height: 36px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 36px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  user-select: none;
+  box-sizing: border-box;
+  transition: $transition;
+
+  &:hover {
+    background-color: $secondary-light;
+  }
+
+  &:active {
+    background-color: $secondary-dark;
+  }
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid $primary-light;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 2px rgba(27, 31, 35, .075);
+  color: #fff;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 6px 8px;
+  background-color: $primary;
+  transition: $transition;
+
+  &:hover {
+    border-color: $secondary-light;
+  }
+
+  &:focus {
+    border-color: $secondary;
+  }
+
+  &[readonly] {
+    color: $primary-light;
+  }
 }

@@ -1,0 +1,24 @@
+@import "base";
+
+.setting {
+  width: 300px;
+  margin:  0 auto 50px;
+
+
+  .avatar {
+    margin: 0 auto 30px;
+    height: 200px;
+    display: block;
+    width: 200px;
+    border-radius: 6px;
+  }
+
+  .input {
+    margin-bottom: 30px;
+  }
+
+  .button,
+  .input {
+    width: 100%;
+  }
+}

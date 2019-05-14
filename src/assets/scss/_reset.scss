@@ -11,6 +11,7 @@ body {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
+  min-height: 100%;
 }
 
 ::-moz-selection {
@@ -67,6 +68,7 @@ audio:not([controls]) {
 a {
   outline: 0;
   text-decoration: none;
+  transition: $transition;
 }
 
 a:hover {

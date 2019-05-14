@@ -1,8 +1,10 @@
 include ./common/header.pug
 +header('index')
-input#postTitle(placeholder='title')
-input#postContent(placeholder='link')
-input#privateKey(placeholder='private key')
-button#postBtn 发布
-div
-    ul#indexList
+div.index
+    div.clear
+        input.input#postTitle(placeholder='title')
+        textarea.input#postContent(placeholder='content')
+        input.input#privateKey(placeholder='private key')
+        button.button.right#postBtn Post
+    div
+        ul#indexList

@@ -1,5 +1,7 @@
 export const config = {
+  aboutPath: "detail.html?id=zdpuAmuLqL6Zc2NuYcVJ3GgmARo7zkgG7pqDe6TUpGRQBAKQj",
   detailPath: "detail.html",
+  defaultAvatar: "https://avatars3.githubusercontent.com/u/970828",
   homePath: "home.html",
   indexPath: "index.html",
   moderateId: "QmfQUfpYh2J2jaihvfwsR6ACQnf3iQ551N1dNMfcNTmyjr",

@@ -1,8 +1,10 @@
 include ./common/header.pug
 +header('setting')
-div
-    input#avatar(placeholder='avatar url')
-    input#name(placeholder='name')
-    input#privateKey(placeholder='private key')
-    button#init 开始使用
+div.setting
+    img#avatarImg.avatar
+    input.input#avatarPath(placeholder='avatar')
+    input.input#name(placeholder='name')
+    input.input#id(readonly='')
+    input.input#privateKey(placeholder='private key')
+    button#start.button Confirm
     div #{config.detailId}
