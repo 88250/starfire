@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import xss from "xss";
+import xss, {escapeHtml} from "xss";
 import "../assets/scss/detail.scss";
 import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
@@ -29,7 +29,7 @@ const init = async () => {
         return;
     }
 
-    document.getElementById("title").innerHTML = xss(result.value.title);
+    document.getElementById("title").innerHTML = escapeHtml(result.value.title);
     document.getElementById("meta").innerHTML = `<a class="name" href="${config.homePath}?id=${result.value.userId}">
         ${result.value.userName}
     </a>

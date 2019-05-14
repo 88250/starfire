@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import xss from "xss";
+import {escapeHtml} from "xss";
 import {config} from "../config/config";
 import {getIPFSGateway} from "./getIPFSGateway";
 
@@ -32,7 +32,7 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
             ${dayjs().to(dayjs(result.value.time))}
         </time>
         <a class="content" href="${config.detailPath}?id=${id}">
-            ${xss(result.value.title)}
+            ${escapeHtml(result.value.title)}
         </a>
     </div>
 </li>`);
