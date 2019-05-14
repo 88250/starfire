@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import xss from "xss";
+import {filterXSS} from "xss";
 import {config} from "../config/config";
 import {getAvatarPath} from "./getAvatarPath";
 import {getIPFSGateway} from "./getIPFSGateway";
@@ -51,11 +51,11 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     <div class="module flex1">
         <div class="module__header">
             <a class="name" href="${config.homePath}?id=${result.value.userId}">
-                ${xss(result.value.userName)}
+                ${filterXSS(result.value.userName)}
             </a>
             <time class="time">${dayjs().to(dayjs(result.value.time))}</time>
         </div>
-        <div class="module__body reset">${xss(result.value.content)}</div>
+        <div class="module__body reset">${filterXSS(result.value.content)}</div>
     </div>
 </div>`;
     }

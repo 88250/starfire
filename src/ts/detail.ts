@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import xss, {escapeHtml} from "xss";
+import {escapeHtml, filterXSS} from "xss";
 import "../assets/scss/detail.scss";
 import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
@@ -37,7 +37,7 @@ const init = async () => {
     <time class="time">
         ${dayjs().to(dayjs(result.value.time))}
     </time>`;
-    document.getElementById("content").innerHTML = xss(result.value.content) || "No Content";
+    document.getElementById("content").innerHTML = filterXSS(result.value.content) || "No Content";
     const gateway = await getIPFSGateway(ipfs);
     document.getElementById("user").innerHTML = `<a href="${config.homePath}?id=${result.value.userId}">
         <img class="avatar" src="${getAvatarPath(result.value.userAvatar, gateway)}"/>

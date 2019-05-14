@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {escapeHtml} from "xss";
-import * as xss from "xss";
+import {filterXSS} from "xss";
 import "../assets/scss/home.scss";
 import pugTpl from "../pug/home.pug";
 import {config} from "./config/config";
@@ -146,7 +146,7 @@ const render = async (userJSON: IUser) => {
             <a href="${config.detailPath}?id=${comment.postId}#${id}" class="name">${comment.postId}</a>
             <time class="time">${dayjs().to(dayjs(comment.time))}</time>
         </div>
-        <div class="module__body reset">${xss(comment.content)}</div>
+        <div class="module__body reset">${filterXSS(comment.content)}</div>
     </div>
 </li>`);
         });

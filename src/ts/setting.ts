@@ -3,10 +3,10 @@ import fileReaderPullStream from "pull-file-reader";
 import "../assets/scss/setting.scss";
 import pugTpl from "../pug/setting.pug";
 import {config} from "./config/config";
+import {getAvatarPath} from "./utils/getAvatarPath";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
-import {getAvatarPath} from "./utils/getAvatarPath";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 
