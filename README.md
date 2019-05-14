@@ -11,13 +11,11 @@
 ## Production
 
 * update config.ts `env: "product"`
-
 * pack & publish
-```
-npm run dist
-ipfs add -r dist
-```
-
+  ```
+  npm run dist
+  ipfs add -r dist
+  ```
 * update version in ipfs
 
 ## Dev
@@ -35,7 +33,7 @@ npm run start
 * starfire
 
 ### File Paths
-``
+
 * /starfire/index
 * /starfire/users/id
 * /starfire/posts/id
