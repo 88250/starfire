@@ -8,18 +8,18 @@ const closeLoading = () => {
 const pullModerate = async (ipfs: IIPFS, type: string) => {
     ipfs.name.resolve(`/ipns/${config.moderateId}/${type}`, (nameErr: Error, name: string) => {
         if (!name) {
-            return
+            return;
         }
         ipfs.get(name, (err: Error, files: IPFSFile []) => {
             if (!files) {
-                return
+                return;
             }
             files.forEach(async (file) => {
 
                 ipfs.files.write(`/starfire/${type}`, Buffer.from(file.content.toString()), {
                     create: true,
                     parents: true,
-                    truncate: true
+                    truncate: true,
                 });
             });
         });

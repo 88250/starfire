@@ -104,7 +104,7 @@ export class PubSub {
             await this.ipfs.files.write("/starfire/blacklist", Buffer.from(blacklistStr.toString()), {
                 create: true,
                 parents: true,
-                truncate: true
+                truncate: true,
             });
         }
     }

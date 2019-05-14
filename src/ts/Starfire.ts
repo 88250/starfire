@@ -20,7 +20,7 @@ class Starfire {
 
     public async init() {
         renderPug(pugTpl);
-        let indexStr = '[]'
+        let indexStr = "[]";
 
         try {
             indexStr = await this.ipfs.files.read("/starfire/index");
@@ -40,7 +40,7 @@ class Starfire {
         this.ipfs.files.write("/starfire/index", Buffer.from(JSON.stringify(indexJSON)), {
             create: true,
             parents: true,
-            truncate: true
+            truncate: true,
         });
 
         loaded(this.ipfs);

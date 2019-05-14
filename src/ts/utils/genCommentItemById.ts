@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {config} from "../config/config";
+import {getIPFSGateway} from "./getIPFSGateway";
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
-import {getIPFSGateway} from "./getIPFSGateway";
 
 dayjs.extend(relativeTime);
 
@@ -28,7 +28,7 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     delete commentObj.signature;
     const isMatch = await verify(JSON.stringify(sortObject(commentObj)), commentObj.publicKey, signature);
 
-    const gateway = await getIPFSGateway(ipfs)
+    const gateway = await getIPFSGateway(ipfs);
     let commentHTML = `<div class="item flex">
     <img class="avatar" src="${gateway}/ipfs/${config.defaultAvatar}"/>
     <div class="module flex1">

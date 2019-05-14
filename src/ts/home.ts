@@ -32,7 +32,7 @@ const syncOtherUser = () => {
                     ipfs.files.write(`/starfire/users/${userId}`, Buffer.from(file.content.toString()), {
                         create: true,
                         parents: true,
-                        truncate: true
+                        truncate: true,
                     });
 
                     render(JSON.parse(file.content.toString()));
@@ -112,7 +112,7 @@ const render = async (userJSON: IUser) => {
 </div>`;
 
     if (latestPostId) {
-        postList.innerHTML = ''
+        postList.innerHTML = "";
         traverseIds(latestPostId, (id: string, post: IPost) => {
             postList.insertAdjacentHTML("beforeend", `
 <li class="flex item">
@@ -133,7 +133,7 @@ const render = async (userJSON: IUser) => {
     }
 
     if (latestCommentId) {
-        commentList.innerHTML = ''
+        commentList.innerHTML = "";
         traverseIds(latestCommentId, (id: string, comment: IComment) => {
             document.getElementById("commentList").insertAdjacentHTML("beforeend", `
 <li class="item flex">
@@ -150,15 +150,15 @@ const render = async (userJSON: IUser) => {
     }
 };
 
-const traverseIds = async (id: string, render: any) => {
+const traverseIds = async (id: string, renderCB: any) => {
     while (id) {
         const current = await ipfs.dag.get(id);
-        render(id, current.value)
+        renderCB(id, current.value);
         const previousId = current.value.previousId;
         if (previousId) {
             id = previousId;
         } else {
-            return
+            return;
         }
     }
 };

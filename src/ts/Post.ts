@@ -66,8 +66,8 @@ export class Post {
         publishUser(userJSON, this.ipfs);
 
         // clear input
-        (document.getElementById("postContent") as HTMLInputElement).value = '';
-        (document.getElementById("postTitle") as HTMLInputElement).value = '';
-        (document.getElementById("privateKey") as HTMLInputElement).value = '';
+        (document.getElementById("postContent") as HTMLInputElement).value = "";
+        (document.getElementById("postTitle") as HTMLInputElement).value = "";
+        (document.getElementById("privateKey") as HTMLInputElement).value = "";
     }
 }

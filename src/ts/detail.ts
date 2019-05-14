@@ -131,7 +131,7 @@ const initComments = async () => {
         ipfs.files.write(path, Buffer.from(JSON.stringify(commentsJSON)), {
             create: true,
             parents: true,
-            truncate: true
+            truncate: true,
         });
     } catch (e) {
         console.warn(e);

@@ -5,8 +5,6 @@ declare module "*.svg" {
 
 declare module "ipfs-http-client";
 
-declare module "base64-js";
-
 declare module "jdenticon/index.js";
 
 declare module "pull-file-reader";

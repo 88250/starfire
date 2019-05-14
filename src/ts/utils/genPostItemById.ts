@@ -17,7 +17,7 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
         return result.value.userId;
     }
 
-    const gateway = await getIPFSGateway(ipfs)
+    const gateway = await getIPFSGateway(ipfs);
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
         `<li class="flex item">
     <a href="${config.homePath}?id=${result.value.userId}">
