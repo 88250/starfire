@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import {config} from "../config/config";
 
 dayjs.extend(relativeTime)
 
@@ -18,17 +19,17 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
     console.log(result.value)
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
         `<li class="flex item">
-    <a href="home.html?id=${result.value.userId}">
+    <a href="${config.homePath}?id=${result.value.userId}">
         <img class="avatar" src="${result.value.userAvatar}"/> 
     </a>
     <div class="flex1">
-        <a href="home.html?id=${result.value.userId}" class="name">
+        <a href="${config.homePath}?id=${result.value.userId}" class="name">
             ${result.value.userName}
         </a> 
         <time class="time">
             ${dayjs().to(dayjs(result.value.time))}
         </time>
-        <a class="content" href="detail.html?id=${id}">
+        <a class="content" href="${config.detailPath}?id=${id}">
             ${result.value.title}
         </a>
     </div>

@@ -1,0 +1,14 @@
+.wrap {
+  width: 760px;
+  margin: 0 auto 50px;
+}
+
+.name {
+  color: #fff;
+  font-weight: 600;
+  margin-right: 6px;
+  &:hover {
+    text-decoration: none;
+    color: $secondary-light;
+  }
+}

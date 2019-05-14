@@ -5,6 +5,7 @@ import {loaded} from "./utils/initPage";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {config} from "./config/config";
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
@@ -67,7 +68,7 @@ const render = async (userJSON: IUser) => {
         let postHTML = "";
         postResult.values.forEach((post, index) => {
             postHTML += `<li>
-    <a href="detail.html?id=${postResult.ids[index]}">${post.title}</a>
+    <a href="${config.detailPath}?id=${postResult.ids[index]}">${post.title}</a>
 </li>`;
         });
         document.getElementById("postList").innerHTML = postHTML;
@@ -78,7 +79,7 @@ const render = async (userJSON: IUser) => {
         let commentHTML = "";
         commentResult.values.forEach((comment) => {
             commentHTML += `<li>
-    <a href="detail.html?id=${comment.postId}">${comment.content}</a>
+    <a href="${config.detailPath}?id=${comment.postId}">${comment.content}</a>
 </li>`;
         });
         document.getElementById("commentList").innerHTML = commentHTML;

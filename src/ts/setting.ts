@@ -35,13 +35,15 @@ const init = async () => {
     document.getElementById("start").addEventListener("click", async () => {
         localStorage.userId = identity.id;
         localStorage.publicKey = identity.publicKey;
+        localStorage.userAvatar = (document.getElementById("avatarImg") as HTMLInputElement).value;
+        localStorage.userName = (document.getElementById("name") as HTMLInputElement).value;
 
         const userObj = {
-            avatar: (document.getElementById("avatarImg") as HTMLInputElement).value,
-            id: identity.id,
+            avatar: localStorage.userAvatar,
+            id: localStorage.userId,
             latestCommentId: (oldUserJSON && oldUserJSON.latestCommentId) || "",
             latestPostId: (oldUserJSON && oldUserJSON.latestPostId) || "",
-            name: (document.getElementById("name") as HTMLInputElement).value,
+            name: localStorage.userName,
             publicKey: identity.publicKey,
         };
 

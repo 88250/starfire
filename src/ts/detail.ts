@@ -1,7 +1,6 @@
-import "../assets/scss/index.scss";
+import "../assets/scss/detail.scss";
 import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
-import {PubSub} from "./PubSub";
 import {getSpam} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {ipfs} from "./utils/initIPFS";
@@ -10,6 +9,10 @@ import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 const postId = location.search.split("=")[1];
 const init = async () => {
@@ -24,11 +27,31 @@ const init = async () => {
         return;
     }
 
-    document.getElementById("content").innerHTML = result.value.content;
     document.getElementById("title").innerHTML = result.value.title;
-    document.getElementById("user").innerHTML = `<a href="home.html?id=${result.value.userId}">
-        <img width="20" src="${result.value.userAvatar}"/> ${result.value.userName}
+    document.getElementById("meta").innerHTML = `<a class="name" href="${config.homePath}?id=${result.value.userId}">
+        ${result.value.userName}
+    </a> 
+    <time class="time">
+        ${dayjs().to(dayjs(result.value.time))}
+    </time>`;
+    document.getElementById("content").innerHTML = result.value.content || 'No Content';
+    document.getElementById("user").innerHTML = `<a href="${config.homePath}?id=${result.value.userId}">
+        <img class="avatar" src="${result.value.userAvatar}"/>
     </a>`;
+
+    document.getElementById('currentUser').innerHTML = `<a href="${config.homePath}">
+        <img class="avatar" src="${localStorage.userAvatar || config.defaultAvatar}"/>
+    </a>`;
+
+    let currentUserNameHTML = `<a class="name" href="${config.settingPath}">
+       Please go Setting Account
+    </a>`
+    if (localStorage.userName) {
+        currentUserNameHTML = `<a class="name" href="${config.homePath}">
+        ${localStorage.userName}
+    </a>`
+    }
+    document.getElementById('currentUserName').innerHTML = currentUserNameHTML
 
     initAddComment();
     initComments();

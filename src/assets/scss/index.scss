@@ -1,9 +1,7 @@
 @import "base";
+@import "post";
 
 .index {
-  width: 760px;
-  margin: 0 auto 50px;
-
   .input, .button {
     margin-bottom: 16px;
   }
@@ -13,26 +11,16 @@
     border-top: 1px solid $primary-light;
   }
 
+  .time {
+    font-size: 12px;
+    color: $primary-light;
+  }
+
   .avatar {
     height: 32px;
     width: 32px;
     border-radius: 3px;
     margin-right: 16px;
-  }
-
-  .name {
-    color: #fff;
-    font-weight: 600;
-    margin-right: 6px;
-    &:hover {
-      text-decoration: none;
-      color: $secondary-light;
-    }
-  }
-
-  .time {
-    font-size: 12px;
-    color: $primary-light;
   }
 
   .content {

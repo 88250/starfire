@@ -1,9 +1,19 @@
 include ./common/header.pug
 +header()
-div#title
-div#content
-div#user
-input#commentContent(placeholder='comment')
-input#privateKey(placeholder='private key')
-button#commentBtn 发布
-ul#comments
+div.detail.wrap
+    div#title
+    div.item.flex
+        div#user
+        div.module.flex1
+            div.module__header#meta
+            div#content.module__body.reset
+    div#comments
+    div.item.flex.item--add
+        div#currentUser
+        div.module.flex1
+            div.module__header#currentUserName
+            div.module__body
+                div.clear
+                    textarea.input#commentContent(placeholder='comment')
+                    input.input#privateKey(placeholder='private key')
+                    button.button.right#commentBtn 发布
