@@ -144,6 +144,35 @@
   }
 }
 
+
+@keyframes bounceInDown {
+  from {
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+#msg {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-name: bounceInDown;
+  background-color: $primary-light;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 260px;
+  margin-left: -130px;
+  box-sizing: border-box;
+  padding: 16px;
+  line-height: 22px;
+  border-radius: 0 0 6px 6px;
+}
+
 .wrap {
   width: 760px;
   margin: 0 auto 50px;

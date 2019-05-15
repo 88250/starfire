@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Vditor from "vditor";
 import {escapeHtml} from "xss";
 import "../assets/scss/detail.scss";
 import pugTpl from "../pug/detail.pug";
@@ -8,6 +9,7 @@ import {getSpam} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {getUserAvatar, getUserLink} from "./utils/getUserHTML";
+import {getVditorConfig} from "./utils/getVditorConfig";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
 import {mdParse, mdRender} from "./utils/mdRender";
@@ -15,13 +17,11 @@ import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import Vditor from "vditor";
-import {getVditorConfig} from "./utils/getVditorConfig";
 
 dayjs.extend(relativeTime);
 
 const postId = location.search.split("=")[1];
-let editor: any
+let editor: any;
 
 const init = async () => {
     renderPug(pugTpl);
@@ -116,7 +116,7 @@ const initAddComment = () => {
         publishUser(userJSON, ipfs);
 
         // clear input
-        editor.setValue('');
+        editor.setValue("");
         (document.getElementById("privateKey") as HTMLInputElement).value = "";
     });
 };

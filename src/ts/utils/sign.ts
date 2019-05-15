@@ -1,15 +1,21 @@
 import cryptoKeys from "libp2p-crypto/src/keys";
+import {showMsg} from "./msg";
 
 export const sign = async (content: string) => {
     return new Promise((resolve) => {
-        cryptoKeys.unmarshalPrivateKey(
-            Buffer.from(Buffer.from((document.getElementById("privateKey") as HTMLInputElement).value,
-                "base64")),
-            (err: Error, privateKeyObj: any) => {
-                privateKeyObj.sign(Buffer.from(content), (signErr: Error, signUint8Array: any) => {
-                    resolve(signUint8Array.toString("hex"));
+        try {
+            cryptoKeys.unmarshalPrivateKey(
+                Buffer.from(Buffer.from((document.getElementById("privateKey") as HTMLInputElement).value,
+                    "base64")),
+                (err: Error, privateKeyObj: any) => {
+                    privateKeyObj.sign(Buffer.from(content), (signErr: Error, signUint8Array: any) => {
+                        resolve(signUint8Array.toString("hex"));
+                    });
                 });
-            });
+        } catch (e) {
+            showMsg('private key error')
+        }
+
     });
 };
 
