@@ -26,7 +26,7 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
         <time class="gray">
             ${dayjs().to(dayjs(result.value.time))}
         </time>
-        ${getTitleLink(id, result.value.title)}
+        ${getTitleLink(id, result.value.title || "No Title")}
     </div>
 </li>`);
     return false;

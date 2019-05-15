@@ -129,7 +129,7 @@ const render = async (userJSON: IUser) => {
         <time class="gray">
             ${dayjs().to(dayjs(post.time))}
         </time>
-        ${getTitleLink(id, post.title)}
+        ${getTitleLink(id, post.title || "No Title")}
     </div>
 </li>`);
         });

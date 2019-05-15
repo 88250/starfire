@@ -56,7 +56,7 @@ const init = async () => {
     </a>`;
     if (localStorage.userName) {
         currentUserNameHTML = `<a class="link" href="${config.homePath}">
-        ${localStorage.userName}
+        ${escapeHtml(localStorage.userName)}
     </a>`;
     }
     document.getElementById("currentUserName").innerHTML = currentUserNameHTML;
