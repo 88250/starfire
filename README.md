@@ -1,12 +1,24 @@
-## How to use
+## Download and setup IPFS
 
-1. Download and setup IPFS
+1. Download IPFS and init it 
    ```
    ipfs init
+   ```
+2. Config IPFS 
+   * Windows: 
+     ```
+     ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  [\"*\"]
+     ```
+   * Linux/Mac: 
+     ```
+     ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
+     ```
+3. Run IPFS
+   ```
    ipfs daemon --enable-pubsub-experiment
    ```
-2. Open browser http://localhost:8080/ipfs/TODO
-3. Login with your key (`PrivKey`) in IPFS config (~/.ipfs/config)
+4. Open browser http://localhost:8080/ipfs/TODO
+5. Login with your key (`PrivKey`) in IPFS config (~/.ipfs/config)
 
 ## Production
 
