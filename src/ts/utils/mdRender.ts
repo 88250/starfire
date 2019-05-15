@@ -1,11 +1,11 @@
-import Vditor from 'vditor'
+import Vditor from "vditor";
 import {filterXSS} from "xss";
 
 export const mdRender = (element: HTMLElement) => {
-    Vditor.mathRender(element)
-    Vditor.mermaidRender(element)
-    Vditor.codeRender(element, 'en_US')
-}
+    Vditor.mathRender(element);
+    Vditor.mermaidRender(element);
+    Vditor.codeRender(element, "en_US");
+};
 
 export const mdParse = async (text: string) => {
     const filterText = filterXSS(text, {
@@ -34,18 +34,18 @@ export const mdParse = async (text: string) => {
             s: [],
             section: [],
             small: [],
+            strong: [],
             sub: [],
             sup: [],
-            strong: [],
             tt: [],
             u: [],
-            video: ["autoplay", "controls", "loop", "preload", "src", "height", "width"]
-        }
-    })
-    const md = emoji2Image(filterText)
-    const html = await Vditor.md2html(md, 'atom-one-dark')
-    return html
-}
+            video: ["autoplay", "controls", "loop", "preload", "src", "height", "width"],
+        },
+    });
+    const md = emoji2Image(filterText);
+    const html = await Vditor.md2html(md, "atom-one-dark");
+    return html;
+};
 
 export const emoji2Image = (text: string) => {
     const emojiPath = "https://cdn.jsdelivr.net/npm/vditor@1.4.0/dist/images/emoji/";
@@ -63,5 +63,5 @@ export const emoji2Image = (text: string) => {
         .replace(/:octocat:/g, `<img class="emoji" src="${emojiPath}octocat.png">`)
         .replace(/:r:/g, `<img class="emoji" src="${emojiPath}r.png">`)
         .replace(/:trollface:/g, `<img class="emoji" src="${emojiPath}trollface.png">`)
-        .replace(/:u:/g, `<img class="emoji" src="${emojiPath}u.png">`)
-}
+        .replace(/:u:/g, `<img class="emoji" src="${emojiPath}u.png">`);
+};

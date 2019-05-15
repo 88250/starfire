@@ -6,12 +6,9 @@ export const getVditorConfig = () => {
         counter: 1048576,
         height: 300,
         lang: "en_US",
-        toolbar: ["emoji", "headings", "bold", "italic", "strike", "|", "line", "quote", "list",
-            "ordered-list", "check", "|", "code", "inline-code", "link", "table", "|", "undo", "redo",
-            "|", "preview", "fullscreen", "|", "info", "help"],
         preview: {
             parse: (element: HTMLElement) => {
-                element.innerHTML = emoji2Image(element.innerHTML)
+                element.innerHTML = emoji2Image(element.innerHTML);
             },
             show: true,
         },
@@ -20,5 +17,8 @@ export const getVditorConfig = () => {
             position: "bottom",
         },
         tab: "  ",
+        toolbar: ["emoji", "headings", "bold", "italic", "strike", "|", "line", "quote", "list",
+            "ordered-list", "check", "|", "code", "inline-code", "link", "table", "|", "undo", "redo",
+            "|", "preview", "fullscreen", "|", "info", "help"],
     };
 };

@@ -6,16 +6,15 @@ import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
 import {getSpam} from "./utils/filterSpam";
 import {genCommentItemById} from "./utils/genCommentItemById";
-import {getAvatarPath} from "./utils/getAvatarPath";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
+import {getUserAvatar, getUserLink} from "./utils/getUserHTML";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
+import {mdParse, mdRender} from "./utils/mdRender";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {mdParse, mdRender} from "./utils/mdRender";
-import {getUserAvatar, getUserLink} from "./utils/getUserHTML";
 
 dayjs.extend(relativeTime);
 
@@ -32,20 +31,20 @@ const init = async () => {
         return;
     }
 
-    document.getElementById("title").innerHTML = escapeHtml(result.value.title || 'No Title');
+    document.getElementById("title").innerHTML = escapeHtml(result.value.title || "No Title");
     document.getElementById("meta").innerHTML = `${getUserLink(result.value.userId, result.value.userName)}
     <time class="gray">
         ${dayjs().to(dayjs(result.value.time))}
     </time>`;
 
-    const contentHTML = await mdParse(result.value.content)
+    const contentHTML = await mdParse(result.value.content);
     document.getElementById("content").innerHTML = contentHTML || "No Content";
-    mdRender(document.getElementById("content"))
+    mdRender(document.getElementById("content"));
 
     const gateway = await getIPFSGateway(ipfs);
-    document.getElementById("user").innerHTML = getUserAvatar(result.value.userId, result.value.userAvatar, gateway)
+    document.getElementById("user").innerHTML = getUserAvatar(result.value.userId, result.value.userAvatar, gateway);
 
-    document.getElementById("currentUser").innerHTML = getUserAvatar('', localStorage.userAvatar, gateway);
+    document.getElementById("currentUser").innerHTML = getUserAvatar("", localStorage.userAvatar, gateway);
 
     let currentUserNameHTML = `<a class="link" href="${config.settingPath}">
        Please go Setting Account
@@ -130,7 +129,7 @@ const initComments = async () => {
             }
         }));
 
-        mdRender(document.getElementById("comments"))
+        mdRender(document.getElementById("comments"));
 
         ipfs.files.write(path, Buffer.from(JSON.stringify(commentsJSON)), {
             create: true,

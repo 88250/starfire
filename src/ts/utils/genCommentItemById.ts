@@ -2,10 +2,10 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {config} from "../config/config";
 import {getIPFSGateway} from "./getIPFSGateway";
+import {getUserAvatar, getUserLink} from "./getUserHTML";
+import {mdParse} from "./mdRender";
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
-import {mdParse} from "./mdRender";
-import {getUserAvatar, getUserLink} from "./getUserHTML";
 
 dayjs.extend(relativeTime);
 
@@ -44,7 +44,7 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     </div>
 </div>`;
     if (isMatch) {
-        const contentHTML = await mdParse(result.value.content)
+        const contentHTML = await mdParse(result.value.content);
 
         commentHTML = `<div class="comment__item" id="${id}">
     ${getUserAvatar(result.value.userId, result.value.userAvatar, gateway)}
@@ -53,7 +53,7 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
             ${getUserLink(result.value.userId, result.value.userName)}
             <time class="gray">${dayjs().to(dayjs(result.value.time))}</time>
         </div>
-        <div class="module__body vditor-reset">${contentHTML || 'No Content'}</div>
+        <div class="module__body vditor-reset">${contentHTML || "No Content"}</div>
     </div>
 </div>`;
     }

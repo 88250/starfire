@@ -1,6 +1,6 @@
 import isIPFS from "is-ipfs";
-import {config} from "../config/config";
 import {escapeHtml} from "xss";
+import {config} from "../config/config";
 import {getAvatarPath} from "./getAvatarPath";
 
 export const getUserLink = (userId: string, userName: string) => {
@@ -10,7 +10,7 @@ export const getUserLink = (userId: string, userName: string) => {
         ${linkHTML}
     </a>`;
     }
-    return linkHTML
+    return linkHTML;
 };
 
 export const getTitleLink = (postId: string, postTitle: string) => {
@@ -20,16 +20,15 @@ export const getTitleLink = (postId: string, postTitle: string) => {
         ${titleHTML}
     </a>`;
     }
-    return titleHTML
+    return titleHTML;
 };
 
-
-export const getUserAvatar = (userId: string, userAvatar: string, gateway: string, className: string = 'avatar') => {
-    let linkHTML = `<img class="${className}" src="${getAvatarPath(userAvatar, gateway)}"/>`
+export const getUserAvatar = (userId: string, userAvatar: string, gateway: string, className: string = "avatar") => {
+    let linkHTML = `<img class="${className}" src="${getAvatarPath(userAvatar, gateway)}"/>`;
     if (isIPFS.cid(userId)) {
         linkHTML = `<a href="${config.homePath}?id=${userId}">
         ${linkHTML}
     </a>`;
     }
-    return linkHTML
+    return linkHTML;
 };

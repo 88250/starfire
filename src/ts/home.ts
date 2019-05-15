@@ -1,20 +1,19 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import isIPFS from "is-ipfs";
 import {escapeHtml} from "xss";
-import {filterXSS} from "xss";
 import "../assets/scss/home.scss";
 import pugTpl from "../pug/home.pug";
 import {config} from "./config/config";
 import {getAvatarPath} from "./utils/getAvatarPath";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
+import {getTitleLink} from "./utils/getUserHTML";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
+import {mdParse, mdRender} from "./utils/mdRender";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {getTitleLink, getUserLink} from "./utils/getUserHTML";
-import {mdParse, mdRender} from "./utils/mdRender";
-import isIPFS from "is-ipfs";
 
 dayjs.extend(relativeTime);
 
@@ -139,10 +138,11 @@ const render = async (userJSON: IUser) => {
     if (latestCommentId) {
         commentList.innerHTML = "";
         traverseIds(latestCommentId, async (id: string, comment: IComment) => {
-            const contentHTML = await mdParse(comment.content)
-            let titleHTML = escapeHtml(comment.postId)
+            const contentHTML = await mdParse(comment.content);
+            let titleHTML = escapeHtml(comment.postId);
             if (isIPFS.cid(comment.postId) && isIPFS.cid(id) && isIPFS.cid(comment.postId)) {
-                titleHTML = `<a href="${config.detailPath}?id=${comment.postId}#${id}" class="link">${comment.postId}</a>`
+                titleHTML =
+                    `<a href="${config.detailPath}?id=${comment.postId}#${id}" class="link">${comment.postId}</a>`;
             }
             commentList.insertAdjacentHTML("beforeend", `
 <li class="comment__item">
@@ -152,7 +152,7 @@ const render = async (userJSON: IUser) => {
             ${titleHTML}
             <time class="gray">${dayjs().to(dayjs(comment.time))}</time>
         </div>
-        <div class="module__body vditor-reset">${contentHTML|| "No Content"}</div>
+        <div class="module__body vditor-reset">${contentHTML || "No Content"}</div>
     </div>
 </li>`);
         });
@@ -167,7 +167,7 @@ const traverseIds = async (id: string, renderCB: any) => {
         if (previousId) {
             id = previousId;
         } else {
-            mdRender(document.getElementById("commentList"))
+            mdRender(document.getElementById("commentList"));
             return;
         }
     }

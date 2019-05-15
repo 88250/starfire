@@ -20,7 +20,7 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
     const gateway = await getIPFSGateway(ipfs);
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
         `<li class="post__item">
-    ${getUserAvatar(result.value.userId, result.value.userAvatar, gateway, 'avatar avatar--small')}
+    ${getUserAvatar(result.value.userId, result.value.userAvatar, gateway, "avatar avatar--small")}
     <div class="flex1">
         ${getUserLink(result.value.userId, result.value.userName)}
         <time class="gray">
