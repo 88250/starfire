@@ -16,7 +16,7 @@ export const getUserLink = (userId: string, userName: string) => {
 export const getTitleLink = (postId: string, postTitle: string) => {
     let titleHTML = escapeHtml(postTitle);
     if (isIPFS.cid(postId)) {
-        titleHTML = `<a class="post__title" href="${config.homePath}?id=${postId}">
+        titleHTML = `<a class="post__title" href="${config.detailPath}?id=${postId}">
         ${titleHTML}
     </a>`;
     }
