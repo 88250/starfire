@@ -13,4 +13,54 @@ $font-family-code: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monosp
 
 @import "reset";
 @import "common";
-@import "~vditor/src/assets/scss/dark";
+
+// vditor
+$borderColor: $primary-light !default;
+
+$toolbarBg: $primary !default;
+$toolbarIcon: $secondary-light !default;
+$toolbarIconHover: $secondary !default;
+$errorColor: $secondary !default;
+
+$textareaBg: $primary !default;
+$textareaColor: #fff !default;
+$textareaFocusBg: $primary !default;
+
+$tooltipColor: #fff !default;
+$tooltipBg: $primary-light !default;
+
+$resizeBg: $primary-light !default;
+$resizeHoverBg: $secondary-light !default;
+
+$layerBg: $primary-light !default;
+$layerShadow: $secondary-light !default;
+$hoverBg: $primary-dark !default;
+$hoverColor: #fff !default;
+
+$fullscreenBg: $primary-dark !default;
+$previewBg: $primary-dark !default;
+
+@import "~vditor/src/assets/scss/tooltipped";
+@import "~vditor/src/assets/scss/panel";
+@import "~vditor/src/assets/scss/toolbar";
+@import "~vditor/src/assets/scss/content";
+@import "~vditor/src/assets/scss/hint";
+@import "~vditor/src/assets/scss/reset";
+
+.vditor {
+  margin-bottom: 16px;
+  border-color: $primary-light;
+  &-reset {
+    color: #fff;
+    a {
+      color: #4285f4;
+    }
+    tr:hover {
+      color: $primary-dark;
+    }
+
+    .language-mermaid {
+      background-color: $secondary-light;
+    }
+  }
+}

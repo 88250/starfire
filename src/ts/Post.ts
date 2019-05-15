@@ -1,19 +1,27 @@
+import Vditor from "vditor";
 import {config} from "./config/config";
+import {getVditorConfig} from "./utils/getVditorConfig";
 import {publishUser} from "./utils/publishUser";
 import {sign} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
 
 export class Post {
     private ipfs: IIPFS;
+    private editor: any;
 
     constructor(ipfs: IIPFS) {
         this.ipfs = ipfs;
     }
 
     public init() {
+        this.initVditor();
         document.getElementById("postBtn").addEventListener("click", () => {
             this.add();
         });
+    }
+
+    public initVditor() {
+        this.editor = new Vditor("postContent", getVditorConfig());
     }
 
     public async add() {
@@ -26,7 +34,7 @@ export class Post {
         const userJSON = JSON.parse(userStr.toString());
 
         const postObj: IPost = {
-            content: (document.getElementById("postContent") as HTMLInputElement).value,
+            content: this.editor.getValue(),
             previousId: userJSON.latestPostId,
             publicKey: localStorage.publicKey,
             time: new Date().getTime(),
@@ -66,7 +74,7 @@ export class Post {
         publishUser(userJSON, this.ipfs);
 
         // clear input
-        (document.getElementById("postContent") as HTMLInputElement).value = "";
+        this.editor.setValue("");
         (document.getElementById("postTitle") as HTMLInputElement).value = "";
         (document.getElementById("privateKey") as HTMLInputElement).value = "";
     }

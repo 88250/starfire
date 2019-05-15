@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {filterXSS} from "xss";
 import {config} from "../config/config";
-import {getAvatarPath} from "./getAvatarPath";
 import {getIPFSGateway} from "./getIPFSGateway";
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
+import {mdParse} from "./mdRender";
+import {getUserAvatar, getUserLink} from "./getUserHTML";
 
 dayjs.extend(relativeTime);
 
@@ -40,22 +40,20 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
             </span>
             <time class="gray">Invalid data</time>
         </div>
-        <div class="module__body reset">Invalid data</div>
+        <div class="module__body vditor-reset">Invalid data</div>
     </div>
 </div>`;
     if (isMatch) {
+        const contentHTML = await mdParse(result.value.content)
+
         commentHTML = `<div class="comment__item" id="${id}">
-    <a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar" src="${getAvatarPath(result.value.userAvatar, gateway)}"/>
-    </a>
+    ${getUserAvatar(result.value.userId, result.value.userAvatar, gateway)}
     <div class="module flex1">
         <div class="module__header">
-            <a class="link" href="${config.homePath}?id=${result.value.userId}">
-                ${filterXSS(result.value.userName)}
-            </a>
+            ${getUserLink(result.value.userId, result.value.userName)}
             <time class="gray">${dayjs().to(dayjs(result.value.time))}</time>
         </div>
-        <div class="module__body reset">${filterXSS(result.value.content)}</div>
+        <div class="module__body vditor-reset">${contentHTML || 'No Content'}</div>
     </div>
 </div>`;
     }
