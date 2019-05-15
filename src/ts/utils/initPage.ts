@@ -51,9 +51,9 @@ export const loaded = async (ipfs: IIPFS) => {
 
     if (!localStorage.lastTime) {
         localStorage.lastTime = (new Date()).getTime()
-        namePR
+        namePR()
     } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
-        namePR
+        namePR()
     }
 };
 
@@ -61,4 +61,8 @@ export const loaded = async (ipfs: IIPFS) => {
 const namePR = async () => {
     pullModerate(ipfs, "version");
     pullModerate(ipfs, "blacklist");
+    if (localStorage.userId) {
+        const stats = await ipfs.files.stat(`/starfire/users/${localStorage.userId}`);
+        ipfs.name.publish(`/ipfs/${stats.hash}`);
+    }
 }
