@@ -14,12 +14,13 @@ import {mdParse, mdRender} from "./utils/mdRender";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {showMsg} from "./utils/msg";
 
 dayjs.extend(relativeTime);
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
-const syncOtherUser = () => {
+const syncOtherUser = (cb?:any) => {
     if (userId !== localStorage.userId) {
         document.getElementById("loading").style.display = "block";
         ipfs.name.resolve(`/ipns/${userId}`, {recursive: true}, (nameErr: Error, name: string) => {
@@ -28,20 +29,22 @@ const syncOtherUser = () => {
                 render(JSON.parse('{"signature":1}'));
                 return;
             }
-            debugger
             ipfs.get(name, (err: Error, files: IPFSFile []) => {
                 if (!files) {
                     render(JSON.parse('{"signature":1}'));
                     return;
                 }
-                debugger
                 files.forEach(async (file) => {
+                    if (!file.content) {
+                        render(JSON.parse('{"signature":1}'));
+                        return
+                    }
                     ipfs.files.write(`/starfire/users/${userId}`, Buffer.from(file.content.toString()), {
                         create: true,
                         parents: true,
                         truncate: true,
                     });
-
+                    cb && cb()
                     render(JSON.parse(file.content.toString()));
                 });
             });
@@ -52,8 +55,13 @@ const syncOtherUser = () => {
 const init = async () => {
     renderPug(pugTpl);
 
+    const syncBtnElement = document.getElementById('syncBtn')
+
     if (location.search.split("=")[1]) {
         document.querySelector(".header__item--current").className = "header__item";
+        syncBtnElement.innerHTML = 'UPDATE'
+    } else {
+        syncBtnElement.innerHTML = 'PUBLISIH'
     }
 
     const postBtn = document.getElementById("postBtn");
@@ -82,6 +90,25 @@ const init = async () => {
 
     render(JSON.parse(userStr.toString()));
     loaded(ipfs);
+
+    document.getElementById('syncBtn').addEventListener('click', async () => {
+        const loadingElement = document.getElementById("loading")
+        if (loadingElement.style.display === 'block') {
+            return
+        }
+        loadingElement.style.display = "block";
+        if (userId === localStorage.userId) {
+            const stats = await ipfs.files.stat(`/starfire/users/${localStorage.userId}`);
+            ipfs.name.publish(`/ipfs/${stats.hash}`, () => {
+                loadingElement.style.display = 'none'
+                showMsg('Publish successful')
+            });
+        } else {
+            syncOtherUser(() => {
+                showMsg('Update successful')
+            });
+        }
+    })
 };
 
 const render = async (userJSON: IUser) => {

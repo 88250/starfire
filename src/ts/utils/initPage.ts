@@ -1,6 +1,5 @@
 import {config} from "../config/config";
 import {PubSub} from "../PubSub";
-import {publishUser} from "./publishUser";
 import {ipfs} from "./initIPFS";
 
 const closeLoading = () => {
@@ -62,8 +61,4 @@ export const loaded = async (ipfs: IIPFS) => {
 const namePR = async () => {
     pullModerate(ipfs, "version");
     pullModerate(ipfs, "blacklist");
-    if (localStorage.userId) {
-        const stats = await ipfs.files.stat(`/starfire/users/${localStorage.userId}`);
-        ipfs.name.publish(`/ipfs/${stats.hash}`);
-    }
 }
