@@ -1,10 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {escapeHtml} from "xss";
-import {filterXSS} from "xss";
-import {config} from "../config/config";
-import {getAvatarPath} from "./getAvatarPath";
 import {getIPFSGateway} from "./getIPFSGateway";
+import {getTitleLink, getUserAvatar, getUserLink} from "./getUserHTML";
 
 dayjs.extend(relativeTime);
 
@@ -23,19 +20,13 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
     const gateway = await getIPFSGateway(ipfs);
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
         `<li class="post__item">
-    <a href="${config.homePath}?id=${result.value.userId}">
-        <img class="avatar avatar--small" src="${getAvatarPath(result.value.userAvatar, gateway)}"/>
-    </a>
+    ${getUserAvatar(result.value.userId, result.value.userAvatar, gateway, 'avatar avatar--small')}
     <div class="flex1">
-        <a href="${config.homePath}?id=${result.value.userId}" class="link">
-            ${filterXSS(result.value.userName)}
-        </a>
+        ${getUserLink(result.value.userId, result.value.userName)}
         <time class="gray">
             ${dayjs().to(dayjs(result.value.time))}
         </time>
-        <a class="post__title" href="${config.detailPath}?id=${id}">
-            ${escapeHtml(result.value.title)}
-        </a>
+        ${getTitleLink(id, result.value.title)}
     </div>
 </li>`);
     return false;

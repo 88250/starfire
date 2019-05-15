@@ -12,6 +12,9 @@ import {loaded} from "./utils/initPage";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {getTitleLink, getUserLink} from "./utils/getUserHTML";
+import {mdParse, mdRender} from "./utils/mdRender";
+import isIPFS from "is-ipfs";
 
 dayjs.extend(relativeTime);
 
@@ -110,8 +113,8 @@ const render = async (userJSON: IUser) => {
     document.getElementById("user").innerHTML = `
 <img class="avatar--big avatar" src="${getAvatarPath(userJSON.avatar, gateway)}">
 <div class="flex1 meta">
-    <div class="username">${userJSON.name}</div>
-    <div class="gray">${userJSON.id}</div>
+    <div class="username">${escapeHtml(userJSON.name)}</div>
+    <div class="gray">${escapeHtml(userJSON.id)}</div>
 </div>`;
 
     if (latestPostId) {
@@ -122,14 +125,12 @@ const render = async (userJSON: IUser) => {
     <img class="avatar avatar--small" src="${getAvatarPath(post.userAvatar, gateway)}"/>
     <div class="flex1">
         <span class="link">
-            ${post.userName}
+            ${escapeHtml(post.userName)}
         </span>
         <time class="gray">
             ${dayjs().to(dayjs(post.time))}
         </time>
-        <a class="post__title" href="${config.detailPath}?id=${id}">
-            ${escapeHtml(post.title)}
-        </a>
+        ${getTitleLink(id, post.title)}
     </div>
 </li>`);
         });
@@ -137,16 +138,21 @@ const render = async (userJSON: IUser) => {
 
     if (latestCommentId) {
         commentList.innerHTML = "";
-        traverseIds(latestCommentId, (id: string, comment: IComment) => {
-            document.getElementById("commentList").insertAdjacentHTML("beforeend", `
+        traverseIds(latestCommentId, async (id: string, comment: IComment) => {
+            const contentHTML = await mdParse(comment.content)
+            let titleHTML = escapeHtml(comment.postId)
+            if (isIPFS.cid(comment.postId) && isIPFS.cid(id) && isIPFS.cid(comment.postId)) {
+                titleHTML = `<a href="${config.detailPath}?id=${comment.postId}#${id}" class="link">${comment.postId}</a>`
+            }
+            commentList.insertAdjacentHTML("beforeend", `
 <li class="comment__item">
     <img class="avatar" src="${getAvatarPath(comment.userAvatar, gateway)}"/>
     <div class="module flex1">
         <div class="module__header">
-            <a href="${config.detailPath}?id=${comment.postId}#${id}" class="link">${comment.postId}</a>
+            ${titleHTML}
             <time class="gray">${dayjs().to(dayjs(comment.time))}</time>
         </div>
-        <div class="module__body reset">${filterXSS(comment.content)}</div>
+        <div class="module__body vditor-reset">${contentHTML|| "No Content"}</div>
     </div>
 </li>`);
         });
@@ -156,11 +162,12 @@ const render = async (userJSON: IUser) => {
 const traverseIds = async (id: string, renderCB: any) => {
     while (id) {
         const current = await ipfs.dag.get(id);
-        renderCB(id, current.value);
+        await renderCB(id, current.value);
         const previousId = current.value.previousId;
         if (previousId) {
             id = previousId;
         } else {
+            mdRender(document.getElementById("commentList"))
             return;
         }
     }

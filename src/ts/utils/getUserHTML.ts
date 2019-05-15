@@ -7,18 +7,28 @@ export const getUserLink = (userId: string, userName: string) => {
     let linkHTML = escapeHtml(userName);
     if (isIPFS.cid(userId)) {
         linkHTML = `<a class="link" href="${config.homePath}?id=${userId}">
-        ${escapeHtml(userName)}
+        ${linkHTML}
     </a>`;
     }
     return linkHTML
 };
 
+export const getTitleLink = (postId: string, postTitle: string) => {
+    let titleHTML = escapeHtml(postTitle);
+    if (isIPFS.cid(postId)) {
+        titleHTML = `<a class="post__title" href="${config.homePath}?id=${postId}">
+        ${titleHTML}
+    </a>`;
+    }
+    return titleHTML
+};
 
-export const getUserAvatar = (userId: string, userAvatar: string, gateway:string) => {
-    let linkHTML = `<img class="avatar" src="${getAvatarPath(userAvatar, gateway)}"/>`
+
+export const getUserAvatar = (userId: string, userAvatar: string, gateway: string, className: string = 'avatar') => {
+    let linkHTML = `<img class="${className}" src="${getAvatarPath(userAvatar, gateway)}"/>`
     if (isIPFS.cid(userId)) {
-        linkHTML =`<a href="${config.homePath}?id=${userId}">
-        <img class="avatar" src="${getAvatarPath(userAvatar, gateway)}"/>
+        linkHTML = `<a href="${config.homePath}?id=${userId}">
+        ${linkHTML}
     </a>`;
     }
     return linkHTML
