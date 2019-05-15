@@ -15,12 +15,17 @@ import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import Vditor from "vditor";
+import {getVditorConfig} from "./utils/getVditorConfig";
 
 dayjs.extend(relativeTime);
 
 const postId = location.search.split("=")[1];
+let editor: any
+
 const init = async () => {
     renderPug(pugTpl);
+    editor = new Vditor("commentContent", getVditorConfig());
 
     const result = await ipfs.dag.get(postId);
     const postObj: IPost = result.value;
@@ -72,7 +77,7 @@ const initAddComment = () => {
         const userJSON = JSON.parse(userStr.toString());
 
         const commentObj: IComment = {
-            content: (document.getElementById("commentContent") as HTMLInputElement).value,
+            content: editor.getValue(),
             postId,
             previousId: userJSON.latestCommentId,
             publicKey: localStorage.publicKey,
@@ -111,7 +116,7 @@ const initAddComment = () => {
         publishUser(userJSON, ipfs);
 
         // clear input
-        (document.getElementById("commentContent") as HTMLInputElement).value = "";
+        editor.setValue('');
         (document.getElementById("privateKey") as HTMLInputElement).value = "";
     });
 };
