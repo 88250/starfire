@@ -62,8 +62,10 @@ const init = async () => {
             publicKey: identity.publicKey,
         };
 
-        await publishUser(userObj, ipfs);
-        window.location.href = config.indexPath;
+       const publishResult =  await publishUser(userObj, ipfs);
+       if (publishResult) {
+           window.location.href = config.indexPath;
+       }
     });
 
     loaded(ipfs);

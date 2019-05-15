@@ -22,17 +22,19 @@ const userId = location.search.split("=")[1] || localStorage.userId;
 const syncOtherUser = () => {
     if (userId !== localStorage.userId) {
         document.getElementById("loading").style.display = "block";
-        ipfs.name.resolve(`/ipns/${userId}`, (nameErr: Error, name: string) => {
+        ipfs.name.resolve(`/ipns/${userId}`, {recursive: true}, (nameErr: Error, name: string) => {
             document.getElementById("loading").style.display = "none";
             if (!name) {
                 render(JSON.parse('{"signature":1}'));
                 return;
             }
+            debugger
             ipfs.get(name, (err: Error, files: IPFSFile []) => {
                 if (!files) {
                     render(JSON.parse('{"signature":1}'));
                     return;
                 }
+                debugger
                 files.forEach(async (file) => {
                     ipfs.files.write(`/starfire/users/${userId}`, Buffer.from(file.content.toString()), {
                         create: true,
@@ -74,7 +76,6 @@ const init = async () => {
     let userStr = "{}";
     try {
         userStr = await ipfs.files.read(`/starfire/users/${userId}`);
-        syncOtherUser();
     } catch (e) {
         syncOtherUser();
     }
@@ -112,7 +113,7 @@ const render = async (userJSON: IUser) => {
     document.getElementById("user").innerHTML = `
 <img class="avatar--big avatar" src="${getAvatarPath(userJSON.avatar, gateway)}">
 <div class="flex1 meta">
-    <div class="username">${escapeHtml(userJSON.name)}</div>
+    <div class="username">${escapeHtml(userJSON.name || 'No Name')}</div>
     <div class="gray">${escapeHtml(userJSON.id)}</div>
 </div>`;
 
@@ -124,7 +125,7 @@ const render = async (userJSON: IUser) => {
     <img class="avatar avatar--small" src="${getAvatarPath(post.userAvatar, gateway)}"/>
     <div class="flex1">
         <span class="link">
-            ${escapeHtml(post.userName)}
+            ${escapeHtml(post.userName || 'No Name')}
         </span>
         <time class="gray">
             ${dayjs().to(dayjs(post.time))}
