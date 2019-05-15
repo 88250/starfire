@@ -2,18 +2,18 @@ include ./common/header.pug
 +header()
 div.detail.wrap
     div#title
-    div.item.flex
+    div.comment__item
         div#user
         div.module.flex1
             div.module__header#meta
-            div#content.module__body.reset
+            div#content.module__body.vditor-reset
     div#comments
-    div.item.flex.item--add
+    div.comment__item.comment__item--add
         div#currentUser
         div.module.flex1
             div.module__header#currentUserName
             div.module__body
                 div.clear
-                    textarea.input#commentContent(placeholder='comment')
-                    input.input#privateKey(placeholder='private key')
+                    textarea.input.input--space#commentContent(placeholder='comment')
+                    input.input.input--space#privateKey(placeholder='private key')
                     button.button.right#commentBtn Post

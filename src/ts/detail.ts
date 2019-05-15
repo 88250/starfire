@@ -31,10 +31,10 @@ const init = async () => {
     }
 
     document.getElementById("title").innerHTML = escapeHtml(result.value.title);
-    document.getElementById("meta").innerHTML = `<a class="name" href="${config.homePath}?id=${result.value.userId}">
+    document.getElementById("meta").innerHTML = `<a class="link" href="${config.homePath}?id=${result.value.userId}">
         ${result.value.userName}
     </a>
-    <time class="time">
+    <time class="gray">
         ${dayjs().to(dayjs(result.value.time))}
     </time>`;
     document.getElementById("content").innerHTML = filterXSS(result.value.content) || "No Content";
@@ -47,11 +47,11 @@ const init = async () => {
         <img class="avatar" src="${getAvatarPath(localStorage.userAvatar, gateway)}"/>
     </a>`;
 
-    let currentUserNameHTML = `<a class="name" href="${config.settingPath}">
+    let currentUserNameHTML = `<a class="link" href="${config.settingPath}">
        Please go Setting Account
     </a>`;
     if (localStorage.userName) {
-        currentUserNameHTML = `<a class="name" href="${config.homePath}">
+        currentUserNameHTML = `<a class="link" href="${config.homePath}">
         ${localStorage.userName}
     </a>`;
     }

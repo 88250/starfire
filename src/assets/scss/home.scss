@@ -5,11 +5,7 @@
     font-size: 26px;
     color: #fff;
     font-weight: 600;
-  }
-
-  .id {
-    margin-top: 8px;
-    color: $primary-light;
+    margin-bottom: 8px;
   }
 
   .meta {
@@ -48,98 +44,15 @@
     }
   }
 
-  .name {
-    color: #fff;
-    font-weight: 600;
-    margin-right: 6px;
-  }
-
   .empty {
     color: #fff;
     text-align: center;
     list-style: none;
   }
 
-  #postList {
-    .item {
-      padding: 16px 0;
-      border-top: 1px solid $primary-light;
-
-      &:first-child {
-        border-top: 0;
-      }
-    }
-
-    .time {
-      font-size: 12px;
-      color: $primary-light;
-    }
-
-    .content {
-      border: 1px solid $primary-light;
-      border-radius: 3px;
-      font-size: 16px;
-      color: #fff;
-      padding: 16px;
-      margin-top: 16px;
-      display: block;
-      background-color: $primary;
-      font-weight: 600;
-
-      &:hover {
-        text-decoration: none;
-        color: $secondary;
-        border-color: $secondary-light;
-      }
-    }
-  }
-
-  #commentList {
-    .item {
-      margin-bottom: 15px;
-      position: relative;
-
-      &:after {
-        content: '';
-        position: absolute;
-        background-color: $primary-light;
-        width: 2px;
-        height: 15px;
-        bottom: -15px;
-        left: 80px;
-      }
-
-      &:last-child:after {
-        display: none;
-      }
-    }
-
-    .time {
-      color: $primary-light;
-    }
-
-    .module {
-      background-color: $primary-dark;
-      border: 1px solid $primary-light;
-      border-radius: 6px;
-      overflow: hidden;
-
-      &__header {
-        line-height: 44px;
-        padding: 0 15px;
-        background-color: $primary;
-        border-bottom: 1px solid $primary-light;
-      }
-
-      &__body {
-        padding: 15px;
-        color: #fff;
-      }
-    }
-
-    .name:hover {
-      text-decoration: none;
-      color: $secondary-light;
+  #commentList .comment__item:last-child {
+    &:after {
+      display: none;
     }
   }
 }

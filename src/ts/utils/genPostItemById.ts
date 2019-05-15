@@ -22,18 +22,18 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
 
     const gateway = await getIPFSGateway(ipfs);
     document.getElementById("indexList").insertAdjacentHTML("afterbegin",
-        `<li class="flex item">
+        `<li class="post__item">
     <a href="${config.homePath}?id=${result.value.userId}">
         <img class="avatar avatar--small" src="${getAvatarPath(result.value.userAvatar, gateway)}"/>
     </a>
     <div class="flex1">
-        <a href="${config.homePath}?id=${result.value.userId}" class="name">
+        <a href="${config.homePath}?id=${result.value.userId}" class="link">
             ${filterXSS(result.value.userName)}
         </a>
-        <time class="time">
+        <time class="gray">
             ${dayjs().to(dayjs(result.value.time))}
         </time>
-        <a class="content" href="${config.detailPath}?id=${id}">
+        <a class="post__title" href="${config.detailPath}?id=${id}">
             ${escapeHtml(result.value.title)}
         </a>
     </div>

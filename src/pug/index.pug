@@ -2,9 +2,9 @@ include ./common/header.pug
 +header('index')
 div.index.wrap
     div.clear
-        input.input#postTitle(placeholder='title')
-        textarea.input#postContent(placeholder='content')
-        input.input#privateKey(placeholder='private key')
-        button.button.right#postBtn Post
+        input.input.input--space#postTitle(placeholder='title')
+        textarea.input.input--space#postContent(placeholder='content')
+        input.input.input--space#privateKey(placeholder='private key')
+        button.button.button--space.right#postBtn Post
     div
         ul#indexList

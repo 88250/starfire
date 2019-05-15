@@ -31,29 +31,29 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     const isMatch = await verify(JSON.stringify(sortObject(commentObj)), commentObj.publicKey, signature);
 
     const gateway = await getIPFSGateway(ipfs);
-    let commentHTML = `<div class="item flex">
+    let commentHTML = `<div class="comment__item">
     <img class="avatar" src="${gateway}/ipfs/${config.defaultAvatar}"/>
     <div class="module flex1">
         <div class="module__header">
-            <a class="name">
+            <span class="link">
                 Invalid data
-            </a>
-            <time class="time">Invalid data</time>
+            </span>
+            <time class="gray">Invalid data</time>
         </div>
         <div class="module__body reset">Invalid data</div>
     </div>
 </div>`;
     if (isMatch) {
-        commentHTML = `<div class="item flex" id="${id}">
+        commentHTML = `<div class="comment__item" id="${id}">
     <a href="${config.homePath}?id=${result.value.userId}">
         <img class="avatar" src="${getAvatarPath(result.value.userAvatar, gateway)}"/>
     </a>
     <div class="module flex1">
         <div class="module__header">
-            <a class="name" href="${config.homePath}?id=${result.value.userId}">
+            <a class="link" href="${config.homePath}?id=${result.value.userId}">
                 ${filterXSS(result.value.userName)}
             </a>
-            <time class="time">${dayjs().to(dayjs(result.value.time))}</time>
+            <time class="gray">${dayjs().to(dayjs(result.value.time))}</time>
         </div>
         <div class="module__body reset">${filterXSS(result.value.content)}</div>
     </div>

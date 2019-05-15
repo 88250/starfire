@@ -90,7 +90,7 @@ const render = async (userJSON: IUser) => {
 <img class="avatar--big avatar" src="${gateway}/ipfs/${config.defaultAvatar}">
 <div class="flex1 meta">
     <div class="username">This node is offline</div>
-    <div class="id">This node is offline</div>
+    <div class="gray">This node is offline</div>
 </div>`;
         return;
     }
@@ -111,23 +111,23 @@ const render = async (userJSON: IUser) => {
 <img class="avatar--big avatar" src="${getAvatarPath(userJSON.avatar, gateway)}">
 <div class="flex1 meta">
     <div class="username">${userJSON.name}</div>
-    <div class="id">${userJSON.id}</div>
+    <div class="gray">${userJSON.id}</div>
 </div>`;
 
     if (latestPostId) {
         postList.innerHTML = "";
         traverseIds(latestPostId, (id: string, post: IPost) => {
             postList.insertAdjacentHTML("beforeend", `
-<li class="flex item">
+<li class="post__item">
     <img class="avatar avatar--small" src="${getAvatarPath(post.userAvatar, gateway)}"/>
     <div class="flex1">
-        <span class="name">
+        <span class="link">
             ${post.userName}
         </span>
-        <time class="time">
+        <time class="gray">
             ${dayjs().to(dayjs(post.time))}
         </time>
-        <a class="content" href="${config.detailPath}?id=${id}">
+        <a class="post__title" href="${config.detailPath}?id=${id}">
             ${escapeHtml(post.title)}
         </a>
     </div>
@@ -139,12 +139,12 @@ const render = async (userJSON: IUser) => {
         commentList.innerHTML = "";
         traverseIds(latestCommentId, (id: string, comment: IComment) => {
             document.getElementById("commentList").insertAdjacentHTML("beforeend", `
-<li class="item flex">
+<li class="comment__item">
     <img class="avatar" src="${getAvatarPath(comment.userAvatar, gateway)}"/>
     <div class="module flex1">
         <div class="module__header">
-            <a href="${config.detailPath}?id=${comment.postId}#${id}" class="name">${comment.postId}</a>
-            <time class="time">${dayjs().to(dayjs(comment.time))}</time>
+            <a href="${config.detailPath}?id=${comment.postId}#${id}" class="link">${comment.postId}</a>
+            <time class="gray">${dayjs().to(dayjs(comment.time))}</time>
         </div>
         <div class="module__body reset">${filterXSS(comment.content)}</div>
     </div>

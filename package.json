@@ -17,6 +17,7 @@
     "jdenticon": "^2.1.1",
     "libp2p-crypto": "^0.16.1",
     "pull-file-reader": "^1.0.2",
+    "vditor": "^1.4.0",
     "xss": "^1.0.6"
   },
   "devDependencies": {

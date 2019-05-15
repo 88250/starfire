@@ -12,5 +12,5 @@ $font-family-base: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragi
 $font-family-code: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace !default;
 
 @import "reset";
-@import "content";
 @import "common";
+@import "~vditor/src/assets/scss/dark";

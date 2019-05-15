@@ -14,8 +14,24 @@
 
 .flex {
   display: flex;
+
   &1 {
     flex: 1;
+  }
+}
+
+.gray {
+  color: $primary-light;
+}
+
+.link {
+  color: #fff;
+  font-weight: 600;
+  margin-right: 6px;
+
+  @at-root a.link:hover {
+    text-decoration: none;
+    color: $secondary-light;
   }
 }
 
@@ -41,9 +57,98 @@
   }
 }
 
+.module {
+  background-color: $primary-dark;
+  border: 1px solid $primary-light;
+  border-radius: 6px;
+  overflow: hidden;
+
+  &__header {
+    line-height: 44px;
+    padding: 0 15px;
+    background-color: $primary;
+    border-bottom: 1px solid $primary-light;
+  }
+
+  &__body {
+    padding: 15px;
+    color: #fff;
+  }
+}
+
+.button {
+  background-color: $secondary;
+  color: #fff;
+  will-change: box-shadow;
+  height: 36px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 36px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  user-select: none;
+  box-sizing: border-box;
+  transition: $transition;
+
+  &--space {
+    margin-bottom: 16px;
+  }
+
+  &:hover {
+    background-color: $secondary-light;
+  }
+
+  &:active {
+    background-color: $secondary-dark;
+  }
+}
+
+.label {
+  color: $primary-light;
+  margin-bottom: 3px;
+  display: block;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid $primary-light;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 2px rgba(27, 31, 35, .075);
+  color: #fff;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 6px 8px;
+  background-color: $primary;
+  transition: $transition;
+
+  &--space {
+    margin-bottom: 16px;
+  }
+
+  &:hover {
+    border-color: $secondary-light;
+  }
+
+  &:focus {
+    border-color: $secondary;
+  }
+
+  &[readonly] {
+    color: $primary-light;
+  }
+}
+
 .wrap {
   width: 760px;
   margin: 0 auto 50px;
+
   &--small {
     width: 384px;
   }
@@ -74,63 +179,57 @@
   }
 }
 
-.button {
-  background-color: $secondary;
-  color: #fff;
-  will-change: box-shadow;
-  height: 36px;
-  padding: 0 16px;
-  border: none;
-  border-radius: 2px;
-  outline: none;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 36px;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  overflow: hidden;
-  user-select: none;
-  box-sizing: border-box;
-  transition: $transition;
+.post {
+  &__item {
+    display: flex;
+    padding: 16px 0;
+    border-top: 1px solid $primary-light;
 
-  &:hover {
-    background-color: $secondary-light;
+    &:first-child {
+      border-top: 0;
+    }
   }
 
-  &:active {
-    background-color: $secondary-dark;
+  &__title {
+    border: 1px solid $primary-light;
+    border-radius: 3px;
+    font-size: 16px;
+    color: #fff;
+    padding: 16px;
+    margin-top: 16px;
+    display: block;
+    background-color: $primary;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: none;
+      color: $secondary;
+      border-color: $secondary-light;
+    }
   }
 }
 
-.label {
-  color: $primary-light;
-  margin-bottom: 3px;
-  display: block;
-}
 
-.input {
-  box-sizing: border-box;
-  width: 100%;
-  border: 1px solid $primary-light;
-  border-radius: 3px;
-  box-shadow: inset 0 1px 2px rgba(27, 31, 35, .075);
-  color: #fff;
-  font-size: 16px;
-  line-height: 20px;
-  padding: 6px 8px;
-  background-color: $primary;
-  transition: $transition;
-
-  &:hover {
-    border-color: $secondary-light;
-  }
-
-  &:focus {
-    border-color: $secondary;
-  }
-
-  &[readonly] {
-    color: $primary-light;
+.comment {
+  &__item {
+    display: flex;
+    margin-bottom: 15px;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      background-color: $primary-light;
+      width: 2px;
+      height: 15px;
+      bottom: -15px;
+      left: 80px;
+    }
+    &--add {
+      padding-top: 15px;
+      border-top: 2px solid $primary-light;
+      &:after {
+        display: none;
+      }
+    }
   }
 }

@@ -1,5 +1,4 @@
 @import "base";
-@import "post";
 
 .detail {
   #title {
@@ -9,53 +8,5 @@
     padding-bottom: 20px;
     margin-bottom: 16px;
     border-bottom: 1px solid $primary-light;
-  }
-
-  .item {
-    margin-bottom: 15px;
-    position: relative;
-    &:after {
-      content: '';
-      position: absolute;
-      background-color: $primary-light;
-      width: 2px;
-      height: 15px;
-      bottom: -15px;
-      left: 80px;
-    }
-    &--add {
-      padding-top: 15px;
-      border-top: 2px solid $primary-light;
-      &:after {
-        display: none;
-      }
-    }
-  }
-
-  .time {
-    color: $primary-light;
-  }
-
-  .module {
-    background-color: $primary-dark;
-    border: 1px solid $primary-light;
-    border-radius: 6px;
-    overflow: hidden;
-
-    &__header {
-      line-height: 44px;
-      padding: 0 15px;
-      background-color: $primary;
-      border-bottom: 1px solid $primary-light;
-    }
-
-    &__body {
-      padding: 15px;
-      color: #fff;
-    }
-  }
-
-  .input {
-    margin-bottom: 16px;
   }
 }
