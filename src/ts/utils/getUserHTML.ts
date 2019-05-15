@@ -4,7 +4,7 @@ import {config} from "../config/config";
 import {getAvatarPath} from "./getAvatarPath";
 
 export const getUserLink = (userId: string, userName: string) => {
-    let linkHTML = escapeHtml(userName);
+    let linkHTML = escapeHtml(userName || 'No Name');
     if (isIPFS.cid(userId)) {
         linkHTML = `<a class="link" href="${config.homePath}?id=${userId}">
         ${linkHTML}

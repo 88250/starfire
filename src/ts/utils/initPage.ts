@@ -47,6 +47,14 @@ export const loaded = (ipfs: IIPFS) => {
     initPubSub(ipfs);
     closeLoading();
     updateNewestVersion(ipfs);
-    pullModerate(ipfs, "version");
-    pullModerate(ipfs, "blacklist");
+
+    if (!localStorage.lastTime) {
+        localStorage.lastTime = (new Date()).getTime()
+        pullModerate(ipfs, "version");
+        pullModerate(ipfs, "blacklist");
+    } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
+        localStorage.lastTime = (new Date()).getTime()
+        pullModerate(ipfs, "version");
+        pullModerate(ipfs, "blacklist");
+    }
 };

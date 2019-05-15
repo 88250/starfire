@@ -1,9 +1,17 @@
 import {sign} from "./sign";
 import {sortObject} from "./tools/sortObject";
+import {showMsg} from "./msg";
+import {config} from "../config/config";
 
 export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     const path = `/starfire/users/${localStorage.userId}`;
     delete userJSON.signature;
+
+    if (userJSON.name.length > 40 || userJSON.name.length === 0) {
+        showMsg('Username is error(1-24 characters)')
+        return false
+    }
+
     userJSON.signature = await sign(JSON.stringify(sortObject(userJSON)));
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,
@@ -12,9 +20,13 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     });
     const stats = await ipfs.files.stat(path);
 
-    clearTimeout(window.publishTimeout);
-    window.publishTimeout = setTimeout(() => {
+    if (!localStorage.lastTime) {
+        localStorage.lastTime = (new Date()).getTime()
         ipfs.name.publish(`/ipfs/${stats.hash}`);
-    }, 10000);
+    } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
+        localStorage.lastTime = (new Date()).getTime()
+        ipfs.name.publish(`/ipfs/${stats.hash}`);
+    }
 
+    return true
 };
