@@ -157,6 +157,7 @@
 }
 
 #msg {
+  z-index: 100;
   animation-duration: .6s;
   animation-fill-mode: both;
   animation-name: bounceInDown;
@@ -165,8 +166,8 @@
   position: fixed;
   top: 0;
   left: 50%;
-  width: 260px;
-  margin-left: -130px;
+  width: 360px;
+  margin-left: -180px;
   box-sizing: border-box;
   padding: 16px;
   line-height: 22px;

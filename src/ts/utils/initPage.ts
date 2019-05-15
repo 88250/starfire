@@ -1,5 +1,7 @@
 import {config} from "../config/config";
 import {PubSub} from "../PubSub";
+import {publishUser} from "./publishUser";
+import {ipfs} from "./initIPFS";
 
 const closeLoading = () => {
     document.getElementById("pageLoading").remove();
@@ -43,18 +45,25 @@ const updateNewestVersion = async (ipfs: IIPFS) => {
     window.location.href = `/ipfs/${versionId}`;
 };
 
-export const loaded = (ipfs: IIPFS) => {
+export const loaded = async (ipfs: IIPFS) => {
     initPubSub(ipfs);
     closeLoading();
     updateNewestVersion(ipfs);
 
     if (!localStorage.lastTime) {
         localStorage.lastTime = (new Date()).getTime()
-        pullModerate(ipfs, "version");
-        pullModerate(ipfs, "blacklist");
+        namePR
     } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
-        localStorage.lastTime = (new Date()).getTime()
-        pullModerate(ipfs, "version");
-        pullModerate(ipfs, "blacklist");
+        namePR
     }
 };
+
+
+const namePR = async () => {
+    pullModerate(ipfs, "version");
+    pullModerate(ipfs, "blacklist");
+    if (localStorage.userId) {
+        const stats = await ipfs.files.stat(`/starfire/users/${localStorage.userId}`);
+        ipfs.name.publish(`/ipfs/${stats.hash}`);
+    }
+}

@@ -17,6 +17,7 @@ import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {showMsg} from "./utils/msg";
 
 dayjs.extend(relativeTime);
 
@@ -87,7 +88,15 @@ const initAddComment = () => {
             userName: userJSON.name,
         };
 
+        if (commentObj.content.length > 1048576 || commentObj.content.length < 4) {
+            showMsg('Content is error(4-1048576 characters)')
+            return
+        }
+
         const signature = await sign(JSON.stringify(sortObject(commentObj)));
+        if (!signature) {
+            return
+        }
         commentObj.signature = signature;
 
         const cid = await ipfs.dag.put(commentObj);

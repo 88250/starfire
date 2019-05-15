@@ -4,6 +4,7 @@ import {getVditorConfig} from "./utils/getVditorConfig";
 import {publishUser} from "./utils/publishUser";
 import {sign} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {showMsg} from "./utils/msg";
 
 export class Post {
     private ipfs: IIPFS;
@@ -45,7 +46,20 @@ export class Post {
             userName: userJSON.name,
         };
 
+        if (postObj.content.length > 1048576 || postObj.content.length < 4) {
+            showMsg('Content is error(4-1048576 characters)')
+            return
+        }
+
+        if (postObj.title.length > 512 || postObj.title.length < 4) {
+            showMsg('Title is error(4-512 characters)')
+            return
+        }
+
         const signature = await sign(JSON.stringify(sortObject(postObj)));
+        if (!signature) {
+            return
+        }
         postObj.signature = signature;
 
         const cid = await this.ipfs.dag.put(postObj);
