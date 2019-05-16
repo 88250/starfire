@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts'",
-    "start": "webpack-dev-server && node-sass -w ./src/assets/scss/index.scss index.css",
+    "start": "webpack-dev-server",
+    "scss": "node-sass -w=./src/assets/scss ./src/assets/scss/index.scss ./index.css",
     "build": "webpack --env.production && node-sass --output-style=compressed ./src/assets/scss/index.scss ./dist/index.css"
   },
   "keywords": [
