@@ -54,15 +54,10 @@ export const loaded = async (ipfs: IIPFS) => {
     closeLoading();
 
     const gateway = await getIPFSGateway(ipfs);
-    document.getElementById("logo").setAttribute("src",
+    document.querySelector("#logo img").setAttribute("src",
         `${gateway}/ipfs/${config.defaultAvatar}`);
 
-    if (!localStorage.lastTime) {
-        const isUpdate = await namePR(ipfs);
-        if (isUpdate) {
-            localStorage.lastTime = (new Date()).getTime();
-        }
-    } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
+    if (!localStorage.lastTime || (new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
         const isUpdate = await namePR(ipfs);
         if (isUpdate) {
             localStorage.lastTime = (new Date()).getTime();
@@ -73,6 +68,8 @@ export const loaded = async (ipfs: IIPFS) => {
 };
 
 const namePR = async (ipfs: IIPFS) => {
+
+    document.querySelector("#logo img").className = "rotation";
     const updatedVersion = await pullModerate(ipfs, "version");
     const updatedBlacklist = await pullModerate(ipfs, "blacklist");
     if (localStorage.userId) {
@@ -80,5 +77,6 @@ const namePR = async (ipfs: IIPFS) => {
         ipfs.name.publish(`/ipfs/${stats.hash}`);
     }
 
+    document.querySelector("#logo img").className = "";
     return updatedVersion && updatedBlacklist;
 };

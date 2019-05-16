@@ -159,9 +159,7 @@
 @keyframes bounceInDown {
   from {
     transform: translate3d(0, -100%, 0);
-    visibility: visible;
   }
-
   to {
     transform: translate3d(0, 0, 0);
   }
@@ -194,6 +192,15 @@
   }
 }
 
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .header {
   background-color: $primary;
   color: hsla(0, 0%, 100%, .7);
@@ -203,10 +210,13 @@
   margin-bottom: 50px;
   text-align: center;
 
-  #logo {
+  #logo img {
     height: 24px;
     width: 24px;
     margin-right: 8px;
+    &.rotation {
+      animation: rotation 1.5s linear infinite;
+    }
   }
 
   &__item {
