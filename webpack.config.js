@@ -6,8 +6,9 @@
 
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const BundleAnalyzerPlugin = require(
+  'webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const baseConfig = {
   output: {
@@ -21,7 +22,7 @@ const baseConfig = {
     'home.js': './src/ts/home.ts',
   },
   resolve: {
-    extensions: ['.ts', '.js', '.scss', 'pug'],
+    extensions: ['.ts', '.js', 'pug'],
   },
   module: {
     rules: [
@@ -30,94 +31,41 @@ const baseConfig = {
         use: ['pug-loader'],
       },
       {
-        test: /\.scss$/,
-        include: [path.resolve(__dirname, 'src')],
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader', // translates CSS into CommonJS
-            options: {
-              url: false,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: () => [
-                require('autoprefixer')({grid: true, remove: false}),
-              ],
-            },
-          },
-          {
-            loader: 'sass-loader', // compiles Sass to CSS
-          },
-        ],
-      },
-      {
         test: /\.ts$/,
         use: 'ts-loader',
       },
-      {
-        test: /\.js$/,
-        exclude: '/node_modules/',
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/env',
-                {
-                  targets: {
-                    browsers: [
-                      'last 2 Chrome major versions',
-                      'last 2 Firefox major versions',
-                      'last 2 Safari major versions',
-                      'last 2 Edge major versions',
-                      'last 2 iOS major versions',
-                      'last 2 ChromeAndroid major versions',
-                    ],
-                  },
-                },
-              ],
-            ],
-          },
-        },
-      },
-      {
-        test: /\.svg$/,
-        include: [path.resolve(__dirname, './src/assets/icons')],
-        use: [
-          {
-            loader: 'html-loader',
-            options: {
-              minimize: true,
-            },
-          },
-        ],
-      },
     ],
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors.js',
+          chunks: 'all',
+        },
+      },
+    },
+  },
   plugins: [
+    // new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
-      chunks: ['index.js'],
+      chunks: ['index.js', 'vendors.js'],
       filename: './index.html',
       template: './src/pug/app.pug',
     }),
     new HtmlWebpackPlugin({
-      chunks: ['setting.js'],
+      chunks: ['setting.js', 'vendors.js'],
       filename: './setting.html',
       template: './src/pug/app.pug',
     }),
     new HtmlWebpackPlugin({
-      chunks: ['detail.js'],
+      chunks: ['detail.js', 'vendors.js'],
       filename: './detail.html',
       template: './src/pug/app.pug',
     }),
     new HtmlWebpackPlugin({
-      chunks: ['home.js'],
+      chunks: ['home.js', 'vendors.js'],
       filename: './home.html',
       template: './src/pug/app.pug',
     }),
@@ -133,10 +81,6 @@ const getConfig = (env) => {
     config.plugins.push(new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [path.join(__dirname, 'dist')],
     }))
-    // config.plugins.push(new CopyPlugin([
-    //   {from: 'src/assets/images/icon', to: 'src/assets/images/icon'},
-    //   {from: 'src/js/libs', to: 'src/js/libs'},
-    // ]))
   } else {
     config = Object.assign({}, baseConfig, {
       mode: 'development',

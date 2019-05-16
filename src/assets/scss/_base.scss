@@ -40,12 +40,12 @@ $hoverColor: #fff !default;
 $fullscreenBg: $primary-dark !default;
 $previewBg: $primary-dark !default;
 
-@import "~vditor/src/assets/scss/tooltipped";
-@import "~vditor/src/assets/scss/panel";
-@import "~vditor/src/assets/scss/toolbar";
-@import "~vditor/src/assets/scss/content";
-@import "~vditor/src/assets/scss/hint";
-@import "~vditor/src/assets/scss/reset";
+@import "../../../node_modules/vditor/src/assets/scss/tooltipped";
+@import "../../../node_modules/vditor/src/assets/scss/panel";
+@import "../../../node_modules/vditor/src/assets/scss/toolbar";
+@import "../../../node_modules/vditor/src/assets/scss/content";
+@import "../../../node_modules/vditor/src/assets/scss/hint";
+@import "../../../node_modules/vditor/src/assets/scss/reset";
 
 .vditor {
   margin-bottom: 16px;

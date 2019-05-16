@@ -41,6 +41,8 @@ npm run start
 ### TODO
 
 * hotkey
+* upload file
+* update avatar
 
 ## Doc
 

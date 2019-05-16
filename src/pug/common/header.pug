@@ -1,6 +1,9 @@
 mixin header(current)
-    div.header
-        a(href=config.indexPath class=current === 'index' ? 'header__item header__item--current':'header__item') Index
-        a(href=config.aboutPath class=current === 'about' ? 'header__item header__item--current':'header__item') About
-        a(href=config.homePath class=current === 'home' ? 'header__item header__item--current':'header__item') Home
-        a(href=config.settingPath class=current === 'setting' ? 'header__item header__item--current':'header__item') Setting
+    div.header.clear
+        a(href=config.indexPath class=current === 'index' ? 'header__item header__item--current left':'header__item left') Index
+        a(href=config.homePath class=current === 'home' ? 'header__item header__item--current left':'header__item left') Home
+        a(href=config.aboutPath class=current === 'about' ? 'header__item header__item--current left':'header__item left') About
+        a(href=config.indexPath class='header__item')
+            img#logo
+            span STARFIRE
+        a(href=config.settingPath class=current === 'setting' ? 'header__item header__item--current right':'header__item right') Setting

@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import isIPFS from "is-ipfs";
 import {escapeHtml} from "xss";
-import "../assets/scss/home.scss";
 import pugTpl from "../pug/home.pug";
 import {config} from "./config/config";
 import {getAvatarPath} from "./utils/getAvatarPath";

@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Vditor from "vditor";
 import {escapeHtml} from "xss";
-import "../assets/scss/detail.scss";
 import pugTpl from "../pug/detail.pug";
 import {config} from "./config/config";
 import {getSpam} from "./utils/filterSpam";

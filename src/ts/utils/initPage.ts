@@ -1,6 +1,7 @@
 import {config} from "../config/config";
 import {PubSub} from "../PubSub";
 import {ipfs} from "./initIPFS";
+import {getIPFSGateway} from "./getIPFSGateway";
 
 const closeLoading = () => {
     document.getElementById("pageLoading").remove();
@@ -48,6 +49,10 @@ export const loaded = async (ipfs: IIPFS) => {
     initPubSub(ipfs);
     closeLoading();
     updateNewestVersion(ipfs);
+
+    const gateway = await getIPFSGateway(ipfs)
+    document.getElementById('logo').setAttribute('src',
+        `${gateway}/ipfs/${config.defaultAvatar}`)
 
     if (!localStorage.lastTime) {
         localStorage.lastTime = (new Date()).getTime()

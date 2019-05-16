@@ -12,6 +12,10 @@
   float: right;
 }
 
+.left {
+  float: left;
+}
+
 .flex {
   display: flex;
 
@@ -170,7 +174,7 @@
   margin-left: -180px;
   box-sizing: border-box;
   padding: 16px;
-  line-height: 22px;
+  line-height: 24px;
   border-radius: 0 0 6px 6px;
 }
 
@@ -187,9 +191,16 @@
   background-color: $primary;
   color: hsla(0, 0%, 100%, .7);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 24px;
   padding: 16px;
   margin-bottom: 50px;
+  text-align: center;
+
+  #logo {
+    height: 24px;
+    width: 24px;
+    margin-right: 8px;
+  }
 
   &__item {
     color: #fff;

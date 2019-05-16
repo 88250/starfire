@@ -1,6 +1,5 @@
 import {toPng} from "jdenticon/index.js";
 import fileReaderPullStream from "pull-file-reader";
-import "../assets/scss/setting.scss";
 import pugTpl from "../pug/setting.pug";
 import {config} from "./config/config";
 import {getAvatarPath} from "./utils/getAvatarPath";
