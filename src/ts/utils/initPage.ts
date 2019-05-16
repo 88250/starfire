@@ -1,6 +1,5 @@
 import {config} from "../config/config";
 import {PubSub} from "../PubSub";
-import {ipfs} from "./initIPFS";
 import {getIPFSGateway} from "./getIPFSGateway";
 
 const closeLoading = () => {
@@ -24,7 +23,7 @@ const pullModerate = async (ipfs: IIPFS, type: string) => {
         parents: true,
         truncate: true,
     });
-    return true
+    return true;
 };
 
 const initPubSub = (ipfs: IIPFS) => {
@@ -33,11 +32,17 @@ const initPubSub = (ipfs: IIPFS) => {
 };
 
 const updateNewestVersion = async (ipfs: IIPFS) => {
+    let versionId = config.version;
     if (config.env !== "product") {
         return;
     }
-    const versionStr = await ipfs.files.read("/starfire/version");
-    const versionId = versionStr.toString();
+    try {
+        const versionStr = await ipfs.files.read("/starfire/version");
+        versionId = versionStr.toString();
+    } catch (e) {
+        console.warn(e);
+    }
+
     if (location.pathname.indexOf(`/ipfs/${versionId}`) === 0) {
         return;
     }
@@ -48,27 +53,26 @@ export const loaded = async (ipfs: IIPFS) => {
     initPubSub(ipfs);
     closeLoading();
 
-    const gateway = await getIPFSGateway(ipfs)
-    document.getElementById('logo').setAttribute('src',
-        `${gateway}/ipfs/${config.defaultAvatar}`)
+    const gateway = await getIPFSGateway(ipfs);
+    document.getElementById("logo").setAttribute("src",
+        `${gateway}/ipfs/${config.defaultAvatar}`);
 
     if (!localStorage.lastTime) {
-        const isUpdate = await namePR()
+        const isUpdate = await namePR(ipfs);
         if (isUpdate) {
-            localStorage.lastTime = (new Date()).getTime()
+            localStorage.lastTime = (new Date()).getTime();
         }
     } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
-        const isUpdate = await namePR()
+        const isUpdate = await namePR(ipfs);
         if (isUpdate) {
-            localStorage.lastTime = (new Date()).getTime()
+            localStorage.lastTime = (new Date()).getTime();
         }
     }
 
     updateNewestVersion(ipfs);
 };
 
-
-const namePR = async () => {
+const namePR = async (ipfs: IIPFS) => {
     const updatedVersion = await pullModerate(ipfs, "version");
     const updatedBlacklist = await pullModerate(ipfs, "blacklist");
     if (localStorage.userId) {
@@ -76,5 +80,5 @@ const namePR = async () => {
         ipfs.name.publish(`/ipfs/${stats.hash}`);
     }
 
-    return updatedVersion && updatedBlacklist
-}
+    return updatedVersion && updatedBlacklist;
+};

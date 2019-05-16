@@ -1,10 +1,10 @@
 import Vditor from "vditor";
 import {config} from "./config/config";
 import {getVditorConfig} from "./utils/getVditorConfig";
+import {showMsg} from "./utils/msg";
 import {publishUser} from "./utils/publishUser";
 import {sign} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {showMsg} from "./utils/msg";
 
 export class Post {
     private ipfs: IIPFS;
@@ -47,18 +47,18 @@ export class Post {
         };
 
         if (postObj.content.length > 1048576 || postObj.content.length < 4) {
-            showMsg('Content is error(4-1048576 characters)')
-            return
+            showMsg("Content is error(4-1048576 characters)");
+            return;
         }
 
         if (postObj.title.length > 512 || postObj.title.length < 4) {
-            showMsg('Title is error(4-512 characters)')
-            return
+            showMsg("Title is error(4-512 characters)");
+            return;
         }
 
         const signature = await sign(JSON.stringify(sortObject(postObj)));
         if (!signature) {
-            return
+            return;
         }
         postObj.signature = signature;
 

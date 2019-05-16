@@ -13,8 +13,8 @@ export const sign = async (content: string) => {
                     });
                 });
         } catch (e) {
-            resolve(false)
-            showMsg('private key error')
+            resolve(false);
+            showMsg("private key error");
         }
 
     });

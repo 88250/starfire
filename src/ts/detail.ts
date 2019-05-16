@@ -12,11 +12,11 @@ import {getVditorConfig} from "./utils/getVditorConfig";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
 import {mdParse, mdRender} from "./utils/mdRender";
+import {showMsg} from "./utils/msg";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {showMsg} from "./utils/msg";
 
 dayjs.extend(relativeTime);
 
@@ -56,7 +56,7 @@ const init = async () => {
     </a>`;
     if (localStorage.userName) {
         currentUserNameHTML = `<a class="link" href="${config.homePath}">
-        ${escapeHtml(localStorage.userName || 'No Name')}
+        ${escapeHtml(localStorage.userName || "No Name")}
     </a>`;
     }
     document.getElementById("currentUserName").innerHTML = currentUserNameHTML;
@@ -88,13 +88,13 @@ const initAddComment = () => {
         };
 
         if (commentObj.content.length > 1048576 || commentObj.content.length < 4) {
-            showMsg('Content is error(4-1048576 characters)')
-            return
+            showMsg("Content is error(4-1048576 characters)");
+            return;
         }
 
         const signature = await sign(JSON.stringify(sortObject(commentObj)));
         if (!signature) {
-            return
+            return;
         }
         commentObj.signature = signature;
 

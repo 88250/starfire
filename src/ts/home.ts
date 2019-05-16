@@ -10,16 +10,16 @@ import {getTitleLink} from "./utils/getUserHTML";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
 import {mdParse, mdRender} from "./utils/mdRender";
+import {showMsg} from "./utils/msg";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {showMsg} from "./utils/msg";
 
 dayjs.extend(relativeTime);
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
-const syncOtherUser = (cb?:any) => {
+const syncOtherUser = (cb?: any) => {
     if (userId !== localStorage.userId) {
         document.getElementById("loading").style.display = "block";
         ipfs.name.resolve(`/ipns/${userId}`, {recursive: true}, (nameErr: Error, name: string) => {
@@ -36,14 +36,16 @@ const syncOtherUser = (cb?:any) => {
                 files.forEach(async (file) => {
                     if (!file.content) {
                         render(JSON.parse('{"signature":1}'));
-                        return
+                        return;
                     }
                     ipfs.files.write(`/starfire/users/${userId}`, Buffer.from(file.content.toString()), {
                         create: true,
                         parents: true,
                         truncate: true,
                     });
-                    cb && cb()
+                    if (cb) {
+                        cb();
+                    }
                     render(JSON.parse(file.content.toString()));
                 });
             });
@@ -54,13 +56,13 @@ const syncOtherUser = (cb?:any) => {
 const init = async () => {
     renderPug(pugTpl);
 
-    const syncBtnElement = document.getElementById('syncBtn')
+    const syncBtnElement = document.getElementById("syncBtn");
 
     if (location.search.split("=")[1]) {
         document.querySelector(".header__item--current").className = "header__item";
-        syncBtnElement.innerHTML = 'UPDATE'
+        syncBtnElement.innerHTML = "UPDATE";
     } else {
-        syncBtnElement.innerHTML = 'PUBLISIH'
+        syncBtnElement.innerHTML = "PUBLISIH";
     }
 
     const postBtn = document.getElementById("postBtn");
@@ -90,24 +92,24 @@ const init = async () => {
     render(JSON.parse(userStr.toString()));
     loaded(ipfs);
 
-    document.getElementById('syncBtn').addEventListener('click', async () => {
-        const loadingElement = document.getElementById("loading")
-        if (loadingElement.style.display === 'block') {
-            return
+    document.getElementById("syncBtn").addEventListener("click", async () => {
+        const loadingElement = document.getElementById("loading");
+        if (loadingElement.style.display === "block") {
+            return;
         }
         loadingElement.style.display = "block";
         if (userId === localStorage.userId) {
             const stats = await ipfs.files.stat(`/starfire/users/${localStorage.userId}`);
             ipfs.name.publish(`/ipfs/${stats.hash}`, () => {
-                loadingElement.style.display = 'none'
-                showMsg('Publish successful')
+                loadingElement.style.display = "none";
+                showMsg("Publish successful");
             });
         } else {
             syncOtherUser(() => {
-                showMsg('Update successful')
+                showMsg("Update successful");
             });
         }
-    })
+    });
 };
 
 const render = async (userJSON: IUser) => {
@@ -139,7 +141,7 @@ const render = async (userJSON: IUser) => {
     document.getElementById("user").innerHTML = `
 <img class="avatar--big avatar" src="${getAvatarPath(userJSON.avatar, gateway)}">
 <div class="flex1 meta">
-    <div class="username">${escapeHtml(userJSON.name || 'No Name')}</div>
+    <div class="username">${escapeHtml(userJSON.name || "No Name")}</div>
     <div class="gray">${escapeHtml(userJSON.id)}</div>
 </div>`;
 
@@ -151,7 +153,7 @@ const render = async (userJSON: IUser) => {
     <img class="avatar avatar--small" src="${getAvatarPath(post.userAvatar, gateway)}"/>
     <div class="flex1">
         <span class="link">
-            ${escapeHtml(post.userName || 'No Name')}
+            ${escapeHtml(post.userName || "No Name")}
         </span>
         <time class="gray">
             ${dayjs().to(dayjs(post.time))}

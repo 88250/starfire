@@ -2,13 +2,13 @@ export const showMsg = (msg: string) => {
 
     clearTimeout(window.msgTimeout);
     window.msgTimeout = setTimeout(() => {
-        document.getElementById('msg').remove()
-    }, 5000)
+        document.getElementById("msg").remove();
+    }, 5000);
 
-    const msgElement = document.getElementById('msg')
+    const msgElement = document.getElementById("msg");
     if (msgElement) {
-        msgElement.innerHTML = msg
-        return
+        msgElement.innerHTML = msg;
+        return;
     }
-    document.querySelector('body').insertAdjacentHTML('afterbegin', `<div id="msg">${msg}</div>`)
-}
+    document.querySelector("body").insertAdjacentHTML("afterbegin", `<div id="msg">${msg}</div>`);
+};

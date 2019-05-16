@@ -10,4 +10,5 @@ export const config = {
   nameInterval: 1000 * 60 * 60,
   settingPath: "setting.html",
   topic: "starfire",
+  version: "QmT1qdmakt3g4Lmks6JTC7bEBYy9W5JF5tvZfFjZUdjE5f",
 };
