@@ -8,24 +8,23 @@ const closeLoading = () => {
 };
 
 const pullModerate = async (ipfs: IIPFS, type: string) => {
-    ipfs.name.resolve(`/ipns/${config.moderateId}/${type}`, (nameErr: Error, name: string) => {
-        if (!name) {
-            return;
-        }
-        ipfs.get(name, (err: Error, files: IPFSFile []) => {
-            if (!files) {
-                return;
-            }
-            files.forEach(async (file) => {
-
-                ipfs.files.write(`/starfire/${type}`, Buffer.from(file.content.toString()), {
-                    create: true,
-                    parents: true,
-                    truncate: true,
-                });
-            });
-        });
+    const name = await ipfs.name.resolve(`/ipns/${config.moderateId}/${type}`);
+    if (!name) {
+        return false;
+    }
+    const files = await ipfs.get(name);
+    if (!files) {
+        return false;
+    }
+    if (!files[0].content) {
+        return false;
+    }
+    await ipfs.files.write(`/starfire/${type}`, Buffer.from(files[0].content.toString()), {
+        create: true,
+        parents: true,
+        truncate: true,
     });
+    return true
 };
 
 const initPubSub = (ipfs: IIPFS) => {
@@ -48,26 +47,34 @@ const updateNewestVersion = async (ipfs: IIPFS) => {
 export const loaded = async (ipfs: IIPFS) => {
     initPubSub(ipfs);
     closeLoading();
-    updateNewestVersion(ipfs);
 
     const gateway = await getIPFSGateway(ipfs)
     document.getElementById('logo').setAttribute('src',
         `${gateway}/ipfs/${config.defaultAvatar}`)
 
     if (!localStorage.lastTime) {
-        localStorage.lastTime = (new Date()).getTime()
-        namePR()
+        const isUpdate = await namePR()
+        if (isUpdate) {
+            localStorage.lastTime = (new Date()).getTime()
+        }
     } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
-        namePR()
+        const isUpdate = await namePR()
+        if (isUpdate) {
+            localStorage.lastTime = (new Date()).getTime()
+        }
     }
+
+    updateNewestVersion(ipfs);
 };
 
 
 const namePR = async () => {
-    pullModerate(ipfs, "version");
-    pullModerate(ipfs, "blacklist");
+    const updatedVersion = await pullModerate(ipfs, "version");
+    const updatedBlacklist = await pullModerate(ipfs, "blacklist");
     if (localStorage.userId) {
         const stats = await ipfs.files.stat(`/starfire/users/${localStorage.userId}`);
         ipfs.name.publish(`/ipfs/${stats.hash}`);
     }
+
+    return updatedVersion && updatedBlacklist
 }

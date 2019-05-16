@@ -1,7 +1,6 @@
 import {sign} from "./sign";
 import {sortObject} from "./tools/sortObject";
 import {showMsg} from "./msg";
-import {config} from "../config/config";
 
 export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     const path = `/starfire/users/${localStorage.userId}`;
@@ -21,15 +20,6 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
         parents: true,
         truncate: true,
     });
-    const stats = await ipfs.files.stat(path);
-
-    if (!localStorage.lastTime) {
-        localStorage.lastTime = (new Date()).getTime()
-        ipfs.name.publish(`/ipfs/${stats.hash}`);
-    } else if ((new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
-        localStorage.lastTime = (new Date()).getTime()
-        ipfs.name.publish(`/ipfs/${stats.hash}`);
-    }
 
     return true
 };
