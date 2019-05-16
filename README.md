@@ -17,15 +17,15 @@
    ```
    ipfs daemon --enable-pubsub-experiment
    ```
-4. Open browser http://localhost:8080/ipfs/TODO
+4. Open browser http://localhost:8080/ipfs/QmT1qdmakt3g4Lmks6JTC7bEBYy9W5JF5tvZfFjZUdjE5f
 5. Login with your key (`PrivKey`) in IPFS config (~/.ipfs/config)
 
 ## Production
 
-* update config.ts `env: "product"`
+* update config.ts `development => product`
 * pack & publish
   ```
-  npm run dist
+  npm run build
   ipfs add -r dist
   ```
 * update version in ipfs

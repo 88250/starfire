@@ -2,7 +2,7 @@ export const config = {
   aboutPath: "detail.html?id=zdpuAmuLqL6Zc2NuYcVJ3GgmARo7zkgG7pqDe6TUpGRQBAKQj",
   defaultAvatar: "QmUkVpWHPPxmB9MfNdWK6uuKL5dXGSBvefAQnhWvxHEe1k",
   detailPath: "detail.html",
-  env: "development",
+  env: "product",
   homePath: "home.html",
   indexPath: "index.html",
   moderateId: "QmfQUfpYh2J2jaihvfwsR6ACQnf3iQ551N1dNMfcNTmyjr",
