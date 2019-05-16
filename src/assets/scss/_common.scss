@@ -118,6 +118,13 @@
   display: block;
 }
 
+.tip {
+  margin-right: 16px;
+  float: right;
+  color: $secondary-light;
+  line-height: 36px;
+}
+
 .input {
   box-sizing: border-box;
   width: 100%;
@@ -255,6 +262,7 @@
     display: flex;
     margin-bottom: 15px;
     position: relative;
+
     &:after {
       content: '';
       position: absolute;
@@ -264,9 +272,11 @@
       bottom: -15px;
       left: 80px;
     }
+
     &--add {
       padding-top: 15px;
       border-top: 2px solid $primary-light;
+
       &:after {
         display: none;
       }

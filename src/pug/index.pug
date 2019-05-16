@@ -1,10 +1,12 @@
 include ./common/header.pug
 +header('index')
 div.index.wrap
-    div.clear
+    div
         input.input.input--space#postTitle(placeholder='title')
         div#postContent(placeholder='content')
         input.input.input--space#privateKey(placeholder='private key')
-        button.button.button--space.right#postBtn Post
+        div.clear
+            button.button.button--space.right#postBtn Post
+            span.tip Please check carefully and cannot be modified after posting.
     div
         ul#indexList
