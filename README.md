@@ -13,12 +13,17 @@
      ```
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-3. Run IPFS
+3. Add bootstrap node and connect it
+   ```
+   ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
+   ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
+   ```   
+4. Run IPFS
    ```
    ipfs daemon --enable-pubsub-experiment
    ```
-4. Open browser http://localhost:8080/ipfs/QmT1qdmakt3g4Lmks6JTC7bEBYy9W5JF5tvZfFjZUdjE5f
-5. Login with your key (`PrivKey`) in IPFS config (~/.ipfs/config)
+5. Open browser http://localhost:8080/ipfs/QmT1qdmakt3g4Lmks6JTC7bEBYy9W5JF5tvZfFjZUdjE5f
+6. Login with your key (`PrivKey`) in IPFS config (~/.ipfs/config)
 
 ## Production
 
