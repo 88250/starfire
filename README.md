@@ -95,24 +95,20 @@ https://github.com/b3log/starfire
    ipfs init
    ```
 2. 运行 IPFS 并连接引导节点
-
    ```shell
    ipfs daemon --enable-pubsub-experiment
    ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
 3. 添加引导节点
-
    ```shell
    ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```   
 4. 允许接口跨域
    * Windows: 
-   
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  [\"*\"]
      ```
    * Linux/Mac: 
-   
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
