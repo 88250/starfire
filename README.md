@@ -112,7 +112,7 @@ https://github.com/b3log/starfire
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-5. 打开浏览器访问 http://127.0.0.1:8080/ipfs/QmT1qdmakt3g4Lmks6JTC7bEBYy9W5JF5tvZfFjZUdjE5f
+5. 打开浏览器访问 http://127.0.0.1:8080/ipfs/QmYkAMj25Qj7Yvv1rRwepstJWb1kASviT3hoAmmr9Dg6TM
 6. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
 
 ---
