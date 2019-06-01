@@ -91,24 +91,28 @@ https://github.com/b3log/starfire
 ## 安装
 
 1. 下载并初始化 IPFS
-   ```
+   ```shell
    ipfs init
    ```
 2. 配置 IPFS 
    * Windows: 
-     ```
+   
+     ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  [\"*\"]
      ```
    * Linux/Mac: 
-     ```
+   
+     ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
 3. 添加引导节点
-   ```
+
+   ```shell
    ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```   
 4. 运行 IPFS 并连接引导节点
-   ```
+
+   ```shell
    ipfs daemon --enable-pubsub-experiment
    ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
