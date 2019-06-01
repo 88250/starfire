@@ -94,7 +94,18 @@ https://github.com/b3log/starfire
    ```shell
    ipfs init
    ```
-2. 配置 IPFS 
+2. 运行 IPFS 并连接引导节点
+
+   ```shell
+   ipfs daemon --enable-pubsub-experiment
+   ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
+   ```
+3. 添加引导节点
+
+   ```shell
+   ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
+   ```   
+4. 允许接口跨域
    * Windows: 
    
      ```shell
@@ -105,17 +116,6 @@ https://github.com/b3log/starfire
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-3. 添加引导节点
-
-   ```shell
-   ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
-   ```   
-4. 运行 IPFS 并连接引导节点
-
-   ```shell
-   ipfs daemon --enable-pubsub-experiment
-   ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
-   ```
 5. 打开浏览器访问 http://localhost:8080/ipfs/QmT1qdmakt3g4Lmks6JTC7bEBYy9W5JF5tvZfFjZUdjE5f
 6. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
 
