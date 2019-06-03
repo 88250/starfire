@@ -96,10 +96,21 @@ https://github.com/b3log/starfire
    ipfs daemon --enable-pubsub-experiment
    ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
+   🐋 
+   ```shell
+   docker pull ipfs/go-ipfs
+   docker run -d --rm --name ipfs_host -v /root/.ipfs:/data/ipfs -p 4001:4001 -p :8080:8080 -p :5001:5001 ipfs/go-ipfs daemon --migrate=true --enable-pubsub-experiment
+   docker exec ipfs_host ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
+   ```
+   
 3. 添加引导节点
    ```shell
    ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```   
+   🐋 
+   ```shell
+   docker exec ipfs_host ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
+   ```
 4. 允许接口跨域
    * Windows: 
      ```shell
@@ -108,6 +119,10 @@ https://github.com/b3log/starfire
    * Linux/Mac: 
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
+     ```
+        🐋 
+     ```shell
+     docker exec ipfs_host ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
 5. 打开浏览器访问 http://${你的公网 IP}:8080/ipfs/QmYkAMj25Qj7Yvv1rRwepstJWb1kASviT3hoAmmr9Dg6TM
 6. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
