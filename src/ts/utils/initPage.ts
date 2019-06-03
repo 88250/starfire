@@ -38,7 +38,7 @@ const updateNewestVersion = async (ipfs: IIPFS) => {
     }
     try {
         const versionStr = await ipfs.files.read("/starfire/version");
-        versionId = versionStr.toString();
+        versionId = versionStr.toString().trim();
     } catch (e) {
         console.warn(e);
     }

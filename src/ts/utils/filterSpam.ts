@@ -9,7 +9,7 @@ export const getSpam = async () => {
     let blackJSON = [];
     try {
         const blackStr = await ipfs.files.read("/starfire/blacklist");
-        blackJSON = blackStr.toString().split("\n");
+        blackJSON = blackStr.toString().trim().split("\n");
     } catch (e) {
         console.warn(e);
     }
