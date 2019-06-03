@@ -20,10 +20,11 @@
     "libp2p-crypto": "^0.16.1",
     "multiaddr": "^6.0.6",
     "pull-file-reader": "^1.0.2",
-    "vditor": "^1.4.5",
+    "vditor": "^1.4.6",
     "xss": "^1.0.6"
   },
   "devDependencies": {
+    "@types/markdown-it": "0.0.7",
     "clean-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.12.0",
