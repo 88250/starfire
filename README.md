@@ -11,7 +11,7 @@
 1. 在中心化的服务下，你的数据并不属于你，服务终止或者账号被封意味着你将失去你的数据
 2. 中心化服务会通过你的数据进行盈利，但并未从盈利中拿出透明公平的收益回报给你
 
-星火的诞生主要解决第一个问题，即你的数据永远属于你。第二个问题星火会逐步尝试探索。
+星火的诞生主要解决第一个问题，即你的数据永远属于你。第二个问题星火会逐步尝试探索。其中更细节的原由请浏览[TBD 写在星火初版发布之际](TBD)。
 
 ### 功能
 
@@ -90,20 +90,18 @@ https://github.com/b3log/starfire
 
 ## 安装
 
-1. 下载并初始化 IPFS
-   ```shell
-   ipfs init
-   ```
-2. 运行 IPFS 并连接引导节点
+1. 你需要一台有静态公网 IP 的服务器或者个人电脑，Windows、Linux、Mac 都可以 
+2. 下载并安装 IPFS
+3. 运行 IPFS 并连接引导节点
    ```shell
    ipfs daemon --enable-pubsub-experiment
    ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
-3. 添加引导节点
+4. 添加引导节点
    ```shell
    ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```   
-4. 允许接口跨域
+5. 允许接口跨域
    * Windows: 
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  [\"*\"]
@@ -112,8 +110,8 @@ https://github.com/b3log/starfire
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-5. 打开浏览器访问 http://127.0.0.1:8080/ipfs/QmYkAMj25Qj7Yvv1rRwepstJWb1kASviT3hoAmmr9Dg6TM
-6. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
+6. 打开浏览器访问 http://${你的公网 IP}:8080/ipfs/QmYkAMj25Qj7Yvv1rRwepstJWb1kASviT3hoAmmr9Dg6TM
+7. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
 
 ---
 
