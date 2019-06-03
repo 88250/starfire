@@ -11,7 +11,8 @@
     ],
     "esModuleInterop": true,
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./node_modules/vditor/src/ts/types"
     ]
   },
   "include": [

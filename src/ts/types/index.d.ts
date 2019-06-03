@@ -61,3 +61,8 @@ interface IComment {
     userName: string;
     postId: string;
 }
+
+interface IMsg {
+    from: string;
+    data: string;
+}
