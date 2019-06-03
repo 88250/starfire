@@ -1,7 +1,7 @@
 export const showMsg = (msg: string) => {
 
     clearTimeout(window.msgTimeout);
-    window.msgTimeout = setTimeout(() => {
+    window.msgTimeout = window.setTimeout(() => {
         document.getElementById("msg").remove();
     }, 5000);
 

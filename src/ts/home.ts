@@ -19,7 +19,7 @@ dayjs.extend(relativeTime);
 
 const userId = location.search.split("=")[1] || localStorage.userId;
 
-const syncOtherUser = (cb?: any) => {
+const syncOtherUser = (cb?: (() => void)) => {
     if (userId !== localStorage.userId) {
         document.getElementById("loading").style.display = "block";
         ipfs.name.resolve(`/ipns/${userId}`, {recursive: true}, (nameErr: Error, name: string) => {
@@ -116,7 +116,7 @@ const render = async (userJSON: IUser) => {
     const signature = userJSON.signature;
     const gateway = await getIPFSGateway(ipfs);
     // ipns 失败
-    if (signature === 1) {
+    if (parseInt(signature) === 1) {
         document.getElementById("user").innerHTML = `
 <img class="avatar--big avatar" src="${gateway}/ipfs/${config.defaultAvatar}">
 <div class="flex1 meta">
@@ -188,7 +188,7 @@ const render = async (userJSON: IUser) => {
     }
 };
 
-const traverseIds = async (id: string, renderCB: any) => {
+const traverseIds = async (id: string, renderCB: ((id: string, post: IPost|IComment) => void)) => {
     while (id) {
         const current = await ipfs.dag.get(id);
         await renderCB(id, current.value);

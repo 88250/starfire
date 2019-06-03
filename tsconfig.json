@@ -10,9 +10,14 @@
       "es2019.object"
     ],
     "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "vditor": [
+        "node_modules/vditor/src/ts/types/index.d.ts"
+      ]
+    },
     "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/vditor/src/ts/types"
+      "./node_modules/@types"
     ]
   },
   "include": [

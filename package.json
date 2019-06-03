@@ -15,13 +15,16 @@
   "dependencies": {
     "dayjs": "^1.8.14",
     "ipfs-http-client": "^32.0.1",
+    "is-ipfs": "^0.6.1",
     "jdenticon": "^2.1.1",
     "libp2p-crypto": "^0.16.1",
+    "multiaddr": "^6.0.6",
     "pull-file-reader": "^1.0.2",
     "vditor": "^1.4.5",
     "xss": "^1.0.6"
   },
   "devDependencies": {
+    "@types/source-map": "^0.5.2",
     "clean-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.12.0",
