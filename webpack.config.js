@@ -1,12 +1,12 @@
 /**
  * @fileoverview webpack config.
  *
- * @version 0.1.0.0, Apr 29, 2019
+ * @version 0.1.0.0, Jun 3, 2019
  */
 
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const BundleAnalyzerPlugin = require(
   'webpack-bundle-analyzer').BundleAnalyzerPlugin
 
