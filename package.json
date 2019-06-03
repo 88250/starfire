@@ -20,7 +20,7 @@
     "libp2p-crypto": "^0.16.1",
     "multiaddr": "^6.0.6",
     "pull-file-reader": "^1.0.2",
-    "vditor": "^1.4.5",
+    "vditor": "^1.4.6",
     "xss": "^1.0.6"
   },
   "devDependencies": {
