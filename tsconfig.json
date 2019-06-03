@@ -9,7 +9,14 @@
       "es2015",
       "es2019.object"
     ],
+    "moduleResolution": "node",
     "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "vditor": [
+        "node_modules/vditor/src/ts/types/index.d.ts"
+      ]
+    },
     "typeRoots": [
       "./node_modules/@types"
     ]

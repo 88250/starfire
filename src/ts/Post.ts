@@ -8,7 +8,7 @@ import {sortObject} from "./utils/tools/sortObject";
 
 export class Post {
     private ipfs: IIPFS;
-    private editor: any;
+    private editor: IVditorConstructor;
 
     constructor(ipfs: IIPFS) {
         this.ipfs = ipfs;

@@ -15,21 +15,21 @@ declare module "xss";
 
 declare module "multiaddr";
 
-declare module "vditor";
-
 declare module "is-ipfs";
+
+declare module "vditor";
 
 declare module "libp2p-crypto/src/keys";
 
 declare module "*.pug";
 
 interface Window {
-    msgTimeout: any;
+    msgTimeout: number;
 }
 
 interface IUser {
     publicKey: string;
-    signature?: any;
+    signature?: string;
     id: string;
     latestCommentId: string;
     latestPostId: string;
@@ -40,7 +40,7 @@ interface IUser {
 interface IPost {
     publicKey: string;
     content: string;
-    signature?: any;
+    signature?: string;
     previousId: string;
     time: number;
     title: string;
@@ -53,11 +53,16 @@ interface IPost {
 interface IComment {
     publicKey: string;
     content: string;
-    signature?: any;
+    signature?: string;
     previousId: string;
     time: number;
     userAvatar: string;
     userId: string;
     userName: string;
     postId: string;
+}
+
+interface IMsg {
+    from: string;
+    data: string;
 }

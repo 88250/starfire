@@ -21,7 +21,7 @@ import {sortObject} from "./utils/tools/sortObject";
 dayjs.extend(relativeTime);
 
 const postId = location.search.split("=")[1];
-let editor: any;
+let editor:IVditorConstructor;
 
 const init = async () => {
     renderPug(pugTpl);

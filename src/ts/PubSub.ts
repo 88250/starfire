@@ -15,7 +15,7 @@ export class PubSub {
         this.ipfs.pubsub.subscribe(config.topic, this.handlerMsg.bind(this));
     }
 
-    private async handlerMsg(msg: any) {
+    private async handlerMsg(msg: IMsg) {
         const result = await idIsInBlacklist(msg.from);
         if (result.isIn) {
             return;
