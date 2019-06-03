@@ -60,7 +60,7 @@ const init = async () => {
     const syncBtnElement = document.getElementById("syncBtn");
 
     if (location.search.split("=")[1]) {
-        document.querySelector(".header__item--current").className = "header__item";
+        document.querySelector(".header__item--current").className = "header__item left";
         syncBtnElement.innerHTML = "UPDATE";
     } else {
         syncBtnElement.innerHTML = "PUBLISIH";
