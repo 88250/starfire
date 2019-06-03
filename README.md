@@ -91,10 +91,7 @@ https://github.com/b3log/starfire
 ## 安装
 
 1. 你需要一台有静态公网 IP 的服务器或者个人电脑，Windows、Linux、Mac 都可以 
-2. 下载后安装并初始化 IPFS
-   ```shell
-   ipfs init
-   ```
+2. 下载并安装 IPFS
 3. 运行 IPFS 并连接引导节点
    ```shell
    ipfs daemon --enable-pubsub-experiment
