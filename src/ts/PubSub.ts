@@ -89,7 +89,7 @@ export class PubSub {
 
             this.ipfs.swarm.peers((err, peerInfos) => {
                 peerInfos.forEach((info: IPeer) => {
-                    blacklistJSON.forEach((blackId) => {
+                    blacklistJSON.forEach((blackId:string) => {
                         if (blackId === info.peer._idB58String) {
                             let maddr = info.addr.toString().replace("/p2p-circuit", "");
                             if (info.addr.toString().indexOf("/ipfs/") !== 0) {
