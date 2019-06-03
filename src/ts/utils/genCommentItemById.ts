@@ -6,6 +6,7 @@ import {getUserAvatar, getUserLink} from "./getUserHTML";
 import {mdParse} from "./mdRender";
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
+import {isNodeIdPost} from "./isNodeIdPost";
 
 dayjs.extend(relativeTime);
 
@@ -22,8 +23,15 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
             isInBlacklist = true;
         }
     });
+
     if (isInBlacklist) {
         return commentObj.userId;
+    }
+
+    let msg = 'Invalid data'
+    const isMatchNodeId = await isNodeIdPost(commentObj.publicKey, commentObj.userId)
+    if (!isMatchNodeId) {
+        msg = 'Invalid user'
     }
 
     const signature = commentObj.signature;
@@ -36,14 +44,14 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
     <div class="module flex1">
         <div class="module__header">
             <span class="link">
-                Invalid data
+                ${msg}
             </span>
-            <time class="gray">Invalid data</time>
+            <time class="gray">${msg}</time>
         </div>
-        <div class="module__body vditor-reset">Invalid data</div>
+        <div class="module__body vditor-reset">${msg}</div>
     </div>
 </div>`;
-    if (isMatch) {
+    if (isMatch && isMatchNodeId) {
         const contentHTML = await mdParse(result.value.content);
 
         commentHTML = `<div class="comment__item" id="${id}">

@@ -19,7 +19,7 @@ export const sign = async (content: string) => {
                     });
                 });
         } catch (e) {
-            resolve('');
+            resolve("");
             showMsg("private key error");
         }
     });

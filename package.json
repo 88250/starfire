@@ -13,17 +13,20 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "bs58": "^4.0.1",
     "dayjs": "^1.8.14",
     "ipfs-http-client": "^32.0.1",
     "is-ipfs": "^0.6.1",
     "jdenticon": "^2.1.1",
     "libp2p-crypto": "^0.16.1",
     "multiaddr": "^6.0.6",
+    "multihashing-async": "^0.7.0",
     "pull-file-reader": "^1.0.2",
     "vditor": "^1.4.6",
     "xss": "^1.0.6"
   },
   "devDependencies": {
+    "@types/bs58": "^4.0.0",
     "@types/markdown-it": "0.0.7",
     "clean-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^3.2.0",

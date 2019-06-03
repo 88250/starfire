@@ -14,6 +14,7 @@ import {showMsg} from "./utils/msg";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {isNodeIdPost} from "./utils/isNodeIdPost";
 
 dayjs.extend(relativeTime);
 
@@ -126,9 +127,16 @@ const render = async (userJSON: IUser) => {
         return;
     }
 
+    const isMatchNodeId = await isNodeIdPost(userJSON.publicKey, userJSON.id)
+    if (!isMatchNodeId) {
+        alert('Invalid user')
+        return;
+    }
+
     delete userJSON.signature;
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
+        alert('Invalid data')
         return;
     }
 
@@ -188,10 +196,19 @@ const render = async (userJSON: IUser) => {
     }
 };
 
-const traverseIds = async (id: string, renderCB: ((id: string, post: IPost|IComment) => void)) => {
+const traverseIds = async (id: string, renderCB: ((id: string, post: IPost | IComment) => void)) => {
     while (id) {
         const current = await ipfs.dag.get(id);
-        await renderCB(id, current.value);
+
+        const isMatchNodeId = await isNodeIdPost(current.value.publicKey, current.value.userId)
+        const signature = current.value.signature;
+        delete current.value.signature;
+        const isMatch = await verify(JSON.stringify(sortObject(current.value)), current.value.publicKey, signature);
+
+        if (isMatch && isMatchNodeId) {
+            await renderCB(id, current.value);
+        }
+
         const previousId = current.value.previousId;
         if (previousId) {
             id = previousId;

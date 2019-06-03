@@ -17,11 +17,12 @@ import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {isNodeIdPost} from "./utils/isNodeIdPost";
 
 dayjs.extend(relativeTime);
 
 const postId = location.search.split("=")[1];
-let editor:IVditorConstructor;
+let editor: IVditorConstructor;
 
 const init = async () => {
     renderPug(pugTpl);
@@ -29,9 +30,14 @@ const init = async () => {
 
     const result = await ipfs.dag.get(postId);
     const postObj: IPost = result.value;
+    const isMatchNodeId = await isNodeIdPost(postObj.publicKey, postObj.userId)
+    if (!isMatchNodeId) {
+        return;
+    }
     const signature = postObj.signature;
     delete postObj.signature;
     const isMatch = await verify(JSON.stringify(sortObject(postObj)), postObj.publicKey, signature);
+
     if (!isMatch) {
         return;
     }

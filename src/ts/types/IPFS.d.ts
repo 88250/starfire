@@ -20,9 +20,9 @@ interface IFilesAPI {
 }
 
 interface INameAPI {
-    publish(path: string): void
+    publish(path: string): void;
 
-    resolve(path: string): string
+    resolve(path: string): string;
 }
 
 interface IPFSFile {
@@ -64,16 +64,16 @@ interface ISwarmAPI {
 interface IPubsubAPI {
     subscribe(topic: string, callback: Callback<IMsg>): void;
 
-    publish(topic: string, buffer: Buffer): void
+    publish(topic: string, buffer: Buffer): void;
 }
 
 interface IIPFS {
     config: {
         get: () => {
             Addresses: {
-                Gateway: string
-            }
-        }
+                Gateway: string,
+            },
+        },
     };
 
     files: IFilesAPI;
@@ -84,5 +84,5 @@ interface IIPFS {
 
     cat(id: string): string;
 
-    get(name: string): IPFSFile[]
+    get(name: string): IPFSFile[];
 }
