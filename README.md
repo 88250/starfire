@@ -91,17 +91,16 @@ https://github.com/b3log/starfire
 ## 安装
 
 1. 你需要一台有静态公网 IP 的服务器或者个人电脑，Windows、Linux、Mac 都可以 
-2. 下载并安装 IPFS
-3. 运行 IPFS 并连接引导节点
+2. 下载并安装 IPFS，运行 IPFS 并连接引导节点
    ```shell
    ipfs daemon --enable-pubsub-experiment
    ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
-4. 添加引导节点
+3. 添加引导节点
    ```shell
    ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```   
-5. 允许接口跨域
+4. 允许接口跨域
    * Windows: 
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  [\"*\"]
@@ -110,8 +109,8 @@ https://github.com/b3log/starfire
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-6. 打开浏览器访问 http://${你的公网 IP}:8080/ipfs/QmYkAMj25Qj7Yvv1rRwepstJWb1kASviT3hoAmmr9Dg6TM
-7. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
+5. 打开浏览器访问 http://${你的公网 IP}:8080/ipfs/QmYkAMj25Qj7Yvv1rRwepstJWb1kASviT3hoAmmr9Dg6TM
+6. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
 
 ---
 
