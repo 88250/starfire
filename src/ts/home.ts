@@ -65,9 +65,9 @@ const init = async () => {
 
     if (location.search.split("=")[1] && location.search.split("=")[1] !== localStorage.userId) {
         document.querySelector(".header__item--current").className = "header__item right";
-        syncBtnElement.innerHTML = "UPDATE";
+        syncBtnElement.innerHTML = "获取更新";
     } else {
-        syncBtnElement.innerHTML = "PUBLISIH";
+        syncBtnElement.innerHTML = "发布推送";
     }
 
     const postBtn = document.getElementById("postBtn");
