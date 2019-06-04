@@ -5,5 +5,5 @@ mixin header(current)
         a#logo(href=config.indexPath class='header__item vditor-tooltipped vditor-tooltipped__e' aria-label='星星之火可以燎原')
             img
             span 星火
-        a(href=config.homePath class=current === 'home' ? 'header__item header__item--current left':'header__item right') 我的主页
+        a(href=config.homePath class=current === 'home' ? 'header__item header__item--current right':'header__item right') 我的主页
         a(href=config.settingPath class=current === 'setting' ? 'header__item header__item--current right':'header__item right') 个人设置
