@@ -48,10 +48,6 @@ const init = async () => {
     (document.getElementById("name") as HTMLInputElement).value = (oldUserJSON && oldUserJSON.name) || "";
     (document.getElementById("id") as HTMLInputElement).value = identity.id;
 
-    if (!localStorage.APIAddress) {
-        localStorage.APIAddress = location.protocol.replace(":", "") + "://" + location.hostname
-            + ":5001";
-    }
     (document.getElementById("apiAddress") as HTMLInputElement).value = localStorage.APIAddress;
 
     // bind start
