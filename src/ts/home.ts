@@ -129,14 +129,14 @@ const render = async (userJSON: IUser) => {
 
     const isMatchNodeId = await isNodeIdPost(userJSON.publicKey, userJSON.id)
     if (!isMatchNodeId) {
-        alert('Invalid user')
+        showMsg('Invalid user')
         return;
     }
 
     delete userJSON.signature;
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        alert('Invalid data')
+        showMsg('Invalid data')
         return;
     }
 

@@ -1,5 +1,5 @@
 import {showMsg} from "./msg";
-import {sign} from "./sign";
+import {sign, verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
 
 export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
@@ -11,10 +11,20 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
         return false;
     }
 
-    userJSON.signature = await sign(JSON.stringify(sortObject(userJSON)));
-    if (!userJSON.signature) {
+    const signature  = await sign(JSON.stringify(sortObject(userJSON)));
+    if (!signature) {
+        showMsg('Invalid private key')
         return;
     }
+
+    const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
+    if (!isMatch) {
+        showMsg('Invalid private key')
+        return;
+    }
+
+    userJSON.signature = signature
+
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,
         parents: true,

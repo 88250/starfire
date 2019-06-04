@@ -3,7 +3,7 @@ import {config} from "./config/config";
 import {getVditorConfig} from "./utils/getVditorConfig";
 import {showMsg} from "./utils/msg";
 import {publishUser} from "./utils/publishUser";
-import {sign} from "./utils/sign";
+import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
 
 export class Post {
@@ -58,6 +58,13 @@ export class Post {
 
         const signature = await sign(JSON.stringify(sortObject(postObj)));
         if (!signature) {
+            showMsg('Invalid private key')
+            return;
+        }
+
+        const isMatch = await verify(JSON.stringify(sortObject(postObj)), postObj.publicKey, signature);
+        if (!isMatch) {
+            showMsg('Invalid private key')
             return;
         }
         postObj.signature = signature;

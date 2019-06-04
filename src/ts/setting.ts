@@ -8,6 +8,9 @@ import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
+import {isNodeIdPost} from "./utils/isNodeIdPost";
+import {showMsg} from "./utils/msg";
+import {verify} from "./utils/sign";
 
 const init = async () => {
     renderPug(pugTpl);
@@ -52,9 +55,15 @@ const init = async () => {
         localStorage.userAvatar = (document.getElementById("avatarPath") as HTMLInputElement).value;
         localStorage.userName = (document.getElementById("name") as HTMLInputElement).value;
 
+        const isMatchNodeId = isNodeIdPost(identity.publicKey, identity.id)
+        if (!isMatchNodeId) {
+            showMsg('Invalid user')
+            return
+        }
+
         const userObj = {
             avatar: localStorage.userAvatar,
-            id: localStorage.userId,
+            id: identity.id,
             latestCommentId: (oldUserJSON && oldUserJSON.latestCommentId) || "",
             latestPostId: (oldUserJSON && oldUserJSON.latestPostId) || "",
             name: localStorage.userName,
