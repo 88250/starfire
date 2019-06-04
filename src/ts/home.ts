@@ -30,6 +30,10 @@ const syncOtherUser = (cb?: (() => void)) => {
                 return;
             }
             ipfs.get(name, (err: Error, files: IPFSFile []) => {
+                if (err) {
+                    render(JSON.parse('{"signature":1}'));
+                    return;
+                }
                 if (!files) {
                     render(JSON.parse('{"signature":1}'));
                     return;
@@ -115,6 +119,11 @@ const init = async () => {
 
 const render = async (userJSON: IUser) => {
     const signature = userJSON.signature;
+
+    if (!signature) {
+        return
+    }
+
     const gateway = await getIPFSGateway(ipfs);
     // ipns 失败
     if (parseInt(signature, 10) === 1) {
