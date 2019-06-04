@@ -62,7 +62,7 @@
 }
 
 .module {
-  background-color: $primary-dark;
+  background-color: rgba($primary, 0.68);
   border: 1px solid $primary-light;
   border-radius: 6px;
   overflow: hidden;
