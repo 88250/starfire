@@ -121,7 +121,7 @@ const render = async (userJSON: IUser) => {
     const signature = userJSON.signature;
 
     if (!signature) {
-        return
+        return;
     }
 
     const gateway = await getIPFSGateway(ipfs);
