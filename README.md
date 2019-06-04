@@ -89,9 +89,8 @@ https://github.com/b3log/starfire
 ---
 
 ## 安装
-
-1. 你需要一台有静态公网 IP 的服务器或者个人电脑，Windows、Linux、Mac 都可以 
-2. 下载并安装 IPFS，运行 IPFS 并连接引导节点
+ 
+1. 下载并安装 IPFS，运行 IPFS 并连接引导节点
    ```shell
    ipfs daemon --enable-pubsub-experiment
    ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
@@ -102,8 +101,7 @@ https://github.com/b3log/starfire
    docker run -d --rm --name ipfs_host -v /root/.ipfs:/data/ipfs -p 4001:4001 -p :8080:8080 -p :5001:5001 ipfs/go-ipfs daemon --migrate=true --enable-pubsub-experiment
    docker exec ipfs_host ipfs swarm connect /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
-   
-3. 添加引导节点
+2. 添加引导节点
    ```shell
    ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```   
@@ -111,7 +109,7 @@ https://github.com/b3log/starfire
    ```shell
    docker exec ipfs_host ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
-4. 允许接口跨域
+3. 允许接口跨域
    * Windows: 
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  [\"*\"]
@@ -124,8 +122,8 @@ https://github.com/b3log/starfire
      ```shell
      docker exec ipfs_host ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-5. 打开浏览器访问 http://${你的公网 IP}:8080/ipfs/Qme9vcN6Pe9r9JXiProcxasz6g7UEG2ooJhEb7Cc9CrH7P
-6. 通过密钥对发帖回帖，密钥对是 ~/.ipfs/config 中的 `PrivKey` 项 
+4. 打开浏览器访问 http://127.0.0.1:8080/ipfs/Qme9vcN6Pe9r9JXiProcxasz6g7UEG2ooJhEb7Cc9CrH7P
+5. 通过密钥对发帖回帖，密钥对是 ~/.ipfs/config 中的 `PrivKey` 项 
 
 ---
 
