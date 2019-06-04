@@ -41,6 +41,11 @@ export const mdParse = async (text: string) => {
             u: [],
             video: ["autoplay", "controls", "loop", "preload", "src", "height", "width"],
         },
+        onTag: (tag: string, html: string) => {
+            if (tag === "audio" && html.indexOf(' controls=') === -1) {
+                return html.replace(' src=', ' controls="controls" src=')
+            }
+        }
     });
     const md = emoji2Image(filterText);
     const html = await Vditor.md2html(md, "atom-one-dark");
