@@ -26,6 +26,11 @@ let editor: IVditorConstructor;
 
 const init = async () => {
     renderPug(pugTpl);
+
+    if (location.href.indexOf(config.aboutPath) > -1) {
+        document.querySelectorAll(".header__item")[1].className = "header__item--current left";
+    }
+
     editor = new Vditor("commentContent", getVditorConfig());
 
     const result = await ipfs.dag.get(postId);

@@ -63,7 +63,7 @@ const init = async () => {
 
     const syncBtnElement = document.getElementById("syncBtn");
 
-    if (location.search.split("=")[1]) {
+    if (location.search.split("=")[1] !== localStorage.userId) {
         document.querySelector(".header__item--current").className = "header__item right";
         syncBtnElement.innerHTML = "UPDATE";
     } else {
