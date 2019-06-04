@@ -120,28 +120,28 @@ https://github.com/b3log/starfire
      ```shell
      ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-        🐋 
+     🐋 
      ```shell
      docker exec ipfs_host ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
 5. 打开浏览器访问 http://${你的公网 IP}:8080/ipfs/QmYkAMj25Qj7Yvv1rRwepstJWb1kASviT3hoAmmr9Dg6TM
-6. 通过密钥对登录 ~/.ipfs/config 中的 `PrivKey` 项 
+6. 通过密钥对发帖回帖，密钥对是 ~/.ipfs/config 中的 `PrivKey` 项 
 
 ---
 
 ## 开发相关
 
-### Production
+### 发布新版
 
-* update config.ts `development => product`
-* pack & publish
+* 更新 config.ts 中的 `env` 项值 `development` 为 `product`
+* 打包并发布
   ```
   npm run build
   ipfs add -r dist
   ```
-* update version in ipfs
+* 通过 starfire-moderator 更新版本
 
-### Dev
+### 开发
 
 ```
 ipfs daemon --enable-pubsub-experiment
@@ -174,5 +174,3 @@ npm run scss
 ### Theme
 
 https://material.io/tools/color/#!/?view.left=0&view.right=1&primary.color=24282d&secondary.color=d93025
-
-

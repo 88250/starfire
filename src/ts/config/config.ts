@@ -1,5 +1,5 @@
 export const config = {
-  aboutPath: "detail.html?id=zdpuAmuLqL6Zc2NuYcVJ3GgmARo7zkgG7pqDe6TUpGRQBAKQj",
+  aboutPath: "detail.html?id=zdpuAuPAB2T8BcT3zfNVkaPB4LGNDYNSSGYPEfFGuffJbihzq",
   defaultAvatar: "QmUkVpWHPPxmB9MfNdWK6uuKL5dXGSBvefAQnhWvxHEe1k",
   detailPath: "detail.html",
   env: "development",
@@ -10,5 +10,5 @@ export const config = {
   nameInterval: 1000 * 60 * 60,
   settingPath: "setting.html",
   topic: "starfire",
-  version: "QmT1qdmakt3g4Lmks6JTC7bEBYy9W5JF5tvZfFjZUdjE5f",
+  version: "QmZEXE74NmPsCL41yDG9hutRe9ZE95yXRbs3zzHtgWAvrx",
 };
