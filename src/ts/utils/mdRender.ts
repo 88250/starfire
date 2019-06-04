@@ -47,7 +47,7 @@ export const mdParse = async (text: string) => {
             video: ["autoplay", "controls", "loop", "preload", "src", "height", "width"],
         },
     });
-    const md = emoji2Image(filterText);
+    const md = emoji2Image(filterText.replace(/&gt; /g, "> "));
     const html = await Vditor.md2html(md, "atom-one-dark");
     return html;
 };
