@@ -48,6 +48,12 @@ const init = async () => {
     (document.getElementById("name") as HTMLInputElement).value = (oldUserJSON && oldUserJSON.name) || "";
     (document.getElementById("id") as HTMLInputElement).value = identity.id;
 
+    if (!localStorage.APIAddress) {
+        localStorage.APIAddress = location.protocol.replace(":", "") + "://" + location.hostname
+            + ":5001";
+    }
+    (document.getElementById("apiAddress") as HTMLInputElement).value = localStorage.APIAddress;
+
     // bind start
     document.getElementById("start").addEventListener("click", async () => {
         localStorage.userId = identity.id;
@@ -61,6 +67,8 @@ const init = async () => {
             return;
         }
 
+        localStorage.APIAddress = (document.getElementById("apiAddress") as HTMLInputElement).value;
+
         const userObj = {
             avatar: localStorage.userAvatar,
             id: identity.id,
@@ -70,10 +78,10 @@ const init = async () => {
             publicKey: identity.publicKey,
         };
 
-        const publishResult =  await publishUser(userObj, ipfs);
+        const publishResult = await publishUser(userObj, ipfs);
         if (publishResult) {
-           window.location.href = config.indexPath;
-       }
+            window.location.href = config.indexPath;
+        }
     });
 
     loaded(ipfs);
