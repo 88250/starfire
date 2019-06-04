@@ -78,6 +78,13 @@ const initAddComment = () => {
             window.location.href = config.settingPath;
             return;
         }
+
+        const isMatchNodeId = isNodeIdPost(localStorage.publicKey, localStorage.userId)
+        if (!isMatchNodeId) {
+            showMsg('Invalid user')
+            return
+        }
+
         const userPath = `/starfire/users/${localStorage.userId}`;
         const userStr = await ipfs.files.read(userPath);
         const userJSON = JSON.parse(userStr.toString());
@@ -100,8 +107,16 @@ const initAddComment = () => {
 
         const signature = await sign(JSON.stringify(sortObject(commentObj)));
         if (!signature) {
+            showMsg('Invalid private key')
             return;
         }
+
+        const isMatch = await verify(JSON.stringify(sortObject(commentObj)), commentObj.publicKey, signature);
+        if (!isMatch) {
+            showMsg('Invalid private key')
+            return;
+        }
+
         commentObj.signature = signature;
 
         const cid = await ipfs.dag.put(commentObj);

@@ -5,6 +5,7 @@ import {showMsg} from "./utils/msg";
 import {publishUser} from "./utils/publishUser";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
+import {isNodeIdPost} from "./utils/isNodeIdPost";
 
 export class Post {
     private ipfs: IIPFS;
@@ -30,6 +31,13 @@ export class Post {
             window.location.href = config.settingPath;
             return;
         }
+
+        const isMatchNodeId = isNodeIdPost(localStorage.publicKey, localStorage.userId)
+        if (!isMatchNodeId) {
+            showMsg('Invalid user')
+            return
+        }
+
         const path = `/starfire/users/${localStorage.userId}`;
         const userStr = await this.ipfs.files.read(path);
         const userJSON = JSON.parse(userStr.toString());
