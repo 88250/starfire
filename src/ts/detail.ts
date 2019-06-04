@@ -11,13 +11,13 @@ import {getUserAvatar, getUserLink} from "./utils/getUserHTML";
 import {getVditorConfig} from "./utils/getVditorConfig";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
+import {isNodeIdPost} from "./utils/isNodeIdPost";
 import {mdParse, mdRender} from "./utils/mdRender";
 import {showMsg} from "./utils/msg";
 import {publishUser} from "./utils/publishUser";
 import {renderPug} from "./utils/renderPug";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {isNodeIdPost} from "./utils/isNodeIdPost";
 
 dayjs.extend(relativeTime);
 
@@ -30,7 +30,7 @@ const init = async () => {
 
     const result = await ipfs.dag.get(postId);
     const postObj: IPost = result.value;
-    const isMatchNodeId = await isNodeIdPost(postObj.publicKey, postObj.userId)
+    const isMatchNodeId = await isNodeIdPost(postObj.publicKey, postObj.userId);
     if (!isMatchNodeId) {
         return;
     }
@@ -79,10 +79,10 @@ const initAddComment = () => {
             return;
         }
 
-        const isMatchNodeId = isNodeIdPost(localStorage.publicKey, localStorage.userId)
+        const isMatchNodeId = isNodeIdPost(localStorage.publicKey, localStorage.userId);
         if (!isMatchNodeId) {
-            showMsg('Invalid user')
-            return
+            showMsg("Invalid user");
+            return;
         }
 
         const userPath = `/starfire/users/${localStorage.userId}`;
@@ -107,13 +107,13 @@ const initAddComment = () => {
 
         const signature = await sign(JSON.stringify(sortObject(commentObj)));
         if (!signature) {
-            showMsg('Invalid private key')
+            showMsg("Invalid private key");
             return;
         }
 
         const isMatch = await verify(JSON.stringify(sortObject(commentObj)), commentObj.publicKey, signature);
         if (!isMatch) {
-            showMsg('Invalid private key')
+            showMsg("Invalid private key");
             return;
         }
 

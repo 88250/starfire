@@ -9,12 +9,12 @@ import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {getTitleLink} from "./utils/getUserHTML";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
+import {isNodeIdPost} from "./utils/isNodeIdPost";
 import {mdParse, mdRender} from "./utils/mdRender";
 import {showMsg} from "./utils/msg";
 import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {isNodeIdPost} from "./utils/isNodeIdPost";
 
 dayjs.extend(relativeTime);
 
@@ -117,7 +117,7 @@ const render = async (userJSON: IUser) => {
     const signature = userJSON.signature;
     const gateway = await getIPFSGateway(ipfs);
     // ipns 失败
-    if (parseInt(signature) === 1) {
+    if (parseInt(signature, 10) === 1) {
         document.getElementById("user").innerHTML = `
 <img class="avatar--big avatar" src="${gateway}/ipfs/${config.defaultAvatar}">
 <div class="flex1 meta">
@@ -127,16 +127,16 @@ const render = async (userJSON: IUser) => {
         return;
     }
 
-    const isMatchNodeId = await isNodeIdPost(userJSON.publicKey, userJSON.id)
+    const isMatchNodeId = await isNodeIdPost(userJSON.publicKey, userJSON.id);
     if (!isMatchNodeId) {
-        showMsg('Invalid user')
+        showMsg("Invalid user");
         return;
     }
 
     delete userJSON.signature;
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        showMsg('Invalid data')
+        showMsg("Invalid data");
         return;
     }
 
@@ -200,7 +200,7 @@ const traverseIds = async (id: string, renderCB: ((id: string, post: IPost | ICo
     while (id) {
         const current = await ipfs.dag.get(id);
 
-        const isMatchNodeId = await isNodeIdPost(current.value.publicKey, current.value.userId)
+        const isMatchNodeId = await isNodeIdPost(current.value.publicKey, current.value.userId);
         const signature = current.value.signature;
         delete current.value.signature;
         const isMatch = await verify(JSON.stringify(sortObject(current.value)), current.value.publicKey, signature);

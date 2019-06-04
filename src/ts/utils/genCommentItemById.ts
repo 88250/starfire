@@ -3,10 +3,10 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import {config} from "../config/config";
 import {getIPFSGateway} from "./getIPFSGateway";
 import {getUserAvatar, getUserLink} from "./getUserHTML";
+import {isNodeIdPost} from "./isNodeIdPost";
 import {mdParse} from "./mdRender";
 import {verify} from "./sign";
 import {sortObject} from "./tools/sortObject";
-import {isNodeIdPost} from "./isNodeIdPost";
 
 dayjs.extend(relativeTime);
 
@@ -28,10 +28,10 @@ export const genCommentItemById = async (id: string, ipfs: IIPFS, blackList: str
         return commentObj.userId;
     }
 
-    let msg = 'Invalid data'
-    const isMatchNodeId = await isNodeIdPost(commentObj.publicKey, commentObj.userId)
+    let msg = "Invalid data";
+    const isMatchNodeId = await isNodeIdPost(commentObj.publicKey, commentObj.userId);
     if (!isMatchNodeId) {
-        msg = 'Invalid user'
+        msg = "Invalid user";
     }
 
     const signature = commentObj.signature;

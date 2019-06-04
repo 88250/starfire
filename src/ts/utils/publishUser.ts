@@ -13,17 +13,17 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
 
     const signature  = await sign(JSON.stringify(sortObject(userJSON)));
     if (!signature) {
-        showMsg('Invalid private key')
+        showMsg("Invalid private key");
         return;
     }
 
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        showMsg('Invalid private key')
+        showMsg("Invalid private key");
         return;
     }
 
-    userJSON.signature = signature
+    userJSON.signature = signature;
 
     await ipfs.files.write(path, Buffer.from(JSON.stringify(userJSON)), {
         create: true,

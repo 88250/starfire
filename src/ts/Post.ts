@@ -1,11 +1,11 @@
 import Vditor from "vditor";
 import {config} from "./config/config";
 import {getVditorConfig} from "./utils/getVditorConfig";
+import {isNodeIdPost} from "./utils/isNodeIdPost";
 import {showMsg} from "./utils/msg";
 import {publishUser} from "./utils/publishUser";
 import {sign, verify} from "./utils/sign";
 import {sortObject} from "./utils/tools/sortObject";
-import {isNodeIdPost} from "./utils/isNodeIdPost";
 
 export class Post {
     private ipfs: IIPFS;
@@ -32,10 +32,10 @@ export class Post {
             return;
         }
 
-        const isMatchNodeId = isNodeIdPost(localStorage.publicKey, localStorage.userId)
+        const isMatchNodeId = isNodeIdPost(localStorage.publicKey, localStorage.userId);
         if (!isMatchNodeId) {
-            showMsg('Invalid user')
-            return
+            showMsg("Invalid user");
+            return;
         }
 
         const path = `/starfire/users/${localStorage.userId}`;
@@ -66,13 +66,13 @@ export class Post {
 
         const signature = await sign(JSON.stringify(sortObject(postObj)));
         if (!signature) {
-            showMsg('Invalid private key')
+            showMsg("Invalid private key");
             return;
         }
 
         const isMatch = await verify(JSON.stringify(sortObject(postObj)), postObj.publicKey, signature);
         if (!isMatch) {
-            showMsg('Invalid private key')
+            showMsg("Invalid private key");
             return;
         }
         postObj.signature = signature;

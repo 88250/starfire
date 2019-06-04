@@ -21,7 +21,7 @@ export const genPostItemById = async (id: string, ipfs: IIPFS, blackList: string
         return postObj.userId;
     }
 
-    const isMatchNodeId = await isNodeIdPost(postObj.publicKey, postObj.userId)
+    const isMatchNodeId = await isNodeIdPost(postObj.publicKey, postObj.userId);
     if (!isMatchNodeId) {
         return;
     }

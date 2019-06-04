@@ -6,10 +6,10 @@ import {getAvatarPath} from "./utils/getAvatarPath";
 import {getIPFSGateway} from "./utils/getIPFSGateway";
 import {ipfs} from "./utils/initIPFS";
 import {loaded} from "./utils/initPage";
-import {publishUser} from "./utils/publishUser";
-import {renderPug} from "./utils/renderPug";
 import {isNodeIdPost} from "./utils/isNodeIdPost";
 import {showMsg} from "./utils/msg";
+import {publishUser} from "./utils/publishUser";
+import {renderPug} from "./utils/renderPug";
 import {verify} from "./utils/sign";
 
 const init = async () => {
@@ -55,10 +55,10 @@ const init = async () => {
         localStorage.userAvatar = (document.getElementById("avatarPath") as HTMLInputElement).value;
         localStorage.userName = (document.getElementById("name") as HTMLInputElement).value;
 
-        const isMatchNodeId = isNodeIdPost(identity.publicKey, identity.id)
+        const isMatchNodeId = isNodeIdPost(identity.publicKey, identity.id);
         if (!isMatchNodeId) {
-            showMsg('Invalid user')
-            return
+            showMsg("Invalid user");
+            return;
         }
 
         const userObj = {

@@ -1,6 +1,6 @@
 declare module "*.svg";
 
-declare module 'multihashing-async';
+declare module "multihashing-async";
 
 declare module "ipfs-http-client";
 
