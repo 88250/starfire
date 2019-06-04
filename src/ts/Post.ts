@@ -34,7 +34,7 @@ export class Post {
 
         const isMatchNodeId = isNodeIdPost(localStorage.publicKey, localStorage.userId);
         if (!isMatchNodeId) {
-            showMsg("Invalid user");
+            showMsg("用户身份校验失败");
             return;
         }
 
@@ -55,24 +55,24 @@ export class Post {
         };
 
         if (postObj.content.length > 1048576 || postObj.content.length < 4) {
-            showMsg("Content is error(4-1048576 characters)");
+            showMsg("内容长度限制 4-1048576 字符");
             return;
         }
 
         if (postObj.title.length > 512 || postObj.title.length < 4) {
-            showMsg("Title is error(4-512 characters)");
+            showMsg("标题长度限制 4-512 字符");
             return;
         }
 
         const signature = await sign(JSON.stringify(sortObject(postObj)));
         if (!signature) {
-            showMsg("Invalid private key");
+            showMsg("该密钥对不可用");
             return;
         }
 
         const isMatch = await verify(JSON.stringify(sortObject(postObj)), postObj.publicKey, signature);
         if (!isMatch) {
-            showMsg("Invalid private key");
+            showMsg("该密钥对不可用");
             return;
         }
         postObj.signature = signature;

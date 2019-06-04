@@ -20,7 +20,7 @@ export const sign = async (content: string) => {
                 });
         } catch (e) {
             resolve("");
-            showMsg("private key error");
+            showMsg("密钥对移除");
         }
     });
 };

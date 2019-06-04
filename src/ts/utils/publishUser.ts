@@ -7,19 +7,19 @@ export const publishUser = async (userJSON: IUser, ipfs: IIPFS) => {
     delete userJSON.signature;
 
     if (userJSON.name.length > 24 || userJSON.name.length === 0) {
-        showMsg("Username is error(1-24 characters)");
+        showMsg("昵称长度限制 1-24 字符");
         return false;
     }
 
     const signature  = await sign(JSON.stringify(sortObject(userJSON)));
     if (!signature) {
-        showMsg("Invalid private key");
+        showMsg("该密钥对不可用");
         return;
     }
 
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        showMsg("Invalid private key");
+        showMsg("该密钥对不可用");
         return;
     }
 

@@ -103,11 +103,11 @@ const init = async () => {
             const stats = await ipfs.files.stat(`/starfire/users/${localStorage.userId}`);
             ipfs.name.publish(`/ipfs/${stats.hash}`, () => {
                 loadingElement.style.display = "none";
-                showMsg("Publish successful");
+                showMsg("发布成功");
             });
         } else {
             syncOtherUser(() => {
-                showMsg("Update successful");
+                showMsg("更新成功");
             });
         }
     });
@@ -129,14 +129,14 @@ const render = async (userJSON: IUser) => {
 
     const isMatchNodeId = await isNodeIdPost(userJSON.publicKey, userJSON.id);
     if (!isMatchNodeId) {
-        showMsg("Invalid user");
+        showMsg("用户身份校验失败");
         return;
     }
 
     delete userJSON.signature;
     const isMatch = await verify(JSON.stringify(sortObject(userJSON)), userJSON.publicKey, signature);
     if (!isMatch) {
-        showMsg("Invalid data");
+        showMsg("数据异常");
         return;
     }
 

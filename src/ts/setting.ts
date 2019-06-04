@@ -57,7 +57,7 @@ const init = async () => {
 
         const isMatchNodeId = isNodeIdPost(identity.publicKey, identity.id);
         if (!isMatchNodeId) {
-            showMsg("Invalid user");
+            showMsg("用户身份校验失败");
             return;
         }
 
