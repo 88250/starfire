@@ -2,11 +2,11 @@ include ./common/header.pug
 +header('index')
 div.index.wrap
     div
-        input.input.input--space#postTitle(placeholder='title')
-        div#postContent(placeholder='content')
-        input.input.input--space#privateKey(placeholder='private key')
+        input.input.input--space#postTitle(placeholder='帖子标题')
+        div#postContent(placeholder='帖子正文')
+        input.input.input--space#privateKey(placeholder='密钥对')
         div.clear
-            button.button.button--space.right#postBtn Post
-            span.tip Please check carefully and cannot be modified after posting.
+            button.button.button--space.right#postBtn 发布
+            span.tip 请仔细检查，发布后不可更新
     div
         ul#indexList
