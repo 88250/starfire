@@ -1,9 +1,9 @@
 mixin header(current)
     div.header.clear
         a(href=config.indexPath class=current === 'index' ? 'header__item header__item--current left':'header__item left') 首页
-        a(href=config.homePath class=current === 'home' ? 'header__item header__item--current left':'header__item left') 我的主页
         a(href=config.aboutPath class=current === 'about' ? 'header__item header__item--current left':'header__item left') 关于
-        a#logo(href=config.indexPath class='header__item vditor-tooltipped vditor-tooltipped__e' aria-label='A single spark can start a prairie fire')
+        a#logo(href=config.indexPath class='header__item vditor-tooltipped vditor-tooltipped__e' aria-label='星星之火可以燎原')
             img
             span 星火
-        a(href=config.settingPath class=current === 'setting' ? 'header__item header__item--current right':'header__item right') 设置
+        a(href=config.homePath class=current === 'home' ? 'header__item header__item--current left':'header__item left') 我的主页
+        a(href=config.settingPath class=current === 'setting' ? 'header__item header__item--current right':'header__item right') 个人设置
