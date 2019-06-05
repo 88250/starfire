@@ -21,6 +21,24 @@
 
 星火可以用于记录你生活的点点滴滴、和其他志同道合的人开展讨论或者推广你的产品等，可以把星火当做个人博客、社区论坛、自媒体平台来使用，并且所有数据都是永久性的。
 
+### 截图
+
+**首页列表**
+
+![列表](https://user-images.githubusercontent.com/873584/58921827-fb112a00-876a-11e9-9f13-a74e133a14ba.png)
+
+**文章详情**
+
+![详情](https://user-images.githubusercontent.com/873584/58921826-fb112a00-876a-11e9-873f-ddf76370199c.png)
+
+**个人主页**
+
+![个人主页](https://user-images.githubusercontent.com/873584/58921828-fba9c080-876a-11e9-9c81-7500188ffb89.png)
+
+**个人设置**
+
+![个人设置](https://user-images.githubusercontent.com/873584/58921901-47f50080-876b-11e9-9eda-cb77d006701c.png)
+
 ### 技术
 
 [IPFS](https://ipfs.io) 为星火的实现提供了基础：
