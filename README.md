@@ -15,7 +15,7 @@
 
 ### 功能
 
-* 发布文章、发布评论
+* 发布帖子、发布回帖
 * 固定的个人主页地址
 * 无缝嵌入 IPFS 数据
 
@@ -25,11 +25,11 @@
 
 **首页列表**
 
-![列表](https://user-images.githubusercontent.com/873584/58921827-fb112a00-876a-11e9-9f13-a74e133a14ba.png)
+![首页列表](https://user-images.githubusercontent.com/873584/58921827-fb112a00-876a-11e9-9f13-a74e133a14ba.png)
 
-**文章详情**
+**帖子详情**
 
-![详情](https://user-images.githubusercontent.com/873584/58921826-fb112a00-876a-11e9-873f-ddf76370199c.png)
+![帖子详情](https://user-images.githubusercontent.com/873584/58921826-fb112a00-876a-11e9-873f-ddf76370199c.png)
 
 **个人主页**
 
