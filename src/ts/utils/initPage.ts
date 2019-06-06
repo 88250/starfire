@@ -49,6 +49,15 @@ const updateNewestVersion = async (ipfs: IIPFS) => {
     window.location.href = `/ipfs/${versionId}`;
 };
 
+const pushIndex = async (ipfs: IIPFS) => {
+    const indexStr = await ipfs.files.read("/starfire/index");
+    const publishObj = {
+        data: JSON.parse(indexStr.toString()),
+        type: "index",
+    };
+    ipfs.pubsub.publish(config.topic, Buffer.from(JSON.stringify(publishObj)));
+}
+
 export const loaded = async (ipfs: IIPFS) => {
     initPubSub(ipfs);
     closeLoading();
@@ -63,6 +72,10 @@ export const loaded = async (ipfs: IIPFS) => {
             localStorage.lastTime = (new Date()).getTime();
         }
     }
+
+    setInterval(() => {
+        pushIndex(ipfs)
+    }, 1000 * 60 * 5)
 
     updateNewestVersion(ipfs);
 };
