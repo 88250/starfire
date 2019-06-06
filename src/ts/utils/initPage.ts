@@ -56,7 +56,7 @@ const pushIndex = async (ipfs: IIPFS) => {
         type: "index",
     };
     ipfs.pubsub.publish(config.topic, Buffer.from(JSON.stringify(publishObj)));
-}
+};
 
 export const loaded = async (ipfs: IIPFS) => {
     initPubSub(ipfs);
@@ -74,8 +74,8 @@ export const loaded = async (ipfs: IIPFS) => {
     }
 
     setInterval(() => {
-        pushIndex(ipfs)
-    }, 1000 * 60 * 5)
+        pushIndex(ipfs);
+    }, 1000 * 60 * 5);
 
     updateNewestVersion(ipfs);
 };

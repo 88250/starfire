@@ -22,6 +22,7 @@ declare module "libp2p-crypto/src/keys";
 
 declare module "*.pug";
 
+// tslint:disable-next-line:interface-name
 interface Window {
     msgTimeout: number;
 }
