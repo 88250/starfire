@@ -1,4 +1,4 @@
-## 星火
+## 星火 <a title="Hits" target="_blank" href="https://github.com/b3log/hits"><img src="https://hits.b3log.org/b3log/starfire.svg"></a>
 
 ### 简介
 
