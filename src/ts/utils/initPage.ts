@@ -67,20 +67,17 @@ export const loaded = async (ipfs: IIPFS) => {
         `${gateway}/ipfs/${config.defaultAvatar}`);
 
     if (!localStorage.lastTime || (new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
-        const isUpdate = await namePR(ipfs);
+        const isUpdate = await versionBlacklistPR(ipfs);
+        pushIndex(ipfs)
         if (isUpdate) {
             localStorage.lastTime = (new Date()).getTime();
         }
     }
 
-    setInterval(() => {
-        pushIndex(ipfs);
-    }, 1000 * 60 * 5);
-
     updateNewestVersion(ipfs);
 };
 
-const namePR = async (ipfs: IIPFS) => {
+const versionBlacklistPR = async (ipfs: IIPFS) => {
 
     document.querySelector("#logo img").className = "rotation";
     const updatedVersion = await pullModerate(ipfs, "version");

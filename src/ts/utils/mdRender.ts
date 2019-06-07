@@ -54,7 +54,7 @@ export const mdParse = async (text: string) => {
 };
 
 export const emoji2Image = (text: string) => {
-    const emojiPath = "https://cdn.jsdelivr.net/npm/vditor@1.5.3/dist/images/emoji/";
+    const emojiPath = "https://cdn.jsdelivr.net/npm/vditor@1.5.4/dist/images/emoji/";
     return text
         .replace(/:c:/g, `<img class="emoji" src="${emojiPath}c.png">`)
         .replace(/:d:/g, `<img class="emoji" src="${emojiPath}d.png">`)

@@ -22,7 +22,7 @@
     "multiaddr": "^6.0.6",
     "multihashing-async": "^0.7.0",
     "pull-file-reader": "^1.0.2",
-    "vditor": "^1.5.3",
+    "vditor": "^1.5.4",
     "xss": "^1.0.6"
   },
   "devDependencies": {

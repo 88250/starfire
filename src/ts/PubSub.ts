@@ -72,7 +72,8 @@ export class PubSub {
             });
 
             // render comment list
-            if (!document.getElementById("comments")) {
+            if (!document.getElementById("comments") ||
+                location.search.split('=')[1] !== data.data.postId) {
                 return;
             }
 
