@@ -146,7 +146,7 @@ https://github.com/b3log/starfire
      ```shell
      docker exec ipfs_host ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["*"]'
      ```
-5. 打开浏览器访问 http://127.0.0.1:8080/ipfs/QmPaa3wooNBkzou5XqA5jb6kGHwUMozHSvNDJQ6mJtxK3G
+5. 打开浏览器访问 http://127.0.0.1:8080/ipfs/QmauDX9WwBwVscpyXkHhxDr3AtDTLwHqjQ5MnJNEjWekMw
 6. 通过密钥对发帖回帖，密钥对是 ~/.ipfs/config 中的 `PrivKey` 项 
 
 ---
