@@ -68,7 +68,7 @@ export const loaded = async (ipfs: IIPFS) => {
 
     if (!localStorage.lastTime || (new Date()).getTime() - localStorage.lastTime > config.nameInterval) {
         const isUpdate = await versionBlacklistPR(ipfs);
-        pushIndex(ipfs)
+        pushIndex(ipfs);
         if (isUpdate) {
             localStorage.lastTime = (new Date()).getTime();
         }

@@ -73,7 +73,7 @@ export class PubSub {
 
             // render comment list
             if (!document.getElementById("comments") ||
-                location.search.split('=')[1] !== data.data.postId) {
+                location.search.split("=")[1] !== data.data.postId) {
                 return;
             }
 
