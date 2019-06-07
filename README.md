@@ -119,7 +119,7 @@ https://github.com/b3log/starfire
    docker exec ipfs_host ipfs bootstrap rm --all
    docker exec ipfs_host ipfs bootstrap add /ip4/47.111.58.76/tcp/4001/ipfs/QmZdWDS3qLbH55knn4hGjH2oq5hGwJz8sUHHz273xzX2rc
    ```
-2. 配置星火私网密钥，保存路径是 $IPFS_PATH/swarm.key（默认 ~/.ipfs/swarm.key）
+2. 新建星火私网密钥文件（内容如下），保存路径是 $IPFS_PATH/swarm.key（默认 ~/.ipfs/swarm.key）
    ```txt
    /key/swarm/psk/1.0.0/
    /base16/
