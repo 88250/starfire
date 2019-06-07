@@ -5,8 +5,7 @@
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts'",
     "start": "webpack-dev-server",
     "scss": "node-sass -w=./src/assets/scss ./src/assets/scss/index.scss ./index.css",
-    "build": "webpack --env.production && node-sass --output-style=compressed ./src/assets/scss/index.scss ./dist/index.css",
-    "lint-staged":"lint-staged"
+    "build": "webpack --env.production && node-sass --output-style=compressed ./src/assets/scss/index.scss ./dist/index.css"
   },
   "keywords": [
     "ipfs",
@@ -23,7 +22,7 @@
     "multiaddr": "^6.0.6",
     "multihashing-async": "^0.7.0",
     "pull-file-reader": "^1.0.2",
-    "vditor": "^1.4.7",
+    "vditor": "^1.5.3",
     "xss": "^1.0.6"
   },
   "devDependencies": {
@@ -43,17 +42,9 @@
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.5.1"
   },
-  "lint-staged": {
-    "linters": {
-      "**/*.{ts}": [
-        "tslint --fix -c tslint.json",
-        "git add"
-      ]
-    }
-  },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint-staged"
+      "pre-commit": "npm run lint"
     }
   }
 }

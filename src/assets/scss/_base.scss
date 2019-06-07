@@ -59,7 +59,8 @@ $previewBg: $primary-dark !default;
       color: $primary-dark;
     }
 
-    .language-mermaid {
+    .language-mermaid,
+    .language-echarts {
       background-color: $secondary-light;
     }
   }

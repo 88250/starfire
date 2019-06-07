@@ -870,6 +870,9 @@ blockquote {
     margin-bottom: 0; }
   .vditor-reset .katex {
     position: relative; }
+  .vditor-reset .language-echarts {
+    overflow: hidden;
+    height: 420px; }
 
 .vditor-task {
   list-style: none;
@@ -912,7 +915,8 @@ blockquote {
       color: #4285f4; }
     .vditor-reset tr:hover {
       color: #000004; }
-    .vditor-reset .language-mermaid {
+    .vditor-reset .language-mermaid,
+    .vditor-reset .language-echarts {
       background-color: #ff674f; }
 
 .detail #title {
